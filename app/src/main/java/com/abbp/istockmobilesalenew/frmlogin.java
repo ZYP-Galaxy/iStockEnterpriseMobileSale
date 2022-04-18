@@ -80,7 +80,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     SharedPreferences sh_ip;
     SharedPreferences sh_port;
     SharedPreferences RegisterID;
-    private DatabaseHelper dataBaseHelper;
     private static final String DB_NAME = "iStock.db";
     ArrayList<String> TableName = new ArrayList<>();
     String jsonValue = "";
@@ -95,7 +94,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     public static int det_locationid;
     public static int def_payment;
     public static int Confirm_PrintVou;
-    //    public  static  int allow_priceLevel;
+//    public  static  int allow_priceLevel;
 //    public static int select_location;
 //    public static int select_customer=1;
 //    public static int change_date;
@@ -201,7 +200,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
         }
         GettingIMEINumber.IMEINO=telephonyManager.getDeviceId();*/
-        dataBaseHelper = DatabaseHelper.getInstance(this, DB_NAME);
+        DatabaseHelper dataBaseHelper = DatabaseHelper.getInstance(this, DB_NAME);
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         System.out.println(sh_ip + "" + sh_port);
