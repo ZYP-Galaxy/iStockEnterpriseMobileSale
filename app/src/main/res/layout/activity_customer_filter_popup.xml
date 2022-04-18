@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="400dp"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#2C73D2"
+        android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="Customer :"
+        android:textSize="13dp"
+        android:padding="5dp"
+        android:textColor="@color/whitesmoke"/>
+        </LinearLayout>
+
+
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/rectanglestyle"
+    android:orientation="horizontal"
+    android:layout_weight="3.5"
+    android:layout_margin="3dp"
+
+
+    >
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search..."
+        android:textSize="15dp"
+        android:id="@+id/customersearch"
+        android:layout_weight="1"
+        android:imeOptions="flagNoExtractUi"
+
+        android:focusable="false"
+        android:padding="10dp"
+        android:textColor="@color/whitesmoke"
+        android:cursorVisible="true"
+        android:layout_gravity="center"
+        android:background="@drawable/rectanglestyleedt"
+        />
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_search_black_24dp"
+                    android:background="@null"
+                    android:id="@+id/searchcustomer"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="10dp"
+
+                    ></ImageButton>
+
+
+
+</LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:layout_gravity="center">
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/closebutton"
+                    android:background="@null"
+                    android:id="@+id/imgNochange"
+                    android:layout_marginLeft="15dp"
+
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        >
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fastScrollEnabled="true" />
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/sideIndex"
+            android:layout_width="40dip"
+            android:layout_height="match_parent"
+            android:background="@color/whitesmoke"
+
+            android:paddingLeft="1dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            >
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

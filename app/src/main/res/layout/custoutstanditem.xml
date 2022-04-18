@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:gravity="center_vertical"
+            android:text=" Merchant Inform"
+            android:id="@+id/merchantinform"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:gravity="center_vertical"
+            android:text="Currency"
+            android:id="@+id/currency"
+
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:gravity="center_vertical"
+            android:text="Opening"
+            android:id="@+id/opening"
+            android:textAlignment="textEnd"
+
+            android:textSize="15dp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:gravity="center_vertical"
+            android:text="Sale"
+            android:id="@+id/sale"
+            android:textAlignment="textEnd"
+
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:gravity="center_vertical"
+            android:text="Returnin"
+            android:id="@+id/returnin"
+            android:textAlignment="textEnd"
+
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:textAlignment="textEnd"
+            android:text="Discount"
+            android:id="@+id/discount"
+
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/paid"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2.5"
+            android:layout_gravity="end"
+            android:gravity="center_vertical"
+            android:text="Paid"
+            android:textAlignment="textEnd"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/closing"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2.5"
+        android:layout_gravity="end"
+        android:gravity="center_vertical"
+        android:text="Closing   "
+        android:textAlignment="textEnd"
+        android:layout_marginRight="5dp"
+
+        android:textSize="15dp"
+        android:textStyle="bold" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/imgpaid"
+            android:layout_weight="1.5"
+            android:src="@drawable/ic_payment_black_24dp"
+            android:visibility="gone"
+
+/>
+</LinearLayout>

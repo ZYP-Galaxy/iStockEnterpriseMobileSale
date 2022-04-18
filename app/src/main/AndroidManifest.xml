@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.abbp.istockmobilesalenew">
+
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:name=".BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme1"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
+        <activity
+            android:name=".CustomerFilterPopup"
+            android:label="Customer Info"
+            android:parentActivityName=".frmCustOutstand"
+            android:theme="@style/CustomDialog" />
+        <activity android:name=".CreditPaidForOutstand" />
+        <activity
+            android:name=".frmCustOutstand"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".frmstockstatus"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".frmscancode"
+            android:label="Scan stock"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.Design.NoActionBar" />
+        <activity
+            android:name=".stock_balance"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme1" />
+        <activity
+            android:name=".sale_entry"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme2" />
+        <activity
+            android:name=".saleorder_entry"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme2" />
+        <activity
+            android:name=".frmlogin"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".frmmain"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme2" />
+        <activity
+            android:name=".frmsalelist"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme2" />
+        <activity
+            android:name=".reportviewer"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+    </application>
+
+</manifest>

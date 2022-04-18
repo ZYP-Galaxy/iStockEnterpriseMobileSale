@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgcolor"
+    tools:context=".frmstockstatus">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/head"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:elevation="20dp"
+            android:padding="10dp"
+            app:cardBackgroundColor="@color/barcolor">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/txtStockStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="Stock Status"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/head"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="1dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/txtdate"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/btnround3"
+                android:text="Today"
+                android:textAllCaps="false"
+                android:textColor="@color/btntxtcolor"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/chooselocation"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/btnround3"
+                android:text="Choose Location"
+                android:textAllCaps="false"
+                android:textColor="@color/btntxtcolor"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/choosecategory"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+
+                android:layout_marginLeft="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/btnround3"
+                android:text="Choose"
+                android:textAllCaps="false"
+                android:textColor="@color/btntxtcolor"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="2dp"
+                android:layout_weight=".3">
+
+                <ImageButton
+                    android:id="@+id/btnmenu"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/cyclebutton2"
+                    android:src="@drawable/stockmenu"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight=".2"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/imgSearchCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_centerVertical="true"
+
+
+                    android:background="@null"
+                    android:src="@drawable/searchicon" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/chksaleorder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxWidth="2dp"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:text="sale/pur ord"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    android:textStyle="bold">
+
+                </CheckBox>
+
+                <CheckBox
+                    android:id="@+id/chkrecndel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-20dp"
+                    android:layout_weight="1"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:text="rec &amp; del"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    android:textStyle="bold">
+
+                </CheckBox>
+
+                <CheckBox
+                    android:id="@+id/chkinactive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-80dp"
+                    android:layout_weight="1"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:text="inactive"
+                    android:textColor="#ffffff"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="2dp"
+                android:layout_weight=".5"
+                android:orientation="horizontal"
+
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <ImageButton
+                        android:id="@+id/btnrefresh"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+
+                        android:background="@drawable/cyclebutton2"
+                        android:src="@drawable/refresh"
+
+
+                        android:visibility="visible" />
+
+                    <ImageButton
+                        android:id="@+id/btnclear"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerVertical="true"
+
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@+id/btnrefresh"
+                        android:background="@drawable/cyclebutton2"
+
+                        android:src="@drawable/clearsalelist"
+
+                        />
+                </RelativeLayout>
+                <!--<LinearLayout-->
+                <!--    android:layout_width="0dp"-->
+                <!--    android:layout_height="wrap_content"-->
+                <!--    android:layout_weight=".24"-->
+                <!--    android:orientation="horizontal"-->
+                <!--    android:layout_gravity="center_vertical"-->
+                <!--    android:paddingLeft="2dp"-->
+
+                <!--    >-->
+                <!--            <ImageButton-->
+                <!--                android:layout_width="35dp"-->
+                <!--                android:layout_height="35dp"-->
+                <!--                android:id="@+id/btnrefresh"-->
+                <!--                android:layout_centerVertical="true"-->
+
+                <!--                android:src="@drawable/refresh"-->
+                <!--                android:background="@drawable/cyclebutton2"-->
+
+
+                <!--                android:visibility="visible"-->
+                <!--                />-->
+                <!--</LinearLayout>-->
+                <!--        <LinearLayout-->
+                <!--            android:layout_width="0dp"-->
+                <!--            android:layout_height="wrap_content"-->
+                <!--            android:layout_weight=".24"-->
+                <!--            android:orientation="horizontal"-->
+                <!--            android:layout_gravity="center_vertical"-->
+                <!--            android:paddingLeft="2dp"-->
+                <!--            android:layout_marginEnd="1dp"-->
+                <!--            >-->
+                <!--            <ImageButton-->
+                <!--                android:layout_width="35dp"-->
+                <!--                android:layout_height="35dp"-->
+                <!--                android:id="@+id/btnclear"-->
+                <!--                android:layout_centerVertical="true"-->
+
+                <!--                android:src="@drawable/clearsalelist"-->
+                <!--                android:background="@drawable/cyclebutton2"-->
+
+
+                <!--                />-->
+                <!--        </LinearLayout>-->
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/middle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/footer"
+            android:layout_below="@+id/header"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="0dp"
+            android:elevation="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/column"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/columnheader">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:layout_weight="1.5"
+                        android:gravity="center_vertical"
+                        android:text="Code"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="2"
+                        android:gravity="center_vertical"
+                        android:text="Description"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:gravity="center_vertical"
+                        android:text="Sale Amount"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        tools:ignore="RtlCompat" />
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="20dp"
+                        android:layout_weight="1.5"
+                        android:gravity="center_vertical"
+                        android:text="Balance"
+                        android:textAlignment="textEnd"
+                        android:textColor="@color/white"
+                        android:textSize="15dp"
+                        android:textStyle="bold"
+                        tools:ignore="RtlCompat" />
+
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rcvsaleList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/column"
+                    android:background="@drawable/rcvback">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
