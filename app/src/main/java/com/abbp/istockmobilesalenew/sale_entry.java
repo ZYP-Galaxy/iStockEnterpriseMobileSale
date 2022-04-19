@@ -2043,6 +2043,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             case R.id.txtdate:
 
                 if (frmlogin.canchangedate == 0) {
+                    Toast.makeText(getApplicationContext(),"You have no permission to change date!",Toast.LENGTH_SHORT).show();
                     txtdate.setEnabled(false);
                 } else {
                     ChangeVouDate();

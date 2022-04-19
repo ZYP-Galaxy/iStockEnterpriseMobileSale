@@ -139,6 +139,11 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         imgFilterClear = findViewById(R.id.imgFilterClear);
         filtermenu = (ImageButton) findViewById(R.id.filtermenu);
         selectfilter = (Button) findViewById(R.id.selectfilter);
+        if (frmlogin.det_locationid != 0) {
+            FilterLocation.locid = frmlogin.det_locationid;
+        } else {
+            FilterLocation.locid = -1;
+        }
         imgFilterClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
