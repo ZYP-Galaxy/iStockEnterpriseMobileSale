@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -50,6 +51,7 @@ import com.android.volley.toolbox.Volley;
 import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
 import com.rt.printerlibrary.connect.PrinterInterface;
 import com.rt.printerlibrary.enumerate.CommonEnum;
+import com.rt.printerlibrary.enumerate.ConnectStateEnum;
 import com.rt.printerlibrary.factory.connect.BluetoothFactory;
 import com.rt.printerlibrary.factory.connect.PIFactory;
 import com.rt.printerlibrary.factory.printer.PrinterFactory;
@@ -95,7 +97,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     public static int det_locationid;
     public static int def_payment;
     public static int Confirm_PrintVou;
-//    public  static  int allow_priceLevel;
+    //    public static int allow_priceLevel;
 //    public static int select_location;
 //    public static int select_customer=1;
 //    public static int change_date;
@@ -141,8 +143,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     ProgressDialog pb;
     String ip;
     String port;
-    int count = 0;
-    int progress = 0;
     AlertDialog showmsg;
     Context context;
     ProgressBar pbDownload;
@@ -171,36 +171,9 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         setContentView(R.layout.frmlogin);
 
         globalsetting.username = "ThuraTun";
-        //GettingIMEINumber.IMEINO="867597042005493";
 
-        //SettingIMEI();
+        GettingIMEINumber.IMEINO = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        /*telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-//
-//                //    Activity#requestPermissions
-//                // here to request the missing permissions, and then overriding
-//                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                //                                          int[] grantResults)
-//                // to handle the case where the user grants the permission. See the documentation
-//                // for Activity#requestPermissions for more details.
-//                return;
-//            }
-//        }
-        int permission= ContextCompat.checkSelfPermission(frmlogin.this, Manifest.permission.READ_PHONE_STATE);
-        System.out.println(permission);
-        if(permission== PackageManager.PERMISSION_GRANTED){
-            System.out.println( telephonyManager.getDeviceId());
-        }else {
-            ActivityCompat.requestPermissions(frmlogin.this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_CODE);
-            System.out.println(telephonyManager.getDeviceId());
-
-
-            return;
-
-        }
-        GettingIMEINumber.IMEINO=telephonyManager.getDeviceId();*/
         dataBaseHelper = DatabaseHelper.getInstance(this, DB_NAME);
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
@@ -216,7 +189,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         GetDeviceName();
         if (globalsetting.datetime != null && globalsetting.datetime.equals("1990-01-01")) {
             updatetime.getString("datetime", "");
-            //frmlogin.updatetime.getString("datetime","1990-01-01");
             dateEditor = updatetime.edit();
             dateEditor.remove("datetime");
             dateEditor.commit();
@@ -235,7 +207,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
 
     }
-    //getting tablenames to download
 
     //set up UI
     private void setUI() {
@@ -333,9 +304,14 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     btnBTprintertest.setOnClickListener(v1 -> {
                         try {
                             BluetoothPrinter bluetoothPrinter = new BluetoothPrinter(frmlogin.this, rtPrinter);
-                            String callback = bluetoothPrinter.escTextPrint("Printer is connected!");
-                            if (!callback.isEmpty()) {
-                                showToast(callback);
+                            if (isInConnectList(configObj)) {
+                                final String testPrintString = "Printer is connected!\n";
+                                String callback = bluetoothPrinter.escTextPrint(testPrintString);
+                                if (!callback.isEmpty()) {
+                                    showToast(callback);
+                                }
+                            } else {
+                                showToast("Please connect to Printer!");
                             }
                         } catch (UnsupportedEncodingException e) {
                             showToast(e.getMessage());
@@ -446,14 +422,15 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                 } catch (Exception ee) {
                     String s = ee.getMessage();
                     dialog.dismiss();
-
                 }
                 break;
+
             case R.id.btnconnect:
                 ip = sh_ip.getString("ip", "empty");
                 port = sh_port.getString("port", "empty");
                 showIpBox(ip, port);
                 break;
+
             case R.id.btnposdown:
                 if (isRegister()) {
                     GetTableNames();
@@ -603,6 +580,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             e.printStackTrace();
         }
         String url = "http://" + ip + ":" + port + "/api/mobile/Register?" + sqlString + "&register=true";
+        Log.i("frmlogin", url);
         RequestQueue request = Volley.newRequestQueue(context);
         Response.Listener listener = new Response.Listener() {
             @Override
@@ -612,13 +590,13 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                 AlertDialog.Builder bd = new AlertDialog.Builder(frmlogin.this, R.style.AlertDialogTheme);
                 bd.setMessage(result[0]);
                 bd.setTitle("iStock");
-
                 bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                        if (!result[1].isEmpty()) {
-
+//                        Modified by ZYP [19-04-2022]
+//                        if (!result[1].isEmpty()) {
+                        if (result.length > 1) {
                             SharedPreferences.Editor editor = RegisterID.edit();
                             editor.remove("register");
                             editor.commit();
@@ -759,12 +737,8 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     ResetData();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String currentDateandTime = sdf.format(new Date());
-                    // Toast.makeText(getApplicationContext(),globalsetting.datetime+"this is globalsetting",Toast.LENGTH_LONG).show();
+
                     System.out.println(updatetime.getString("datetime", ""));
-//                    if(globalsetting.datetime!=""){
-//                        currentDateandTime=globalsetting.datetime;
-//                        globalsetting.datetime="";
-//                    }
                     if (updatetime.getString("datetime", "").equals("1990-01-01")) {
                         currentDateandTime = updatetime.getString("datetime", "");
                         dateEditor = updatetime.edit();
@@ -775,39 +749,22 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                         dateEditor.putString("datetime", "");
                         dateEditor.commit();
                     }
+
                     String ipp = sh_ip.getString("ip", "empty");
                     String portt = sh_port.getString("port", "empty");
-                    //String url = "http://" + ip + ":" + port + "/api/DataSync/GetData?download=true";
                     String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
-                    //Toast.makeText(getApplicationContext(),urll,Toast.LENGTH_LONG).show();
+                    Log.i("frmlogin", urll);
                     RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
                     final Response.Listener<String> listenerr = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-
-                            JSONArray jarr = null;
-                            try {
-                                jarr = new JSONArray(response);
-                                jobj = jarr.getJSONObject(0);
-                                System.out.println(jobj + "this is json");
-                                //Toast.makeText(getApplicationContext(),"this is successful imei",Toast.LENGTH_LONG).show();
-
-//                                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-//                                    selectInsertLibrary.insertingData(msg.toString(), jobj);
-//                                        data=jarr.getJSONObject(0).getJSONArray(" ");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
+                            System.out.println(response);
                         }
-
                     };
 
                     final Response.ErrorListener errorr = new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-//                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                             Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
                         }
                     };
@@ -820,66 +777,43 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     //String url = "http://" + ip + ":" + port + "/api/DataSync/GetData?download=true";
                     String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
 
-                    Log.i("login", url);
+                    Log.i("frmlogin", url);
                     RequestQueue request = Volley.newRequestQueue(context);
                     final Response.Listener<String> listener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-
-
                             JSONArray jarr = null;
                             try {
                                 jarr = new JSONArray(response);
                                 jobj = jarr.getJSONObject(0);
-                                //data=jarr.getJSONObject(0).getJSONArray(" ");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-
 
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
-                                        for (progress = 0; progress < tableNames.size(); progress++) {
+                                        for (int progress = 0; progress < tableNames.size(); progress++) {
 
-//                                            insertingData(tableNames.get(progress),progress);
                                             SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
                                             selectInsertLibrary.UpSertingData(tableNames.get(progress), jobj);
+                                            int finalProgress = progress;
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    txtProgress.setText((progress + 1) + "/" + tableNames.size());
-
-                    /*if(progress<5){
-                        txtProgress.setText(((progress+1)*10)+" %");
-                    }else if(progress<7) {
-                        txtProgress.setText(((progress+0.5)*10)+" %");
-                    }else if(progress<9){
-                        txtProgress.setText(((progress+0.5)*10)+" %");
-                    }else  if(progress>10){
-                        txtProgress.setText("100 %");}else {
-                        txtProgress.setText("100 %");
-                    }
-*/
-                                                    txtTable.setText(tableNames.get(progress));
+                                                    txtProgress.setText((finalProgress + 1) + "/" + tableNames.size());
+                                                    txtTable.setText(tableNames.get(finalProgress));
                                                 }
                                             });
 
                                             pbDownload.setProgress(progress + 1);
-                                            try {
-                                                Thread.sleep(500);
-                                            } catch (Exception ex) {
-                                            }
                                         }
                                         dialog.dismiss();
 
-
                                     } catch (Exception ee) {
-//                                        Toast.makeText(frmCustOutstand.this, "You are in Offline. Please check your connection!", Toast.LENGTH_LONG).show();
                                         Toast.makeText(context, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
                                     }
-
                                 }
                             }).start();
 
@@ -892,7 +826,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Toast.makeText(frmlogin.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
-
                         }
                     };
                     StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
@@ -961,7 +894,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         String port = sh_port.getString("port", "80");
         String Device = frmlogin.Device_Name.replace(" ", "%20");
         String Url = "http://" + ip + ":" + port + "/api/mobile/LockUser?userid=" + frmlogin.LoginUserid + "&hostname=" + Device + "&locked=" + locked;
-
+        Log.i("frmlogin", Url);
         requestQueue = Volley.newRequestQueue(this);
 
         final Response.Listener<String> listener = new Response.Listener<String>() {
@@ -980,14 +913,10 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     if (cursor != null && cursor.getCount() != 0) {
                         if (cursor.moveToFirst()) {
                             do {
-
                                 hostname = cursor.getString(cursor.getColumnIndex("hostname"));
 
-
                             } while (cursor.moveToNext());
-
                         }
-
                     }
                     cursor.close();
 
@@ -1254,7 +1183,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         String port = sh_port.getString("port", "80");
         // String Url="http://"+ip+":"+port+"/api/DataSync/GetData";
         String Url = "http://" + ip + ":" + port + "/api/mobile/CheckConnection";
-
         requestQueue = Volley.newRequestQueue(this);
 
         final Response.Listener<String> listener = new Response.Listener<String>() {
@@ -1346,6 +1274,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         //port = sh_port.getString("port", "80");
         //String url = "http://" + ip + ":" + port + "/api/mobile/GetPrinter?&printer=true";
         String url = "http://" + ip + "/api/mobile/GetPrinter?&printer=true";
+        Log.i("frmlogin", url);
         RequestQueue request = Volley.newRequestQueue(context);
         Response.Listener listener = new Response.Listener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -1469,6 +1398,21 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         }
     }
 
+    private boolean isInConnectList(Object configObj) {
+        if (configObj == null) return false;
+        boolean isInList = false;
+        for (int i = 0; i < printerInterfaceArrayList.size(); i++) {
+            PrinterInterface printerInterface = printerInterfaceArrayList.get(i);
+            if (configObj.toString().equals(printerInterface.getConfigObject().toString())) {
+                if (printerInterface.getConnectState() == ConnectStateEnum.Connected) {
+                    isInList = true;
+                    break;
+                }
+            }
+        }
+
+        return isInList;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
