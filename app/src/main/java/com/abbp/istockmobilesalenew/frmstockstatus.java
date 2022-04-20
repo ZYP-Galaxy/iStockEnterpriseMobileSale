@@ -374,15 +374,16 @@ public class frmstockstatus extends AppCompatActivity {
 
                         description = object.getString("description");
                         saleamount = object.getString("saleamount");
-                        balanceqty = "";
-                        System.out.println(usrcode + " " + description + " " + saleamount + " "/*+balanceqty*/);
-                        JSONArray stockhistorylist = object.getJSONArray("stockhistorylist");
-                        for (int j = 0; j < stockhistorylist.length(); j++) {
-                            JSONObject stockhistorylistobj = stockhistorylist.getJSONObject(j);
-//                            if(stockhistorylistobj.getString("locationname").equals(FilterLocation.shortdesc)){
-                            balanceqty = stockhistorylistobj.getString("balanceqty");
-//                            }
-                        }
+                        balanceqty = object.getString("totalbalance");
+//                        balanceqty = "";
+                        System.out.println(usrcode + " " + description + " " + saleamount + " " + balanceqty);
+//                        JSONArray stockhistorylist = object.getJSONArray("stockhistorylist");
+//                        for (int j = 0; j < stockhistorylist.length(); j++) {
+//                            JSONObject stockhistorylistobj = stockhistorylist.getJSONObject(j);
+////                            if(stockhistorylistobj.getString("locationname").equals(FilterLocation.shortdesc)){
+//                            balanceqty = stockhistorylistobj.getString("balanceqty");
+////                            }
+//                        }
 //                        Toast.makeText(getApplicationContext(),usrcode+" "+description+" "+saleamount+" "+balanceqty, Toast.LENGTH_LONG).show();
 //                        if(usrcode.toLowerCase().contains(findcode.getText().toString().toLowerCase())) {
                         if (!searchcode.equals("")) {

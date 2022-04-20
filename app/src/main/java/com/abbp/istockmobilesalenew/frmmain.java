@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -134,150 +135,137 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         String ip = sh_ip.getString("ip", "empty");
         String port = sh_port.getString("port", "empty");
         String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+        Log.i("frmmain", url);
         RequestQueue request = Volley.newRequestQueue(getApplicationContext());
         final Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
-                JSONArray jarr = null;
-                try {
-                    jarr = new JSONArray(response);
-                    jobj = jarr.getJSONObject(0);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            jobj = jsonArray.getJSONObject(0);
 
-                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-                    //instead of Signalr to check what data are changes
-                    String tablename = "";
-                    if (jobj.getJSONArray("posuser").length() > 0) {
-                        tablename = "Posuser";
-                        selectInsertLibrary.UpSertingData(tablename, jobj);
+                            SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+                            //instead of Signalr to check what data are changes
+                            String tablename = "";
+                            if (jobj.getJSONArray("posuser").length() > 0) {
+                                tablename = "Posuser";
+                                selectInsertLibrary.UpSertingData(tablename, jobj);
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("customer").length() > 0) {
+                                    tablename = "Customer";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("location").length() > 0) {
+                                    tablename = "Location";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("usr_code").length() > 0 || jobj.getJSONArray("unit").length() > 0) {
+                                    tablename = "Usr_Code";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("paymenttype").length() > 0) {
+                                    tablename = "Payment_Type";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("dis_Type").length() > 0) {
+                                    tablename = "Dis_Type";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("systemSetting").length() > 0) {
+                                    tablename = "SystemSetting";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("salesmen").length() > 0) {
+                                    tablename = "Salesmen";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("class").length() > 0) {
+                                    tablename = "Class";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("category").length() > 0) {
+                                    tablename = "Category";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String currentDateandTime = sdf.format(new Date());
+                            String ipp = sh_ip.getString("ip", "empty");
+                            String portt = sh_port.getString("port", "empty");
+                            String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + frmlogin.LoginUserid + "&clientname=" + frmlogin.Device_Name;
+                            Log.i("frmmain", urll);
+                            RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+                            final Response.Listener<String> listenerr = new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    System.out.println(response);
+                                }
+                            };
+                            final Response.ErrorListener errorr = new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+                                }
+                            };
+
+                            StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
+                            requestt.add(reqq);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-
-                    try {
-                        if (jobj.getJSONArray("customer").length() > 0) {
-                            tablename = "Customer";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("location").length() > 0) {
-                            tablename = "Location";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("usr_code").length() > 0 || jobj.getJSONArray("unit").length() > 0) {
-                            tablename = "Usr_Code";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("paymenttype").length() > 0) {
-                            tablename = "Payment_Type";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("dis_Type").length() > 0) {
-                            tablename = "Dis_Type";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("systemSetting").length() > 0) {
-                            tablename = "SystemSetting";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("salesmen").length() > 0) {
-                            tablename = "Salesmen";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("class").length() > 0) {
-                            tablename = "Class";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("category").length() > 0) {
-                            tablename = "Category";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    String ippp = sh_ip.getString("ip", "empty");
-                    String porttt = sh_port.getString("port", "empty");
-                    String server = "http://" + ippp + ":" + porttt + "/signalr";//159.138.231.20
-
-                    /* Your logic here */
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String currentDateandTime = sdf.format(new Date());
-                    String ipp = sh_ip.getString("ip", "empty");
-                    String portt = sh_port.getString("port", "empty");
-                    String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + frmlogin.LoginUserid + "&clientname=" + frmlogin.Device_Name;
-                    RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
-                    final Response.Listener<String> listenerr = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            System.out.println(response);
-//                            JSONArray jarr = null;
-//                            try {
-//                                jarr = new JSONArray(response);
-//                                jobj = jarr.getJSONObject(0);
-//                                System.out.println(jobj + "this is json");
-//
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
-
-                        }
-                    };
-                    final Response.ErrorListener errorr = new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
-
-                        }
-                    };
-
-                    StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
-                    requestt.add(reqq);
-
-
-                    //instead of Signalr to check what data are changes
-//                                        data=jarr.getJSONObject(0).getJSONArray(" ");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                }).start();
 
             }
         };
@@ -285,7 +273,6 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         final Response.ErrorListener error = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 Toast.makeText(frmmain.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
             }
         };

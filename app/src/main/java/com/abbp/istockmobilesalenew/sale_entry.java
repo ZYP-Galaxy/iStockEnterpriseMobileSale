@@ -1864,10 +1864,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                         double creditL = 0.0;
                                         String nameSt = name.getText().toString().trim();
                                         String codeSt = code.getText().toString().trim();
+                                        String creditLimit = credit.getText().toString();
                                         int custid = getCustomerCount() + 1;
                                         if (chkCredit.isChecked()) {
                                             iscredit = true;
-                                            creditL = Double.parseDouble(credit.getText().toString());
+                                            creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                         }
 
                                         ArrayList<customer> customers = new ArrayList<>();
@@ -1885,15 +1886,15 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                         customers.add(newcustomer);
 
                                         //modified by ZYP 31-08-2021 for customer setup
-                                        String addCust = "insert into customer(customerid, shortdesc, sortid, name, companyname, townshipid, contact," +
+                                        sqlstring = "insert into customer(customerid, shortdesc, sortid, name, companyname, townshipid, contact," +
                                                 "pricelevelid, address, phone, fax, email, iscredit, balance, creditlimit, dueindays, " +
                                                 "discountpercent, isinactive, discountamount, custgroupid, lastinvoiceno, branchid, " +
                                                 "nationalcardid, birthdate, updateddatetime,isdeleted) " +
                                                 "values (" + custid + ",'" + codeSt + "',null,'" + nameSt + "',null," + selected_townshipid + ",null, " +
                                                 "null,null,null,null,null," + iscredit + ",null," + creditL + ",null, " +
                                                 "null,false,null, " + selected_custgroupid + ",null,null, " +
-                                                "null,null,localtimestamp,false)";
-                                        sqlstring = addCust; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
+                                                "null,null,localtimestamp,false)"; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
+
                                         InsertCustomer();
                                         name.setText("");
                                         code.setText("");
@@ -6257,155 +6258,141 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onResponse(String response) {
 
-                JSONArray jarr = null;
-                try {
-                    jarr = new JSONArray(response);
-                    jobj = jarr.getJSONObject(0);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            jobj = jsonArray.getJSONObject(0);
 
-                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-                    //instead of Signalr to check what data are changes
-                    String tablename = "";
-                    if (jobj.getJSONArray("posuser").length() > 0) {
-                        tablename = "Posuser";
-                        selectInsertLibrary.UpSertingData(tablename, jobj);
-                    }
+                            SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+                            //instead of Signalr to check what data are changes
+                            String tablename = "";
+                            if (jobj.getJSONArray("posuser").length() > 0) {
+                                tablename = "Posuser";
+                                selectInsertLibrary.UpSertingData(tablename, jobj);
+                            }
 
-                    try {
-                        if (jobj.getJSONArray("customer").length() > 0) {
-                            tablename = "Customer";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("location").length() > 0) {
-                            tablename = "Location";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("usr_code").length() > 0 || jobj.getJSONArray("unit").length() > 0) {
-                            tablename = "Usr_Code";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("paymenttype").length() > 0) {
-                            tablename = "Payment_Type";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("dis_Type").length() > 0) {
-                            tablename = "Dis_Type";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("systemSetting").length() > 0) {
-                            tablename = "SystemSetting";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("salesmen").length() > 0) {
-                            tablename = "Salesmen";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("class").length() > 0) {
-                            tablename = "Class";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("category").length() > 0) {
-                            tablename = "Category";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        if (jobj.getJSONArray("discount_code").length() > 0) {
-                            tablename = "discount_code";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
-                        }
-                    } catch (JSONException e) {
-                        DatabaseHelper.rawQuery("delete from discount_code");
-                        e.printStackTrace();
-                    }
-
-
-                    String ippp = sh_ip.getString("ip", "empty");
-                    String porttt = sh_port.getString("port", "empty");
-                    String server = "http://" + ippp + ":" + porttt + "/signalr";//159.138.231.20
-
-                    /* Your logic here */
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String currentDateandTime = sdf.format(new Date());
-                    String ipp = sh_ip.getString("ip", "empty");
-                    String portt = sh_port.getString("port", "empty");
-                    String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + frmlogin.LoginUserid + "&clientname=" + frmlogin.Device_Name;
-                    RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
-                    final Response.Listener<String> listenerr = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            JSONArray jarr = null;
                             try {
-                                jarr = new JSONArray(response);
-                                jobj = jarr.getJSONObject(0);
-                                System.out.println(jobj + "this is json");
-
+                                if (jobj.getJSONArray("customer").length() > 0) {
+                                    tablename = "Customer";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
 
+                            try {
+                                if (jobj.getJSONArray("location").length() > 0) {
+                                    tablename = "Location";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("usr_code").length() > 0 || jobj.getJSONArray("unit").length() > 0) {
+                                    tablename = "Usr_Code";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("paymenttype").length() > 0) {
+                                    tablename = "Payment_Type";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("dis_Type").length() > 0) {
+                                    tablename = "Dis_Type";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("systemSetting").length() > 0) {
+                                    tablename = "SystemSetting";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("salesmen").length() > 0) {
+                                    tablename = "Salesmen";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("class").length() > 0) {
+                                    tablename = "Class";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("category").length() > 0) {
+                                    tablename = "Category";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            try {
+                                if (jobj.getJSONArray("discount_code").length() > 0) {
+                                    tablename = "discount_code";
+                                    selectInsertLibrary.UpSertingData(tablename, jobj);
+                                }
+                            } catch (JSONException e) {
+                                DatabaseHelper.rawQuery("delete from discount_code");
+                                e.printStackTrace();
+                            }
+
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String currentDateandTime = sdf.format(new Date());
+                            String ipp = sh_ip.getString("ip", "empty");
+                            String portt = sh_port.getString("port", "empty");
+                            String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + frmlogin.LoginUserid + "&clientname=" + frmlogin.Device_Name;
+                            RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+                            final Response.Listener<String> listenerr = new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    System.out.println(response);
+                                }
+                            };
+                            final Response.ErrorListener errorr = new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(sale_entry.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+                                }
+                            };
+
+                            StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
+                            requestt.add(reqq);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    };
-                    final Response.ErrorListener errorr = new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                            Toast.makeText(sale_entry.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
-
-                        }
-                    };
-
-                    StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
-                    requestt.add(reqq);
-
-
-                    //instead of Signalr to check what data are changes
-//                                        data=jarr.getJSONObject(0).getJSONArray(" ");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                    }
+                }).start();
 
             }
         };

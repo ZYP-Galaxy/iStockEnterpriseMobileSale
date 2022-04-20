@@ -66,6 +66,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -727,7 +728,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             txtProgress.setText("0/" + tableNames.size());
             //  txtProgress.setText("0/0");
             pbDownload.setMax(tableNames.size());
-            //bdProgress.setCancelable(false);
+            bdProgress.setCancelable(false);
             bdProgress.setView(view);
             downloadAlert = bdProgress.create();
             context = this;
@@ -750,9 +751,14 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                         dateEditor.commit();
                     }
 
-                    String ipp = sh_ip.getString("ip", "empty");
+                    /*String ipp = sh_ip.getString("ip", "empty");
                     String portt = sh_port.getString("port", "empty");
-                    String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                    String urll = "";
+                    try {
+                        urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + URLEncoder.encode(currentDateandTime, "UTF-8") + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                     Log.i("frmlogin", urll);
                     RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
                     final Response.Listener<String> listenerr = new Response.Listener<String>() {
@@ -769,7 +775,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                         }
                     };
                     StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
-                    requestt.add(reqq);
+                    requestt.add(reqq);*/
 
 
                     ip = sh_ip.getString("ip", "empty");
@@ -779,21 +785,26 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
                     Log.i("frmlogin", url);
                     RequestQueue request = Volley.newRequestQueue(context);
+                    String finalCurrentDateandTime = currentDateandTime;
                     final Response.Listener<String> listener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            JSONArray jarr = null;
-                            try {
-                                jarr = new JSONArray(response);
-                                jobj = jarr.getJSONObject(0);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+//                            JSONArray jarr = null;
+//                            try {
+//                                jarr = new JSONArray(response);
+//                                jobj = jarr.getJSONObject(0);
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
 
                             new Thread(new Runnable() {
                                 @Override
                                 public void run() {
                                     try {
+
+                                        JSONArray jsonArray = new JSONArray(response);
+                                        jobj = jsonArray.getJSONObject(0);
+
                                         for (int progress = 0; progress < tableNames.size(); progress++) {
 
                                             SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
@@ -809,6 +820,27 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
                                             pbDownload.setProgress(progress + 1);
                                         }
+
+                                        //Update Downloaded DateTime to AccessedUser
+                                        String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + URLEncoder.encode(finalCurrentDateandTime, "UTF-8") + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                                        Log.i("frmlogin", url);
+                                        RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+                                        final Response.Listener<String> listenerr = new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                System.out.println(response);
+                                            }
+                                        };
+
+                                        final Response.ErrorListener errorr = new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        };
+                                        StringRequest reqq = new StringRequest(Request.Method.GET, url, listenerr, errorr);
+                                        requestt.add(reqq);
+
                                         dialog.dismiss();
 
                                     } catch (Exception ee) {
@@ -817,9 +849,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                 }
                             }).start();
 
-
                         }
-
                     };
 
                     final Response.ErrorListener error = new Response.ErrorListener() {
@@ -830,6 +860,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     };
                     StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
                     request.add(req);
+
 
                 }
 
