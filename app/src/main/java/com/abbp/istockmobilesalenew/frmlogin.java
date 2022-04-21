@@ -1461,35 +1461,39 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void run() {
                 //pb_connect.setVisibility(View.GONE);
-                switch (state) {
-                    case CommonEnum.CONNECT_STATE_SUCCESS:
+                try {
+                    switch (state) {
+                        case CommonEnum.CONNECT_STATE_SUCCESS:
 //                        TimeRecordUtils.record("RT连接end：", System.currentTimeMillis());
-                        showToast(printerInterface.getConfigObject().toString() + " - connect success");
-                        tv_device_selected.setText(printerInterface.getConfigObject().toString());
-                        tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
-                        curPrinterInterface = printerInterface;//设置为当前连接， set current Printer Interface
-                        printerInterfaceArrayList.add(printerInterface);//多连接-添加到已连接列表
-                        rtPrinter.setPrinterInterface(printerInterface);
+                            showToast(printerInterface.getConfigObject().toString() + " - connect success");
+                            tv_device_selected.setText(printerInterface.getConfigObject().toString());
+                            tv_device_selected.setTag(BaseEnum.HAS_DEVICE);
+                            curPrinterInterface = printerInterface;//设置为当前连接， set current Printer Interface
+                            printerInterfaceArrayList.add(printerInterface);//多连接-添加到已连接列表
+                            rtPrinter.setPrinterInterface(printerInterface);
 //                          BaseApplication.getInstance().setRtPrinter(rtPrinter);
 //                        setPrintEnable(true);
-                        break;
-                    case CommonEnum.CONNECT_STATE_INTERRUPTED:
-                        if (printerInterface != null && printerInterface.getConfigObject() != null) {
-                            showToast(printerInterface.getConfigObject().toString() + " disconnected");
-                        } else {
-                            showToast("disconnected");
-                        }
+                            break;
+                        case CommonEnum.CONNECT_STATE_INTERRUPTED:
+                            if (printerInterface != null && printerInterface.getConfigObject() != null) {
+                                showToast(printerInterface.getConfigObject().toString() + " disconnected");
+                            } else {
+                                showToast("disconnected");
+                            }
 //                        TimeRecordUtils.record("RT连接断开：", System.currentTimeMillis());
 //                        tv_device_selected.setText(R.string.please_connect);
-                        tv_device_selected.setTag(BaseEnum.NO_DEVICE);
-                        curPrinterInterface = null;
-                        printerInterfaceArrayList.remove(printerInterface);//多连接-从已连接列表中移除
-                        //  BaseApplication.getInstance().setRtPrinter(null);
+                            tv_device_selected.setTag(BaseEnum.NO_DEVICE);
+                            curPrinterInterface = null;
+                            printerInterfaceArrayList.remove(printerInterface);//多连接-从已连接列表中移除
+                            //  BaseApplication.getInstance().setRtPrinter(null);
 //                        setPrintEnable(false);
 
-                        break;
-                    default:
-                        break;
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });

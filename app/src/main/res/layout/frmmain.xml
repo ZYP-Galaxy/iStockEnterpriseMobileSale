@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/IEbluecolor"
-    >
+    android:background="@color/IEbluecolor">
+
     <TextView
         android:id="@+id/cpyname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+        android:layout_alignParentLeft="true"
         android:layout_marginTop="20dp"
         android:layout_marginRight="25dp"
-
         android:hint="Galaxy Software Co.,Ltd."
         android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:textSize="20dp"
-        android:layout_alignParentLeft="true"
-        />
+        android:textSize="20dp" />
 
     <TextView
         android:id="@+id/txtUsername"
@@ -33,342 +30,367 @@
         android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
-        android:textSize="13dp"
-         />
+        android:textSize="13dp" />
+
     <LinearLayout
-        android:clipToPadding="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        >
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="false"
-        >
-    <LinearLayout
         android:clipToPadding="false"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:gravity="center"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardsale"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-            app:cardMaxElevation="10dp"
-            app:cardBackgroundColor="@color/IElightbluecolor"
-            android:layout_height="wrap_content">
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="false">
+
             <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:clipToPadding="false"
                 android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/sale"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/salecirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"></View>
-                <TextView
-                    android:layout_width="match_parent"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardsale"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sale"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:fontFamily="serif"
-                    android:gravity="center"/>
+                    android:layout_margin="7dp"
+                    app:cardBackgroundColor="@color/IElightbluecolor"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="6dp"
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/salecirclebg"
+                            android:padding="10dp"
+                            android:src="@drawable/sale" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Sale"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardsalelist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:padding="5dp"
+                    app:cardBackgroundColor="@color/darkgreen"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="6dp"
+
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/salehistorycirclebg"
+                            android:padding="10dp"
+                            android:src="@drawable/salelist" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Sale History"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardsaleorder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    app:cardBackgroundColor="@color/lemon"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="6dp"
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/salecirclebg"
+                            android:padding="10dp"
+                            android:src="@drawable/saleorder" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Sale Order"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardsaleorderlist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:padding="5dp"
+                    app:cardBackgroundColor="@color/limegreen"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="6dp"
+
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/salehistorycirclebg"
+                            android:padding="10dp"
+                            android:src="@drawable/salelist" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="SaleOrd History"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardstock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:padding="5dp"
+                    android:visibility="visible"
+                    app:cardBackgroundColor="@color/lateblue"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="6dp"
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/stockcirclebg"
+                            android:padding="10dp"
+                            android:src="@drawable/stockbalance" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Stock Balance"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardcustoutstand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:padding="5dp"
+                    app:cardBackgroundColor="@color/pink"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="6dp"
+
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/salehistorycirclebg"
+                            android:padding="10dp"
+                            android:src="@drawable/viewlist" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Outstanding"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardlogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="7dp"
+                    android:padding="5dp"
+                    app:cardBackgroundColor="@color/gray"
+                    app:cardCornerRadius="10dp"
+
+                    app:cardElevation="6dp"
+                    app:cardMaxElevation="10dp"
+                    app:contentPadding="8dp">
+
+                    <LinearLayout
+                        android:layout_width="110dp"
+                        android:layout_height="140dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="30dp"
+                            android:background="@drawable/logoutcirclebg"
+                            android:padding="10dp"
+
+                            android:src="@drawable/logout" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:layout_margin="5dp"
+                            android:background="@drawable/btnround1"></View>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="serif"
+                            android:gravity="center"
+                            android:text="Log out"
+                            android:textColor="@color/white"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardsalelist"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-            app:cardMaxElevation="10dp"
-
-            app:cardBackgroundColor="@color/darkgreen"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/salelist"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/salehistorycirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"></View>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sale History"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:fontFamily="serif"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardsaleorder"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-            app:cardMaxElevation="10dp"
-            app:cardBackgroundColor="@color/lemon"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/saleorder"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/salecirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"></View>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sale Order"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:fontFamily="serif"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardsaleorderlist"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-            app:cardMaxElevation="10dp"
-
-            app:cardBackgroundColor="@color/limegreen"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/salelist"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/salehistorycirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"></View>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="SaleOrd History"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:fontFamily="serif"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardstock"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-            app:cardMaxElevation="10dp"
-            android:visibility="visible"
-            app:cardBackgroundColor="@color/lateblue"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/stockbalance"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/stockcirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"
-                    ></View>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Stock Balance"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:gravity="center"
-                    android:fontFamily="serif"/>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardcustoutstand"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-            app:cardMaxElevation="10dp"
-
-            app:cardBackgroundColor="@color/pink"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/viewlist"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/salehistorycirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"></View>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Outstanding"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:fontFamily="serif"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardlogout"
-            android:layout_margin="7dp"
-            android:layout_width="wrap_content"
-            android:padding="5dp"
-            app:cardElevation="6dp"
-            app:cardCornerRadius="10dp"
-            app:contentPadding="8dp"
-
-            app:cardMaxElevation="10dp"
-            app:cardBackgroundColor="@color/gray"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="110dp"
-                android:layout_height="140dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:orientation="vertical">
-                <ImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:padding="10dp"
-                    android:src="@drawable/logout"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="30dp"
-
-                    android:background="@drawable/logoutcirclebg"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/btnround1"></View>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Log out"
-                    android:textStyle="bold"
-                    android:textColor="@color/white"
-                    android:textSize="13dp"
-                    android:fontFamily="serif"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-    </LinearLayout>
-    </HorizontalScrollView>
+        </HorizontalScrollView>
 
     </LinearLayout>
 </RelativeLayout>

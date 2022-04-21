@@ -7,6 +7,6 @@ import android.telephony.TelephonyManager;
 
 public final class GettingIMEINumber {
     //    private TelephonyManager telephonyManager;
-    static String IMEINO;
+    public static String IMEINO;
 
 }
