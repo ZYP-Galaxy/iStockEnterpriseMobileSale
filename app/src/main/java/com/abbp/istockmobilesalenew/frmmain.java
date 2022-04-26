@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -437,7 +438,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.cardsale:
-                intent = new Intent(frmmain.this, sale_entry.class);
+                intent = new Intent(frmmain.this, sale_entry_tv.class);
                 startActivity(intent);
                 finish();
                 break;
@@ -460,7 +461,6 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
                 finish();
                 break;
 
-
             case R.id.cardlogout:
                 UnLockUser(frmlogin.LoginUserid);
                 intent = new Intent(frmmain.this, frmlogin.class);
@@ -473,7 +473,6 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
                 finish();
                 break;
-
 
             case R.id.cardstock:
 //                intent=new Intent (frmmain.this,stock_balance.class);

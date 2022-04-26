@@ -1,54 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d2c4c4">
+    android:background="@color/white">
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="visible">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/root_view"
+                android:layout_width="400dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:orientation="vertical" />
+
+        </ScrollView>
+    </FrameLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="202dp">
+        android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/frame"
-            android:layout_width="500dp"
-            android:layout_height="match_parent"
-            android:visibility="visible">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="#1D6289"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/img_user"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                app:srcCompat="@drawable/logoutfortablet" />
 
-                <LinearLayout
-                    android:id="@+id/root_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite"
-                    android:orientation="vertical" />
+            <TextView
+                android:id="@+id/txt_username"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/img_user"
+                android:gravity="center"
+                android:text="Username"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
-            </ScrollView>
-        </FrameLayout>
+            <TextView
+                android:id="@+id/txt_shopname"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="ShopName"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/img_wifi_connect"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="10dp"
+                app:srcCompat="@drawable/wificonnect" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#d2c4c4"
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="200dp"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:background="#ededed"
+                android:layout_weight="1"
+                android:background="@color/white"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/barcolor">
+                    android:layout_height="45dp"
+                    android:background="@color/colorAccent">
 
                     <LinearLayout
                         android:id="@+id/datelayout"
@@ -146,24 +190,23 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:layout_toRightOf="@+id/invoicelayout"
+                        android:layout_marginStart="15dp"
+                        android:layout_toEndOf="@+id/invoicelayout"
                         android:orientation="horizontal">
 
                         <CheckBox
                             android:id="@+id/chkToDeliver"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:buttonTint="@color/white"
                             android:text="To Deliver"
                             android:textColor="#ffffff"
-                            android:textSize="15dp"
+                            android:textSize="15sp"
                             android:textStyle="bold">
 
                         </CheckBox>
 
-
                     </LinearLayout>
-
 
                     <ImageButton
                         android:id="@+id/imgHeader"
@@ -178,14 +221,12 @@
                     <ImageButton
                         android:id="@+id/imgPrintSelection"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="10dp"
-                        android:layout_toLeftOf="@+id/imgHeader"
+                        android:layout_marginEnd="20dp"
+                        android:layout_toStartOf="@+id/imgHeader"
                         android:background="@null"
-                        android:paddingRight="20dp"
-                        android:src="@drawable/printbtn"
-                        android:visibility="gone" />
+                        app:srcCompat="@drawable/printertablet" />
 
                 </RelativeLayout>
 
@@ -193,72 +234,72 @@
                     android:id="@+id/datacolumn"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@drawable/columnheader"
+                    android:background="@color/colorGray"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/sr"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:gravity="center_vertical"
                         android:text="Sr"
-                        android:textColor="#faf8f8"
-                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/desc"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="4"
                         android:gravity="center_vertical"
                         android:text="Description"
-                        android:textColor="#faf8f8"
-                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/qty"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:focusable="false"
                         android:gravity="center_vertical"
                         android:text="Qty"
-                        android:textColor="#faf8f8"
-                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/unit"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:layout_weight="1"
                         android:focusable="false"
                         android:gravity="center_vertical"
                         android:text="Unit"
-                        android:textColor="#faf8f8"
-                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/amt"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="2"
                         android:focusable="false"
                         android:gravity="center_vertical"
                         android:text="Amount"
                         android:textAlignment="textEnd"
-                        android:textColor="#faf8f8"
-                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold"
                         tools:ignore="RtlCompat" />
 
@@ -266,12 +307,13 @@
                         android:id="@+id/delitem"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:focusable="false"
                         android:gravity="center_vertical"
-                        android:textSize="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
                         android:textStyle="bold" />
 
 
@@ -282,385 +324,335 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+                    <ListView
+                        android:id="@+id/entrygrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/white"
+                        android:focusable="true"
+                        android:listSelector="@color/secbarcolor">
+
+                    </ListView>
+
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_weight="4">
-
-                        <ListView
-                            android:id="@+id/entrygrid"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/white"
-                            android:focusable="true"
-                            android:listSelector="@color/secbarcolor">
-
-                        </ListView>
-
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_above="@+id/footerbtn"
-                        android:layout_below="@+id/entrygrid"
-                        android:layout_weight="2.5"
-                        android:background="@color/barcolor">
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:background="@color/barcolor"
-                            android:orientation="horizontal">
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp">
 
-                                <RelativeLayout
+                                <TextView
+                                    android:id="@+id/txtTotal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Amount"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtTotalAmt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp">
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtTotal"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
-                                    <TextView
-                                        android:id="@+id/txtTotal"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="Amount"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp">
 
-                                        />
+                                <TextView
+                                    android:id="@+id/txtFoc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Discount"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
 
-                                    <TextView
-                                        android:id="@+id/txtTotalAmt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtTotal"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
+                                <TextView
+                                    android:id="@+id/txtFocAmt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp">
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtFoc"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
-                                    <TextView
-                                        android:id="@+id/txtFoc"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="Discount"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:visibility="visible">
 
-                                        />
+                                <TextView
+                                    android:id="@+id/txtPrevious"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Outstand"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
 
-                                    <TextView
-                                        android:id="@+id/txtFocAmt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtFoc"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
+                                <TextView
+                                    android:id="@+id/txtPreviousAmt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:visibility="visible">
-
-                                    <TextView
-                                        android:id="@+id/txtPrevious"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="Outstand"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
-
-                                        />
-
-                                    <TextView
-                                        android:id="@+id/txtPreviousAmt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtPrevious"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtPrevious"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
 
-                                <RelativeLayout
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/txtitemDis"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Item Dis"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+
+                                    />
+
+                                <TextView
+                                    android:id="@+id/txtitemDisAmt"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="10dp"
-                                    android:visibility="gone">
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtitemDis"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
 
-                                    <TextView
-                                        android:id="@+id/txtitemDis"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="Item Dis"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
-
-                                        />
-
-                                    <TextView
-                                        android:id="@+id/txtitemDisAmt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtitemDis"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:visibility="gone">
-
-                                    <TextView
-                                        android:id="@+id/txtvoudis"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="Vou Discount"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
-
-                                        />
-
-                                    <TextView
-                                        android:id="@+id/txtvoudisamt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtvoudis"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:visibility="gone">
-
-                                    <TextView
-                                        android:id="@+id/txtPaid"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginLeft="10dp"
-                                        android:text="Paid"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
-
-                                        />
-
-                                    <TextView
-                                        android:id="@+id/txtPaidAmt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtPaid"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:id="@+id/taxlo"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp">
-
-                                    <TextView
-                                        android:id="@+id/txttax"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:text="Tax"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold"
-
-                                        />
-
-                                    <TextView
-                                        android:id="@+id/txttaxamt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txttax"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="15dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp">
-
-                                    <TextView
-                                        android:id="@+id/txtNet"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
-                                        android:text="Net Amt"
-                                        android:textColor="#ffffff"
-                                        android:textSize="18dp"
-                                        android:textStyle="bold"
-
-                                        />
-
-                                    <TextView
-                                        android:id="@+id/txtNetAmt"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_centerVertical="true"
-                                        android:layout_marginRight="10dp"
-                                        android:layout_toRightOf="@+id/txtNet"
-                                        android:gravity="end"
-                                        android:text="0"
-                                        android:textColor="#ffffff"
-                                        android:textSize="18dp"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:padding="0dp">
-
-                                    <Button
-                                        android:id="@+id/btndetail"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="35dp"
-                                        android:layout_alignParentRight="true"
-                                        android:layout_marginRight="10dp"
-                                        android:background="@drawable/entrybtn"
-                                        android:text="Details"
-                                        android:textAllCaps="false"
-                                        android:textColor="@color/barcolor"
-                                        android:textStyle="bold" />
-                                </RelativeLayout>
-                            </LinearLayout>
 
                         </LinearLayout>
-                    </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/txtvoudis"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Vou Discount"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtvoudisamt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtvoudis"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:id="@+id/txtPaid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    android:text="Paid"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtPaidAmt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtPaid"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/taxlo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp">
+
+                                <TextView
+                                    android:id="@+id/txttax"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="Tax"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+
+                                    />
+
+                                <TextView
+                                    android:id="@+id/txttaxamt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txttax"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp">
+
+                                <TextView
+                                    android:id="@+id/txtNet"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:text="Net Amount"
+                                    android:textColor="#ffffff"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/txtNetAmt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:layout_toEndOf="@+id/txtNet"
+                                    android:gravity="end"
+                                    android:text="0"
+                                    android:textColor="#ffffff"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="0dp">
+
+                                <Button
+                                    android:id="@+id/btndetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="35dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginEnd="10dp"
+                                    android:background="@drawable/entrybtn"
+                                    android:text="Details"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/barcolor"
+                                    android:textStyle="bold" />
+                            </RelativeLayout>
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/footerbtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/columnheader"
+                        android:background="@color/colorAccent"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:padding="3dp">
-
-                        <RelativeLayout
-                            android:id="@+id/viewBack"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <ImageButton
-                                android:id="@+id/back"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:background="@null"
-                                android:src="@drawable/backarrow" />
-
-                            <TextView
-                                android:id="@+id/txtBack"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/back"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="2dp"
-                                android:text="Back"
-                                android:textColor="#f0f0f2"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-                        </RelativeLayout>
+                        android:padding="5dp">
 
                         <RelativeLayout
                             android:id="@+id/viewEdit"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button"
+                            android:padding="5dp">
 
                             <ImageButton
                                 android:id="@+id/edit"
@@ -668,7 +660,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:background="@null"
-                                android:src="@drawable/editbtn" />
+                                android:src="@drawable/itemedit" />
 
                             <TextView
                                 android:id="@+id/txtedit"
@@ -676,48 +668,23 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/edit"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="2dp"
+                                android:layout_margin="2dp"
                                 android:text="Edit"
-                                android:textColor="#f0f0f2"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-                        </RelativeLayout>
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
-                        <RelativeLayout
-                            android:id="@+id/viewDelete"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="gone">
-
-                            <ImageButton
-                                android:id="@+id/delete"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:background="@null"
-                                android:src="@drawable/deletebtn" />
-
-                            <TextView
-                                android:id="@+id/txtDelete"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/delete"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="2dp"
-                                android:text="Del"
-                                android:textColor="#f0f0f2"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/viewDelAll"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button"
+                            android:backgroundTint="#F44336"
+                            android:padding="5dp">
 
                             <ImageButton
                                 android:id="@+id/delall"
@@ -725,7 +692,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerHorizontal="true"
                                 android:background="@null"
-                                android:src="@drawable/deletebtn" />
+                                android:src="@drawable/delete" />
 
                             <TextView
                                 android:id="@+id/txtDelAll"
@@ -733,50 +700,23 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/delall"
                                 android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="2dp"
-                                android:text="Del All"
-                                android:textColor="#f0f0f2"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-                        </RelativeLayout>
+                                android:layout_margin="2dp"
+                                android:text="Delete All"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
-                        <RelativeLayout
-                            android:id="@+id/viewSave"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:visibility="gone">
-
-                            <ImageButton
-                                android:id="@+id/savebtntolite"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="0dp"
-                                android:background="@null"
-                                android:src="@drawable/savebtn"
-                                android:visibility="gone" />
-
-                            <TextView
-                                android:id="@+id/txtSave"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/imgSave"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="2dp"
-                                android:text="Confirm"
-                                android:textColor="#f0f0f2"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/viewCloud"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button"
+                            android:backgroundTint="#1E88E5"
+                            android:padding="5dp">
 
                             <ImageButton
                                 android:id="@+id/savetoCloud"
@@ -792,24 +732,27 @@
                                 android:id="@+id/txtCloud"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_below="@+id/savetoCloud"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginEnd="2dp"
+                                android:layout_marginBottom="2dp"
+                                android:text="Upload"
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
 
-                                android:layout_alignParentTop="true"
-                                android:layout_toLeftOf="@+id/savetoCloud"
-
-
-                                android:text=""
-                                android:textColor="#ff2212"
-                                android:textSize="10dp"
-                                android:textStyle="bold"
-
-                                android:visibility="visible" />
                         </RelativeLayout>
 
                         <RelativeLayout
                             android:id="@+id/viewConfirm"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1">
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_button"
+                            android:backgroundTint="#39BD3F"
+                            android:padding="5dp">
 
                             <ImageButton
                                 android:id="@+id/imgconfirm"
@@ -819,7 +762,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="0dp"
                                 android:background="@null"
-                                android:src="@drawable/savebtn" />
+                                android:src="@drawable/confirm" />
 
                             <TextView
                                 android:id="@+id/txtConfirm"
@@ -827,14 +770,15 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/imgconfirm"
                                 android:layout_centerHorizontal="true"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                android:layout_marginEnd="2dp"
                                 android:layout_marginBottom="2dp"
                                 android:text="Confirm"
-                                android:textColor="#f0f0f2"
-                                android:textSize="18dp"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
+                                android:textColor="@color/white"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
                         </RelativeLayout>
-
 
                     </LinearLayout>
 
@@ -845,147 +789,189 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="4"
+                android:layout_weight="1"
+                android:background="@color/colorGray"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/Searching"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@color/barcolor">
+                    android:layout_height="45dp"
+                    android:background="@color/colorAccent"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/header"
+                    <EditText
+                        android:id="@+id/edtBarcodeScan"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_input"
+                        android:backgroundTint="@color/white"
+                        android:ems="10"
+                        android:hint="@string/barcode_scan"
+                        android:inputType="textMultiLine"
+                        android:padding="5dp"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:id="@+id/edtSearch"
+                        android:layout_width="0dp"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_input"
+                        android:backgroundTint="@color/white"
+                        android:drawableTint="@color/colorGrayB"
+                        android:ems="10"
+                        android:hint="@string/search"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:padding="5dp"
+                        android:textSize="14sp" />
+
+                    <ImageButton
+                        android:id="@+id/imgscanner"
                         android:layout_width="wrap_content"
-                        android:layout_height="50dp"
-                        android:layout_alignParentTop="true"
-                        android:background="@color/barcolor">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="25dp"
+                        android:background="@drawable/barcodeicon"
+                        android:visibility="gone" />
 
-                        <ImageButton
-                            android:id="@+id/imgFilterCode"
+                    <LinearLayout
+                        android:id="@+id/useOffline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <CheckBox
+                            android:id="@+id/chkOffline"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_toLeftOf="@+id/imgscanner"
-                            android:background="@null"
-                            android:src="@drawable/filtertablet"
-                            android:visibility="gone" />
+                            android:text="Use Offline"
+                            android:textColor="#ffffff"
+                            android:textSize="15dp"
+                            android:textStyle="bold">
 
-                        <ImageButton
-                            android:id="@+id/imgscanner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="25dp"
-                            android:layout_toLeftOf="@+id/imgClearFilter"
-                            android:background="@drawable/barcodeicon" />
-
-                        <LinearLayout
-                            android:id="@+id/useOffline"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_toLeftOf="@+id/imgscanner"
-                            android:orientation="horizontal">
-
-                            <CheckBox
-                                android:id="@+id/chkOffline"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Use Offline"
-                                android:textColor="#ffffff"
-                                android:textSize="15dp"
-                                android:textStyle="bold">
-
-                            </CheckBox>
+                        </CheckBox>
 
 
-                        </LinearLayout>
+                    </LinearLayout>
 
-                        <ImageButton
-                            android:id="@+id/imgLogout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="15dp"
-                            android:background="@null"
-                            android:src="@drawable/logoutse" />
+                    <ImageButton
+                        android:id="@+id/imgLogout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="15dp"
+                        android:background="@null"
+                        android:src="@drawable/logoutse"
+                        android:visibility="gone" />
 
-                        <ImageButton
-                            android:id="@+id/imgSearchCode"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginRight="30dp"
-                            android:layout_toLeftOf="@+id/imgLogout"
-                            android:background="@null"
-                            android:src="@drawable/searchicon" />
+                    <ImageButton
+                        android:id="@+id/imgSearchCode"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/colorPrimary"
+                        app:srcCompat="@drawable/searchtablet" />
 
-                        <ImageButton
-                            android:id="@+id/imgClearFilter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="15dp"
-                            android:layout_toLeftOf="@+id/imgSearchCode"
-                            android:background="@null"
-                            android:src="@drawable/cuticon" />
+                    <ImageButton
+                        android:id="@+id/imgFilterCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="10dp"
+                        android:background="@null"
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/ic_filter" />
 
-                    </RelativeLayout>
-                </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/imgClearFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        app:srcCompat="@drawable/clearfilter_40dp" />
 
-                <RelativeLayout
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorGray">
-
+                    android:background="@color/colorGray"
+                    android:orientation="vertical">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/gv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
-                    <!--<TextView-->
-                    <!--    android:layout_width="match_parent"-->
-                    <!--    android:layout_height="wrap_content"-->
+                        android:visibility="gone" />
 
-                    <!--    android:fontFamily="serif-monospace"-->
-                    <!--    android:textSize="100dp"-->
-                    <!--    android:textColor="@color/white"-->
-                    <!--    android:textAlignment="center"-->
-                    <!--    android:text="Sale"-->
-                    <!--    android:layout_centerInParent="true">-->
-
-                    <!--</TextView>-->
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/cvv"
+                        android:id="@+id/recycler_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:orientation="horizontal"
+                        android:visibility="visible" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_category"
                         android:layout_width="match_parent"
                         android:layout_height="90dp"
-                        android:layout_alignParentStart="true"
-                        android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+                        android:orientation="horizontal"
+                        android:visibility="visible" />
+
+                    <RelativeLayout
+                        android:id="@+id/layout_sort"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:gravity="center_vertical"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:id="@+id/img_sort_code"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            app:srcCompat="@drawable/ic_format_line"
+                            app:tint="@color/colorAccent" />
+
+                        <TextView
+                            android:id="@+id/txt_sortby"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="5dp"
+                            android:layout_toEndOf="@id/img_sort_code"
+                            android:text="By Code"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/txt_itemof"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="Category Name"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/gvv"
+                        android:id="@+id/recycler_code"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_below="@+id/cvv"
-                        android:visibility="gone"></androidx.recyclerview.widget.RecyclerView>
+                        android:visibility="visible" />
 
-                </RelativeLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

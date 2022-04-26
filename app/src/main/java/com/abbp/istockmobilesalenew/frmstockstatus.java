@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -95,7 +93,7 @@ public class frmstockstatus extends AppCompatActivity {
         btnmenu = findViewById(R.id.btnmenu);
         choosecategory = findViewById(R.id.choosecategory);
         chooselocation = findViewById(R.id.chooselocation);
-        gridclassview = findViewById(R.id.cvv);
+        gridclassview = findViewById(R.id.recycler_category);
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");

@@ -16,7 +16,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -695,8 +694,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         viewEdit.setOnClickListener(this);
         viewConfirm.setOnClickListener(this);
         gridview = findViewById(R.id.gv);
-        gridclassview = findViewById(R.id.cvv);
-        gridcodeview = findViewById(R.id.gvv);
+        gridclassview = findViewById(R.id.recycler_category);
+        gridcodeview = findViewById(R.id.recycler_code);
         imgDelete = findViewById(R.id.delete);
         imgEdit = findViewById(R.id.edit);
         imgDeleteAll = findViewById(R.id.delall);

@@ -1,4 +1,7 @@
-package com.abbp.istockmobilesalenew;
+package com.abbp.istockmobilesalenew.tvsale;
+
+import static com.abbp.istockmobilesalenew.tvsale.sale_entry_tv.itemPosition;
+import static com.abbp.istockmobilesalenew.tvsale.sale_entry_tv.pad;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,19 +16,22 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.DatabaseHelper;
+import com.abbp.istockmobilesalenew.R;
+import com.abbp.istockmobilesalenew.frmlogin;
+import com.abbp.istockmobilesalenew.frmmain;
+import com.abbp.istockmobilesalenew.priceLevelAdapter;
+import com.abbp.istockmobilesalenew.saleorder_entry;
+import com.abbp.istockmobilesalenew.unitforcode;
+
 import java.util.ArrayList;
 
-import static com.abbp.istockmobilesalenew.sale_entry.itemPosition;
-import static com.abbp.istockmobilesalenew.sale_entry.pad;
-import static com.abbp.istockmobilesalenew.sale_entry.priceLevels;
-
-public class itemAdapter extends BaseAdapter {
+public class ItemAdapter extends BaseAdapter {
     Context context;
     boolean isqty = false;
     boolean isSalePrice = false;
@@ -37,11 +43,11 @@ public class itemAdapter extends BaseAdapter {
     TextView tv5;
     TextView tv2; // added by EKK 12-11-2020
     boolean startOpen;
-    public itemAdapter itemAd;
+    public ItemAdapter itemAd;
     public static double disamt;
 
 
-    public itemAdapter(Context context) {
+    public ItemAdapter(Context context) {
         this.context = context;
     }
 
@@ -50,7 +56,7 @@ public class itemAdapter extends BaseAdapter {
         if (this.context.toString().contains("saleorder_entry")) {
             return saleorder_entry.sd.size();
         } else {
-            return sale_entry.sd.size();
+            return sale_entry_tv.sd.size();
         }
     }
 
@@ -194,10 +200,10 @@ public class itemAdapter extends BaseAdapter {
                 TextView txtChangePrice = view.findViewById(R.id.txtChangePrice);
                 txtamt = view.findViewById(R.id.txtChangeAmt);
                 ImageButton save = view.findViewById(R.id.imgSave);
-                //txtChangePrice.setText(String.valueOf(sale_entry.sd.get(position).getSale_price()));
+                //txtChangePrice.setText(String.valueOf(sale_entry_tv.sd.get(position).getSale_price()));
                 txtChangePrice.setText(String.format("%,." + frmmain.price_places + "f", saleorder_entry.sd.get(position).getSale_price()));
                 disamt = saleorder_entry.sd.get(position).getSale_price() - saleorder_entry.sd.get(position).getDis_price();
-                Double amt = sale_entry.StringTODouble(txtChangePrice.getText().toString()) * saleorder_entry.sd.get(position).getUnit_qty();
+                Double amt = sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()) * saleorder_entry.sd.get(position).getUnit_qty();
                 String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                 txtamt.setText(numberAsString);
 
@@ -210,10 +216,10 @@ public class itemAdapter extends BaseAdapter {
                         //keynum=txtChangePrice.getText().toString();
                         int op = saleorder_entry.sd.get(position).getOpen_price();
                         if (frmlogin.canchangesaleprice == 1 || op == 1) {
-                            keynum = String.format("%,." + frmmain.price_places + "f", sale_entry.StringTODouble(txtChangePrice.getText().toString()));
+                            keynum = String.format("%,." + frmmain.price_places + "f", sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()));
                             showKeyPad(txtChangePrice, txtChangePrice, position);
                         }
-                        Double amt = sale_entry.StringTODouble(txtChangePrice.getText().toString()) * saleorder_entry.sd.get(position).getUnit_qty();
+                        Double amt = sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()) * saleorder_entry.sd.get(position).getUnit_qty();
                         String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                         txtamt.setText(numberAsString);
 
@@ -223,8 +229,8 @@ public class itemAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
-                        saleorder_entry.sd.get(position).setSale_price(sale_entry.StringTODouble(txtChangePrice.getText().toString()));
-                        saleorder_entry.sd.get(position).setDis_price(sale_entry.StringTODouble(txtChangePrice.getText().toString()));
+                        saleorder_entry.sd.get(position).setSale_price(sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()));
+                        saleorder_entry.sd.get(position).setDis_price(sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()));
 
                         if (saleorder_entry.sd.get(position).getDis_type() == 3
                                 || saleorder_entry.sd.get(position).getDis_type() == 4
@@ -366,23 +372,22 @@ public class itemAdapter extends BaseAdapter {
                 } while (cursorplvl.moveToNext());
 
             }
-        }
-        if (cursorplvl != null) {
             cursorplvl.close();
         }
+
         tv3.setVisibility(use_unit ? View.VISIBLE : View.GONE);
         tv4 = (TextView) convertView.findViewById(R.id.amt);
         tv5 = convertView.findViewById(R.id.txtDelete);
-        tv.setText(String.valueOf(sale_entry.sd.get(position).getSr()));
+        tv.setText(String.valueOf(sale_entry_tv.sd.get(position).getSr()));
 
-        tv1.setText(sale_entry.sd.get(position).getDesc());
-        Double unit_qty = sale_entry.sd.get(position).getUnit_qty();
+        tv1.setText(sale_entry_tv.sd.get(position).getDesc());
+        Double unit_qty = sale_entry_tv.sd.get(position).getUnit_qty();
         String qtyAsString = String.format("%." + frmmain.qty_places + "f", unit_qty);
         tv2.setText(qtyAsString);
-        tv3.setText(sale_entry.sd.get(position).getUnit_short());
+        tv3.setText(sale_entry_tv.sd.get(position).getUnit_short());
 
 
-        double amt = sale_entry.sd.get(position).getSale_price() * sale_entry.sd.get(position).getUnit_qty();
+        double amt = sale_entry_tv.sd.get(position).getSale_price() * sale_entry_tv.sd.get(position).getUnit_qty();
         String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
 
         //modified by EKK on 27-10-2020
@@ -390,7 +395,7 @@ public class itemAdapter extends BaseAdapter {
             tv4.setText("****");
             tv4.setEnabled(false);
         } else {
-            tv4.setText(String.valueOf(numberAsString));
+            tv4.setText(numberAsString);
             tv4.setEnabled(true);
         }
 
@@ -415,24 +420,24 @@ public class itemAdapter extends BaseAdapter {
                 bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sale_entry.sd.remove(position);
+                        sale_entry_tv.sd.remove(position);
                         itemPosition = -1;
-                        for (int i = 0; i < sale_entry.sd.size(); i++) {
-                            sale_entry.sd.get(i).setSr(i + 1);
+                        for (int i = 0; i < sale_entry_tv.sd.size(); i++) {
+                            sale_entry_tv.sd.get(i).setSr(i + 1);
                         }
-                        sale_entry.getData();
-                        sale_entry.getSummary();
-                        if (sale_entry.sd.size() == 0) {
-                            String tax = "Tax" + (sale_entry.getTax() > 0 ? "( " + sale_entry.getTax() + "% )" : "");
-                            sale_entry.txttax.setText(tax);
-                            sale_entry.sh.get(0).setTax_per(sale_entry.getTax());
-                            sale_entry.sh.get(0).setTax_amount(0.0);
-                            sale_entry.sh.get(0).setDiscount(0.0);
-                            sale_entry.sh.get(0).setDiscount_per(0);
-                            sale_entry.sh.get(0).setPaid_amount(0);
-                            sale_entry.txtvoudis.setText("0");
-                            sale_entry.txtpaidamt.setText("0");
-                            sale_entry.getSummary();
+                        sale_entry_tv.getData();
+                        sale_entry_tv.getSummary();
+                        if (sale_entry_tv.sd.size() == 0) {
+                            String tax = "Tax" + (sale_entry_tv.getTax() > 0 ? "( " + sale_entry_tv.getTax() + "% )" : "");
+                            sale_entry_tv.txttax.setText(tax);
+                            sale_entry_tv.sh.get(0).setTax_per(sale_entry_tv.getTax());
+                            sale_entry_tv.sh.get(0).setTax_amount(0.0);
+                            sale_entry_tv.sh.get(0).setDiscount(0.0);
+                            sale_entry_tv.sh.get(0).setDiscount_per(0);
+                            sale_entry_tv.sh.get(0).setPaid_amount(0);
+                            sale_entry_tv.txtvoudis.setText("0");
+                            sale_entry_tv.txtpaidamt.setText("0");
+                            sale_entry_tv.getSummary();
                         }
                         dialog.dismiss();
                     }
@@ -459,15 +464,15 @@ public class itemAdapter extends BaseAdapter {
                 View view = inflater.inflate(R.layout.changesaleprice, null);
                 builder.setView(view);
                 TextView txtheader = view.findViewById(R.id.caption);
-                String title = sale_entry.sd.get(position).getDesc();
+                String title = sale_entry_tv.sd.get(position).getDesc();
                 txtheader.setText(title);
                 TextView txtChangePrice = view.findViewById(R.id.txtChangePrice);
                 txtamt = view.findViewById(R.id.txtChangeAmt);
                 ImageButton save = view.findViewById(R.id.imgSave);
-                //txtChangePrice.setText(String.valueOf(sale_entry.sd.get(position).getSale_price()));
-                txtChangePrice.setText(String.format("%,." + frmmain.price_places + "f", sale_entry.sd.get(position).getSale_price()));
-                disamt = sale_entry.sd.get(position).getSale_price() - sale_entry.sd.get(position).getDis_price();
-                Double amt = sale_entry.StringTODouble(txtChangePrice.getText().toString()) * sale_entry.sd.get(position).getUnit_qty();
+                //txtChangePrice.setText(String.valueOf(sale_entry_tv.sd.get(position).getSale_price()));
+                txtChangePrice.setText(String.format("%,." + frmmain.price_places + "f", sale_entry_tv.sd.get(position).getSale_price()));
+                disamt = sale_entry_tv.sd.get(position).getSale_price() - sale_entry_tv.sd.get(position).getDis_price();
+                Double amt = sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()) * sale_entry_tv.sd.get(position).getUnit_qty();
                 String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                 txtamt.setText(numberAsString);
 
@@ -478,13 +483,13 @@ public class itemAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
                         //keynum=txtChangePrice.getText().toString();
-                        int op = sale_entry.sd.get(position).getOpen_price();
+                        int op = sale_entry_tv.sd.get(position).getOpen_price();
                         if (frmlogin.canchangesaleprice == 1 || op == 1) {
-                            keynum = String.format("%,." + frmmain.price_places + "f", sale_entry.StringTODouble(txtChangePrice.getText().toString()));
+                            keynum = String.format("%,." + frmmain.price_places + "f", sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()));
                             showKeyPad(txtChangePrice, txtChangePrice, position);
                         }
 
-                        Double amt = sale_entry.StringTODouble(txtChangePrice.getText().toString()) * sale_entry.sd.get(position).getUnit_qty();
+                        Double amt = sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()) * sale_entry_tv.sd.get(position).getUnit_qty();
                         String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                         txtamt.setText(numberAsString);
 
@@ -494,41 +499,41 @@ public class itemAdapter extends BaseAdapter {
                     @Override
                     public void onClick(View v) {
 
-                        sale_entry.sd.get(position).setSale_price(sale_entry.StringTODouble(txtChangePrice.getText().toString()));
-                        sale_entry.sd.get(position).setDis_price(sale_entry.StringTODouble(txtChangePrice.getText().toString()));
+                        sale_entry_tv.sd.get(position).setSale_price(sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()));
+                        sale_entry_tv.sd.get(position).setDis_price(sale_entry_tv.StringTODouble(txtChangePrice.getText().toString()));
 
-                        if (sale_entry.sd.get(position).getDis_type() == 3
-                                || sale_entry.sd.get(position).getDis_type() == 4
-                                || sale_entry.sd.get(position).getDis_type() == 6
-                                || sale_entry.sd.get(position).getDis_type() == 7) {
-                            sale_entry.sd.get(position).setDis_percent(0);
-                            sale_entry.sd.get(position).setDis_price(sale_entry.sd.get(position).getSale_price());
-                        } else if (sale_entry.sd.get(position).getDis_type() == 1
-                                || sale_entry.sd.get(position).getDis_type() == 2) {
-                            double dispercent = sale_entry.sd.get(position).getDis_type() == 1 ? 0.05 : 0.1;
-                            double discount = sale_entry.sd.get(position).getDis_type() == 1 ? 5 : 10;
-                            sale_entry.sd.get(position).setDis_percent(discount);
-                            double dis_price = sale_entry.sd.get(position).getSale_price() - (sale_entry.sd.get(position).getSale_price() * (dispercent));
-                            sale_entry.sd.get(position).setDis_price(dis_price);
-                        } else if (sale_entry.sd.get(position).getDis_type() == 5) {
-                            if (sale_entry.sd.get(position).getDis_percent() > 0) {
-                                double dis_percent = sale_entry.sd.get(position).getDis_percent();
-                                sale_entry.sd.get(position).setDis_percent(dis_percent);
-                                double dis_price = sale_entry.sd.get(position).getSale_price() - (sale_entry.sd.get(position).getSale_price() * (dis_percent / 100));
-                                sale_entry.sd.get(position).setDis_price(dis_price);
+                        if (sale_entry_tv.sd.get(position).getDis_type() == 3
+                                || sale_entry_tv.sd.get(position).getDis_type() == 4
+                                || sale_entry_tv.sd.get(position).getDis_type() == 6
+                                || sale_entry_tv.sd.get(position).getDis_type() == 7) {
+                            sale_entry_tv.sd.get(position).setDis_percent(0);
+                            sale_entry_tv.sd.get(position).setDis_price(sale_entry_tv.sd.get(position).getSale_price());
+                        } else if (sale_entry_tv.sd.get(position).getDis_type() == 1
+                                || sale_entry_tv.sd.get(position).getDis_type() == 2) {
+                            double dispercent = sale_entry_tv.sd.get(position).getDis_type() == 1 ? 0.05 : 0.1;
+                            double discount = sale_entry_tv.sd.get(position).getDis_type() == 1 ? 5 : 10;
+                            sale_entry_tv.sd.get(position).setDis_percent(discount);
+                            double dis_price = sale_entry_tv.sd.get(position).getSale_price() - (sale_entry_tv.sd.get(position).getSale_price() * (dispercent));
+                            sale_entry_tv.sd.get(position).setDis_price(dis_price);
+                        } else if (sale_entry_tv.sd.get(position).getDis_type() == 5) {
+                            if (sale_entry_tv.sd.get(position).getDis_percent() > 0) {
+                                double dis_percent = sale_entry_tv.sd.get(position).getDis_percent();
+                                sale_entry_tv.sd.get(position).setDis_percent(dis_percent);
+                                double dis_price = sale_entry_tv.sd.get(position).getSale_price() - (sale_entry_tv.sd.get(position).getSale_price() * (dis_percent / 100));
+                                sale_entry_tv.sd.get(position).setDis_price(dis_price);
 
 
                             } else {
                                 double dis_percent = 0;
-                                sale_entry.sd.get(position).setDis_percent(dis_percent);
-                                double dis_price = sale_entry.sd.get(position).getSale_price() - disamt;
-                                sale_entry.sd.get(position).setDis_price(dis_price);
+                                sale_entry_tv.sd.get(position).setDis_percent(dis_percent);
+                                double dis_price = sale_entry_tv.sd.get(position).getSale_price() - disamt;
+                                sale_entry_tv.sd.get(position).setDis_price(dis_price);
                             }
                         }
 
-                        sale_entry.getSummary();
-                        sale_entry.entrygrid.setAdapter(itemAd);
-                        sale_entry.entrygrid.setSelection(position);
+                        sale_entry_tv.getSummary();
+                        sale_entry_tv.entrygrid.setAdapter(itemAd);
+                        sale_entry_tv.entrygrid.setSelection(position);
                         itemPosition = -1;
                         da.dismiss();
 
@@ -569,7 +574,7 @@ public class itemAdapter extends BaseAdapter {
                     etdSearch.setVisibility(View.GONE);
                     imgSearch.setVisibility(View.GONE);
 
-                    sqlString = "select * from Usr_Code where unit_type>0 and code=" + sale_entry.sd.get(position).getCode() + " order by unit_type";
+                    sqlString = "select * from Usr_Code where unit_type>0 and code=" + sale_entry_tv.sd.get(position).getCode() + " order by unit_type";
                     cursor = DatabaseHelper.rawQuery(sqlString);
                     unitcount = cursor.getCount();
                     if (cursor != null && cursor.getCount() != 0) {
@@ -817,7 +822,7 @@ public class itemAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                if (itemAdapter.this.context.toString().contains("saleorder_entry")) {
+                if (ItemAdapter.this.context.toString().contains("saleorder_entry")) {
                     try {
                         Double check = Double.parseDouble(keynum);
                         if (isqty) {
@@ -839,7 +844,7 @@ public class itemAdapter extends BaseAdapter {
                             Double amt = Double.parseDouble(source.getText().toString()) * saleorder_entry.sd.get(itemposition).getUnit_qty();
                             String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                             txtamt.setText(numberAsString);
-                            //sale_entry.getSummary();
+                            //sale_entry_tv.getSummary();
 
                         }
 
@@ -876,25 +881,25 @@ public class itemAdapter extends BaseAdapter {
                         Double check = Double.parseDouble(keynum);
                         if (isqty) {
                             check = check > 0 ? check : 1;
-                            sale_entry.sd.get(itemposition).setUnit_qty(check);
+                            sale_entry_tv.sd.get(itemposition).setUnit_qty(check);
                             source.setText(String.valueOf(check));
-                            sale_entry.entrygrid.setAdapter(itemAd);
-                            sale_entry.entrygrid.setSelection(itemposition);
+                            sale_entry_tv.entrygrid.setAdapter(itemAd);
+                            sale_entry_tv.entrygrid.setSelection(itemposition);
 
                             if (frmmain.isusespecialprice == 1) //added by EKK on 13-11-2020
                                 getSpecialPrice(itemposition, true);
 
-                            sale_entry.getSummary();
+                            sale_entry_tv.getSummary();
 
 
                         } else if (isSalePrice) {
                             check = check > 0 ? check : 0;
-                            sale_entry.sd.get(itemposition).setSale_price(check);
+                            sale_entry_tv.sd.get(itemposition).setSale_price(check);
                             source.setText(String.format("%,." + frmmain.price_places + "f", check));
-                            Double amt = Double.parseDouble(source.getText().toString()) * sale_entry.sd.get(itemposition).getUnit_qty();
+                            Double amt = Double.parseDouble(source.getText().toString()) * sale_entry_tv.sd.get(itemposition).getUnit_qty();
                             String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                             txtamt.setText(numberAsString);
-                            //sale_entry.getSummary();
+                            //sale_entry_tv.getSummary();
 
                         }
 
@@ -937,8 +942,8 @@ public class itemAdapter extends BaseAdapter {
         int unit_type;
 
         if (isSaleEntry) {
-            code = sale_entry.sd.get(itemposition).getCode();
-            unit_type = sale_entry.sd.get(itemposition).getUnt_type();
+            code = sale_entry_tv.sd.get(itemposition).getCode();
+            unit_type = sale_entry_tv.sd.get(itemposition).getUnt_type();
         } else {
             code = saleorder_entry.sd.get(itemposition).getCode();
             unit_type = saleorder_entry.sd.get(itemposition).getUnt_type();
@@ -1002,7 +1007,7 @@ public class itemAdapter extends BaseAdapter {
                         sale_price = pad.getSalePrice(level);
                         isValidQty = true;
                         if (isSaleEntry)
-                            sale_entry.sd.get(itemposition).setPriceLevel(level);
+                            sale_entry_tv.sd.get(itemposition).setPriceLevel(level);
                         else
                             saleorder_entry.sd.get(itemposition).setPriceLevel(level);
 
@@ -1016,7 +1021,7 @@ public class itemAdapter extends BaseAdapter {
                             sale_price = pad.getSalePrice(tmpPriceLevel);
 
                             if (isSaleEntry)
-                                sale_entry.sd.get(itemposition).setPriceLevel(tmpPriceLevel);
+                                sale_entry_tv.sd.get(itemposition).setPriceLevel(tmpPriceLevel);
                             else
                                 saleorder_entry.sd.get(itemposition).setPriceLevel(tmpPriceLevel);
                         }
@@ -1025,8 +1030,8 @@ public class itemAdapter extends BaseAdapter {
                     // Toast.makeText(context,"Price " + sale_price, Toast.LENGTH_LONG).show();
                     if (isValidQty) {
                         if (isSaleEntry) {
-                            sale_entry.sd.get(itemposition).setSale_price(sale_price);
-                            sale_entry.sd.get(itemposition).setDis_price(sale_price);
+                            sale_entry_tv.sd.get(itemposition).setSale_price(sale_price);
+                            sale_entry_tv.sd.get(itemposition).setDis_price(sale_price);
                         } else {
                             saleorder_entry.sd.get(itemposition).setSale_price(sale_price);
                             saleorder_entry.sd.get(itemposition).setDis_price(sale_price);
@@ -1044,7 +1049,7 @@ public class itemAdapter extends BaseAdapter {
 
     }
 
-    public void getItemAdpater(itemAdapter itemAdapter) {
+    public void getItemAdpater(ItemAdapter itemAdapter) {
         itemAd = itemAdapter;
     }
 

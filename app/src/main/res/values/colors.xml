@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#E87D2D</color>
+    <color name="colorAccent">#2C3B46</color>
+
     <color name="colorPrimary1">#FF610583</color>
     <color name="colorPrimaryDark1">#111</color>
     <color name="colorAccent1">#9708cc</color>
@@ -8,6 +11,9 @@
     <color name="colorPrimaryDark2">#111</color>
     <color name="colorAccent2">#2f8eb3</color>
 
+    <color name="headerinfo">#4b5d67</color>
+    <color name="headerbar">#235667</color>
+    <color name="headertext">#ededed</color>
     <color name="white">#fff</color>
     <color name="btntxtcolor">#2f8eb3</color>
     <color name="black">#111</color>
@@ -26,9 +32,9 @@
     <color name="red">#F70329</color>
     <color name="ddf">#231123</color>
     <color name="whitesmoke">#BEF5F5F5</color>
-    <color name="darkblue">	#00008B</color>
-    <color name="midnightblue">	#191970</color>
-    <color name="lateblue">	#483D8B</color>
+    <color name="darkblue">#00008B</color>
+    <color name="midnightblue">#191970</color>
+    <color name="lateblue">#483D8B</color>
     <color name="pink">#e73895</color>
     <color name="warning">#ff9966</color>
     <color name="green">#99cc33</color>

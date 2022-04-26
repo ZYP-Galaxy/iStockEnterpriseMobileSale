@@ -88,7 +88,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     SharedPreferences sh_port;
     DateFormat dateFormat;
     String url;
-    static ListView entrygrid;
+    public static ListView entrygrid;
     public static boolean openEditText = false;
     public static boolean isCodeFinding = false;
     public static boolean isCategory = false;
@@ -1451,8 +1451,8 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         viewEdit.setOnClickListener(this);
         viewConfirm.setOnClickListener(this);
         gridview = findViewById(R.id.gv);
-        gridclassview = findViewById(R.id.cvv);
-        gridcodeview = findViewById(R.id.gvv);
+        gridclassview = findViewById(R.id.recycler_category);
+        gridcodeview = findViewById(R.id.recycler_code);
         imgDelete = findViewById(R.id.delete);
         imgEdit = findViewById(R.id.edit);
         imgDeleteAll = findViewById(R.id.delall);

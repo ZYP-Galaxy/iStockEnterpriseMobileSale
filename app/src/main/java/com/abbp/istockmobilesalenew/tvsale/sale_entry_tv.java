@@ -30,6 +30,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -43,6 +44,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,6 +59,7 @@ import com.abbp.istockmobilesalenew.DisTypeAdapter;
 import com.abbp.istockmobilesalenew.Dis_Type;
 import com.abbp.istockmobilesalenew.GetAppSetting;
 import com.abbp.istockmobilesalenew.GettingIMEINumber;
+import com.abbp.istockmobilesalenew.GlobalClass;
 import com.abbp.istockmobilesalenew.Location;
 import com.abbp.istockmobilesalenew.LocationAdapter;
 import com.abbp.istockmobilesalenew.PaymentTypeAdapter;
@@ -80,12 +83,12 @@ import com.abbp.istockmobilesalenew.frmlogin;
 import com.abbp.istockmobilesalenew.frmmain;
 import com.abbp.istockmobilesalenew.frmsalelist;
 import com.abbp.istockmobilesalenew.frmscancode;
-import com.abbp.istockmobilesalenew.itemAdapter;
 import com.abbp.istockmobilesalenew.pay_type;
 import com.abbp.istockmobilesalenew.priceLevelAdapter;
 import com.abbp.istockmobilesalenew.reportviewer;
 import com.abbp.istockmobilesalenew.sale_det;
 import com.abbp.istockmobilesalenew.sale_det_tmp;
+import com.abbp.istockmobilesalenew.sale_entry;
 import com.abbp.istockmobilesalenew.sale_head_tmp;
 import com.abbp.istockmobilesalenew.salechange;
 import com.abbp.istockmobilesalenew.unitforcode;
@@ -139,7 +142,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     sale_head_tmp sale_head_tmp;
     Gson gson = new Gson();
 
-    public static RecyclerView gridview, gridclassview, gridcodeview;
+    public static RecyclerView gridview, gridclassview, gridcodeview, recyclerClass;
     ArrayList<usr_code> filteredCode = new ArrayList<>();
     ArrayList<category> filteredList = new ArrayList<>();
     ArrayList<usr_code> filtereddesc = new ArrayList<>();
@@ -155,7 +158,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static long tranidfromcloud;
     public static String strtranid;
     public static int tranidInt;
-    public static com.abbp.istockmobilesalenew.itemAdapter itemAdapter;
+    public static ItemAdapter itemAdapter;
     public static String fitercode;
     public static SharedPreferences sh_ip;
     public static SharedPreferences sh_port;
@@ -272,8 +275,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     SharedPreferences sh_printer, sh_ptype;
     String ToDeliver = "";
 
-    public HubConnection mHubConnection;
-
     private JSONObject jobj;
     private String msgString;
     public static boolean taxchange = false;
@@ -287,6 +288,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     double tmpSalePrice, tmpTotalAmt; //added by EKK on 18-11-2020
 
     RTPrinter btPrinter;
+
+    public static TextView txtItemOf;
+    EditText edtBarcodeScan;
+    ImageView imgConnectionStatus;
+    ImageView imgSortCode;
+    ClassAdapter classAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,11 +315,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
         FillDataWithSignalr();
 
-        entrygrid = findViewById(R.id.entrygrid);
         pb = new ProgressDialog(sale_entry_tv.this, R.style.AlertDialogTheme);
-        pb.setMessage("Please a few seconds");
+        pb.setMessage("Please wait a few seconds ...");
         pb.setTitle("iStock");
+
         itemPosition = -1;
+        entrygrid = findViewById(R.id.entrygrid);
         entrygrid.setOnItemLongClickListener(this);
         entrygrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -320,16 +328,23 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 itemPosition = position;
             }
         });
+
         isCodeFinding = false;
         SetUI();
-        if (frmmain.withoutclass.equals("true")) {
-            gridview.setVisibility(View.VISIBLE);
-            BindingCategory();
-        } else {
-            gridclassview.setVisibility(View.VISIBLE);
-            gridcodeview.setVisibility(View.VISIBLE);
-            BindingClass();
-        }
+
+        gridclassview.setVisibility(View.VISIBLE);
+        gridcodeview.setVisibility(View.VISIBLE);
+        BindingClass();
+
+//        if (frmmain.withoutclass.equals("true")) {
+//            gridview.setVisibility(View.VISIBLE);
+//            BindingCategory();
+//        } else {
+//            gridclassview.setVisibility(View.VISIBLE);
+//            gridcodeview.setVisibility(View.VISIBLE);
+//            BindingClass();
+//        }
+
         if (sd.size() > 0) sd.clear();
         if (sh.size() > 0) sh.clear();
         getHeader();
@@ -352,152 +367,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
     }
 
-    public void bindingCreditBalance() {
-        try {
-
-            String ip = sh_ip.getString("ip", "empty");
-            String port = sh_port.getString("port", "empty");
-            String data = "_userid=" + frmlogin.LoginUserid + "&_filterdate=" + sh.get(0).getDate() + "&_customerid=" + sh.get(0).getCustomerid();
-            String url = "http://" + ip + ":" +/*"80/DataSyncAPI"*/port + "/api/mobile/GetCreditBalance?" + data;
-            RequestQueue requestQueue1 = Volley.newRequestQueue(this);
-            final Response.Listener<String> listener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    if (!response.isEmpty()) {
-                        if (Double.parseDouble(response) > 0) {
-                            txtoutstand.setText(String.format("%,." + frmmain.price_places + "f", Double.parseDouble(response)));
-                        }
-                    } else {
-                        txtoutstand.setText("0");
-                    }
-
-                }
-
-            };
-
-            final Response.ErrorListener error = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(sale_entry_tv.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
-
-                }
-            };
-            StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
-            requestQueue1.add(req);
-
-
-        } catch (Exception ee) {
-            Toast.makeText(this, "You are in Offline. Please check your connection!", Toast.LENGTH_LONG).show();
-
-
-        }
-
-    }
-
-    private void settingcpyname() {
-        String cpystr = "";
-        Cursor cursor = DatabaseHelper.rawQuery("select  * from usr_code");
-        if (cursor != null && cursor.getCount() != 0) {
-            // Toast.makeText(getApplicationContext(),cursor.getCount()+" this is count",Toast.LENGTH_LONG).show();
-            if (cursor.moveToFirst()) {
-                do {
-                    cpystr += cursor.getString(cursor.getColumnIndex("class")) + "  " + cursor.getString(cursor.getColumnIndex("category")) + "  " + cursor.getString(cursor.getColumnIndex("usr_code")) + "\n";
-                } while (cursor.moveToNext());
-            }
-////            //test for default uint type
-////            //defunit=3;
-        }
-//        //cpyname.setText(cpystr);
-        Toast.makeText(getApplicationContext(), cursor.getCount() + " this is count" + cpystr, Toast.LENGTH_LONG).show();
-    }
-
-    private void getHeaderWithUUID() {
-//        tranid=UU
-//        strtranid=UUID.randomUUID().toString();
-
-        Cursor cursor = DatabaseHelper.rawQuery("select * from sale_head_main");
-        tranidInt = cursor.getCount() + 1;
-//        Toast.makeText(this,tranidInt+"this is tranid ",Toast.LENGTH_LONG).show();
-
-        sh.add(new Sale_head_main(tranid, frmlogin.LoginUserid, "VOU-1", dateFormat.format(new Date()), "", "", frmlogin.det_locationid, 1, frmlogin.def_cashid, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        try {
-            String voudate = new SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(sh.get(0).getDate()));
-            txtdate.setText(voudate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    private void GetBillPrintCount() {
-        GetAppSetting getAppSetting = new GetAppSetting("Bill_Print_Count");
-        billprintcount = Integer.parseInt(getAppSetting.getSetting_Value());
-    }
-
-    private void getSystemSetting() {
-        Cursor cursor = DatabaseHelper.rawQuery("select isuselocation,isusecustomergroup,isusetownship,isusesalesmen,isusedelivery,isusemulticash from SystemSetting");
-        if (cursor != null && cursor.getCount() != 0) {
-            if (cursor.moveToFirst()) {
-                do {
-                    use_location = cursor.getInt(cursor.getColumnIndex("isuselocation")) == 1 ? true : false;
-                    use_customergroup = cursor.getInt(cursor.getColumnIndex("isusecustomergroup")) == 1 ? true : false;
-                    use_township = cursor.getInt(cursor.getColumnIndex("isusetownship")) == 1 ? true : false;
-                    use_salesperson = cursor.getInt(cursor.getColumnIndex("isusesalesmen")) == 1 ? true : false;
-                    Use_Delivery = cursor.getInt(cursor.getColumnIndex("isusedelivery")) == 1 ? true : false;
-                    use_multicash = cursor.getInt(cursor.getColumnIndex("isusemulticash")) == 1 ? true : false; //added by EKK on 17-11-2020
-                } while (cursor.moveToNext());
-            }
-        }
-        if (Use_Tax == 0) {
-            taxlo.setVisibility(View.GONE);
-        } else {
-            taxlo.setVisibility(View.VISIBLE);
-            if (frmlogin.isusetax == 0) {
-                txttaxamt.setEnabled(false);
-            } else {
-                txttaxamt.setEnabled(true);
-            }
-        }
-
-    }
-
-    private void GetCustomerOutstand(long customerid) {
-        try {
-
-            String ip = sh_ip.getString("ip", "empty");
-            String port = sh_port.getString("port", "empty");
-            String data = "userid=" + frmlogin.LoginUserid + "&tranid=" + sh.get(0).getTranid() + "&customerid=" + customerid + "&date=" + sh.get(0).getDate();
-            url = "http://" + ip + ":" + port + "/api/DataSync/GetData?" + data;
-            requestQueue = Volley.newRequestQueue(this);
-            final Response.Listener<String> listener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    txtoutstand.setText(response);
-
-                }
-
-            };
-
-            final Response.ErrorListener error = new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-
-                }
-            };
-            StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
-            requestQueue.add(req);
-
-
-        } catch (Exception ee) {
-            //Toast.makeText(sale_entry.this, ee.getMessage(), Toast.LENGTH_LONG).show();
-
-
-        }
-
-    }
 
     private void SetUI() {
 
@@ -532,7 +401,24 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         if (cursorCloud != null)
             cursorCloud.close();
 
-        tvUnit.setVisibility(use_unit == true ? View.VISIBLE : View.GONE);
+        tvUnit.setVisibility(use_unit ? View.VISIBLE : View.GONE);
+
+        //region TVSale
+        recyclerClass = findViewById(R.id.recycler_class);
+        txtItemOf = findViewById(R.id.txt_itemof);
+
+        imgConnectionStatus = findViewById(R.id.img_wifi_connect);
+        imgConnectionStatus.setOnClickListener(v -> CheckConnection());
+
+        TextView txtShopName = findViewById(R.id.txt_shopname);
+        txtShopName.setText(GlobalClass.GetSystemSetting("title"));
+
+        TextView txtUsername = findViewById(R.id.txt_username);
+        txtUsername.setText(frmlogin.username);
+
+
+        //endregion
+
         imgFilterClear = findViewById(R.id.imgClearFilter);
         imgFilterClear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -562,6 +448,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+
         imgFilterCode = findViewById(R.id.imgFilterCode);
         imgSearchCode = findViewById(R.id.imgSearchCode);
         imgSearchCode.setOnClickListener(new View.OnClickListener() {
@@ -636,6 +523,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
             }
         });
+
         imgFilterCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -661,19 +549,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
         });
 
-
-        txtDel = findViewById(R.id.txtDelete);
         txtDelAll = findViewById(R.id.txtDelAll);
         txtEdit = findViewById(R.id.txtedit);
         txtComfirm = findViewById(R.id.txtConfirm);
-        txtBack = findViewById(R.id.txtBack);
         viewConfirm = findViewById(R.id.viewConfirm);
 
         //to save in sqlite database
-        viewSave = findViewById(R.id.viewSave);
-        viewSave.setOnClickListener(this);
-        savebtntolite = findViewById(R.id.savebtntolite);
-        savebtntolite.setOnClickListener(this);
         viewcloud = findViewById(R.id.viewCloud);
         viewcloud.setOnClickListener(this);
         savetocloud = findViewById(R.id.savetoCloud);
@@ -681,35 +562,23 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         //to save in sqlite database
 
         viewEdit = findViewById(R.id.viewEdit);
-        viewDel = findViewById(R.id.viewDelete);
         viewDelAll = findViewById(R.id.viewDelAll);
-        viewBack = findViewById(R.id.viewBack);
-        txtDel.setOnClickListener(this);
         txtDelAll.setOnClickListener(this);
         txtEdit.setOnClickListener(this);
         txtComfirm.setOnClickListener(this);
-        txtBack.setOnClickListener(this);
-        viewBack.setOnClickListener(this);
         viewDelAll.setOnClickListener(this);
-        viewDel.setOnClickListener(this);
         viewEdit.setOnClickListener(this);
         viewConfirm.setOnClickListener(this);
         gridview = findViewById(R.id.gv);
-        gridclassview = findViewById(R.id.cvv);
-        gridcodeview = findViewById(R.id.gvv);
-        imgDelete = findViewById(R.id.delete);
+        gridclassview = findViewById(R.id.recycler_category);
+        gridcodeview = findViewById(R.id.recycler_code);
         imgEdit = findViewById(R.id.edit);
         imgDeleteAll = findViewById(R.id.delall);
-        // imgSummary = findViewById(R.id.summary);
-        // imgSummary.setOnClickListener(this);
         imgEdit.setOnClickListener(this);
         imgDeleteAll.setOnClickListener(this);
-        imgDelete.setOnClickListener(this);
         txttotal = findViewById(R.id.txtTotalAmt);
         imgConfrim = findViewById(R.id.imgconfirm);
         imgConfrim.setOnClickListener(this);
-        imgPrint = findViewById(R.id.imgHeader);
-        imgPrint.setOnClickListener(this);
 
         imgPrinter = findViewById(R.id.imgPrintSelection);
         imgPrinter.setOnClickListener(this);
@@ -729,8 +598,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         txtpaid = findViewById(R.id.txtPaid);
         // txtpaid.setText("aid amount is %");
         txtnet = findViewById(R.id.txtNetAmt);
-        imgBack = findViewById(R.id.back);
-        imgBack.setOnClickListener(this);
         txttaxamt = findViewById(R.id.txttaxamt);
         txttax = findViewById(R.id.txttax);
         btndetail = findViewById(R.id.btndetail);
@@ -779,9 +646,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
         });
 
-
-//Added By abbp barcode scanner on 19/6/2019
-
+        //Added By abbp barcode scanner on 19/6/2019
         imgScanner = findViewById(R.id.imgscanner);
         imgScanner.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -791,58 +656,131 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
         });
 
+    }
 
-//def customer outstand
-        //GetCustomerOutstand(1);
+    public void bindingCreditBalance() {
+        try {
 
-//**************************************************************************************************
+            String ip = sh_ip.getString("ip", "empty");
+            String port = sh_port.getString("port", "empty");
+            String data = "_userid=" + frmlogin.LoginUserid + "&_filterdate=" + sh.get(0).getDate() + "&_customerid=" + sh.get(0).getCustomerid();
+            String url = "http://" + ip + ":" +/*"80/DataSyncAPI"*/port + "/api/mobile/GetCreditBalance?" + data;
+            RequestQueue requestQueue1 = Volley.newRequestQueue(this);
+            final Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
 
-
-//removed by abbp for detail btn in sale entry on 18/6/2019
-        /*
-        txtpaid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeheader=false;
-                if(isCreditcustomer&& sh.get(0).getPay_type()==2) {
-                    keynum = txtpaid.getText().toString();
-                    paiddis=true;
-                    showKeyPad(txtpaid, txtpaid);
-                }
-                else
-                {
-
-                    AlertDialog.Builder ab=new AlertDialog.Builder(sale_entry.this,R.style.AlertDialogTheme);
-                    ab.setTitle("iStock");
-                    ab.setMessage("Only Allow in Credit.");
-
-                    ab.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            msg.dismiss();
+                    if (!response.isEmpty()) {
+                        if (Double.parseDouble(response) > 0) {
+                            txtoutstand.setText(String.format("%,." + frmmain.price_places + "f", Double.parseDouble(response)));
                         }
-                    });
-                    msg=ab.create();
-                    msg.show();
+                    } else {
+                        txtoutstand.setText("0");
+                    }
+
                 }
 
+            };
+
+            final Response.ErrorListener error = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(sale_entry_tv.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+                }
+            };
+            StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+            requestQueue1.add(req);
 
 
+        } catch (Exception ee) {
+            Toast.makeText(this, "You are in Offline. Please check your connection!", Toast.LENGTH_LONG).show();
+
+
+        }
+
+    }
+
+    private void getHeaderWithUUID() {
+        Cursor cursor = DatabaseHelper.rawQuery("select * from sale_head_main");
+        tranidInt = cursor.getCount() + 1;
+        sh.add(new Sale_head_main(tranid, frmlogin.LoginUserid, "VOU-1", dateFormat.format(new Date()), "", "", frmlogin.det_locationid, 1, frmlogin.def_cashid, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+        try {
+            String voudate = new SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(sh.get(0).getDate()));
+            txtdate.setText(voudate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void GetBillPrintCount() {
+        GetAppSetting getAppSetting = new GetAppSetting("Bill_Print_Count");
+        billprintcount = Integer.parseInt(getAppSetting.getSetting_Value());
+    }
+
+    private void getSystemSetting() {
+        Cursor cursor = DatabaseHelper.rawQuery("select isuselocation,isusecustomergroup,isusetownship,isusesalesmen,isusedelivery,isusemulticash from SystemSetting");
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    use_location = cursor.getInt(cursor.getColumnIndex("isuselocation")) == 1 ? true : false;
+                    use_customergroup = cursor.getInt(cursor.getColumnIndex("isusecustomergroup")) == 1 ? true : false;
+                    use_township = cursor.getInt(cursor.getColumnIndex("isusetownship")) == 1 ? true : false;
+                    use_salesperson = cursor.getInt(cursor.getColumnIndex("isusesalesmen")) == 1 ? true : false;
+                    Use_Delivery = cursor.getInt(cursor.getColumnIndex("isusedelivery")) == 1 ? true : false;
+                    use_multicash = cursor.getInt(cursor.getColumnIndex("isusemulticash")) == 1 ? true : false; //added by EKK on 17-11-2020
+                } while (cursor.moveToNext());
             }
-        });
-        txtvoudis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeheader=false;
-                voudis=true;
-                keynum=txtvoudis.getText().toString();
-                showKeyPad(txtpaid,txtvoudis);
+        }
+        if (Use_Tax == 0) {
+            taxlo.setVisibility(View.GONE);
+        } else {
+            taxlo.setVisibility(View.VISIBLE);
+            if (frmlogin.isusetax == 0) {
+                txttaxamt.setEnabled(false);
+            } else {
+                txttaxamt.setEnabled(true);
             }
-        });*/
-//***************************************************************************************************
-//        if(isCreditcustomer&& sh.get(0).getPay_type()==2) {
-//            bindingCreditBalance();
-//        }
+        }
+
+    }
+
+    private void GetCustomerOutstand(long customerid) {
+        try {
+
+            String ip = sh_ip.getString("ip", "empty");
+            String port = sh_port.getString("port", "empty");
+            String data = "userid=" + frmlogin.LoginUserid + "&tranid=" + sh.get(0).getTranid() + "&customerid=" + customerid + "&date=" + sh.get(0).getDate();
+            url = "http://" + ip + ":" + port + "/api/DataSync/GetData?" + data;
+            requestQueue = Volley.newRequestQueue(this);
+            final Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    txtoutstand.setText(response);
+
+                }
+
+            };
+
+            final Response.ErrorListener error = new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+
+                }
+            };
+            StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+            requestQueue.add(req);
+
+
+        } catch (Exception ee) {
+            //Toast.makeText(sale_entry.this, ee.getMessage(), Toast.LENGTH_LONG).show();
+
+
+        }
+
     }
 
 
@@ -1219,7 +1157,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 
     public static void getData() {
-        itemAdapter = new itemAdapter(datacontext);
+        itemAdapter = new ItemAdapter(datacontext);
         itemAdapter.getItemAdpater(itemAdapter);
         entrygrid.setAdapter(itemAdapter);
     }
@@ -1303,14 +1241,18 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 } while (cursor.moveToNext());
 
             }
-
+            cursor.close();
         }
-        cursor.close();
 
-        cad = new classAdapter(sale_entry_tv.this, class_items, gridclassview);
-        gridclassview.setAdapter(cad);
-        LinearLayoutManager classlayoutmanger = new LinearLayoutManager(sale_entry_tv.this, LinearLayoutManager.HORIZONTAL, false);
-        gridclassview.setLayoutManager(classlayoutmanger);
+//        cad = new classAdapter(sale_entry_tv.this, class_items, gridclassview);
+//        gridclassview.setAdapter(cad);
+//        LinearLayoutManager classlayoutmanger = new LinearLayoutManager(sale_entry_tv.this, LinearLayoutManager.HORIZONTAL, false);
+//        gridclassview.setLayoutManager(classlayoutmanger);
+
+        classAdapter = new ClassAdapter(datacontext, class_items, gridclassview);
+        LinearLayoutManager ClassLayoutManager = new LinearLayoutManager(datacontext, LinearLayoutManager.HORIZONTAL, false);
+        recyclerClass.setLayoutManager(ClassLayoutManager);
+        recyclerClass.setAdapter(classAdapter);
 
     }
 
@@ -1460,7 +1402,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sd.clear();
-                            itemAdapter = new itemAdapter(sale_entry_tv.this);
+                            itemAdapter = new ItemAdapter(sale_entry_tv.this);
                             entrygrid.setAdapter(itemAdapter);
                             String tax = "Tax" + (getTax() > 0 ? "( " + getTax() + "% )" : "");
                             txttax.setText(tax);
@@ -6657,5 +6599,107 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         return result;
     }
 
+
+    private void CheckConnection() {
+        String ip = sh_ip.getString("ip", "localhost");
+        String port = sh_port.getString("port", "80");
+        String Url = "http://" + ip + ":" + port + "/api/DataSync/GetData";
+
+        requestQueue = Volley.newRequestQueue(this);
+
+        final Response.Listener<String> listener = response -> {
+            imgConnectionStatus.setImageResource(R.drawable.wificonnect);
+        };
+
+        final Response.ErrorListener error = error1 -> {
+            imgConnectionStatus.setImageResource(R.drawable.wifidis);
+        };
+
+        StringRequest req = new StringRequest(Request.Method.GET, Url, listener, error);
+        requestQueue.add(req);
+
+    }
+
+    private void BarcodeScan(String scanCode) {
+        Cursor cursor = DatabaseHelper.rawQuery("select usr_code from Alias_Code where al_code='" + scanCode + "'");
+        if (cursor.getCount() == 0) {
+            cursor = DatabaseHelper.rawQuery("select usr_code from Usr_Code where usr_code='" + scanCode + "'");
+        }
+
+        String resultCode = "";
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    resultCode = cursor.getString(cursor.getColumnIndex("usr_code"));
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        if (!resultCode.equals("")) {
+            try {
+                UsrcodeAdapter.scanner(resultCode);
+            } catch (Exception ex) {
+                GlobalClass.showAlertDialog(datacontext, "iStock", ex.getMessage());
+            }
+        } else {
+            GlobalClass.showToast(datacontext, "Code doesn't exist!");
+        }
+    }
+
+//    private void showPrinterSetting() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        View dialogView = getLayoutInflater().inflate(R.layout.devicesetting, null);
+//        builder.setView(dialogView);
+//
+//        //region SunmiPrinter
+//        TextView txtTitleBTprinter = dialogView.findViewById(R.id.txt_title_btprinter);
+//        LinearLayout layoutBTprinter = dialogView.findViewById(R.id.layout_btprinter);
+//        LinearLayout layoutSunmiprinter = dialogView.findViewById(R.id.layout_sunmi_printer);
+//        if (SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
+//            layoutSunmiprinter.setVisibility(View.VISIBLE);
+//            txtTitleBTprinter.setVisibility(View.GONE);
+//            layoutBTprinter.setVisibility(View.GONE);
+//        } else {
+//            layoutSunmiprinter.setVisibility(View.GONE);
+//            txtTitleBTprinter.setVisibility(View.VISIBLE);
+//            layoutBTprinter.setVisibility(View.VISIBLE);
+//        }
+//
+//        TextView sunmi_printerstatus = dialogView.findViewById(R.id.txt_sunmi_printerstatus);
+//        sunmi_printerstatus.setText(String.format("Status : %s", SunmiPrintHelper.getInstance().showPrinterStatus(context)));
+//
+//        CardView btnSunmiPrintStatus = dialogView.findViewById(R.id.btn_sunmi_printerstatus);
+//        btnSunmiPrintStatus.setOnClickListener(v1 -> {
+//            sunmi_printerstatus.setText(String.format("Status : %s", SunmiPrintHelper.getInstance().showPrinterStatus(context)));
+//        });
+//
+//        CardView btnSunmiPrintTest = dialogView.findViewById(R.id.btn_sunmi_printertest);
+//        btnSunmiPrintTest.setOnClickListener(v1 -> {
+////                        SunmiPrintHelper.getInstance().printText("Galaxy Software\niStock Mobile TV Sale\n\n\nSunmi Printer Testing!",
+////                                36, false, false, null);
+//            SunmiPrintHelper.getInstance().printTest(context);
+//        });
+//
+//        CardView btnSunmiPrintFeed = dialogView.findViewById(R.id.btn_sunmi_printerfeed);
+//        btnSunmiPrintFeed.setOnClickListener(v1 -> {
+//            SunmiPrintHelper.getInstance().feedPaper();
+//        });
+//
+//        CardView btnSunmiPrintCut = dialogView.findViewById(R.id.btn_sunmi_printercut);
+//        btnSunmiPrintCut.setOnClickListener(v1 -> {
+//            SunmiPrintHelper.getInstance().cutpaper();
+//        });
+//
+//        //endregion
+//
+//        ImageView imgClose = dialogView.findViewById(R.id.btn_printersetup_close);
+//        imgClose.setOnClickListener(v1 -> {
+//            dialog.dismiss();
+//        });
+//        dialog = builder.create();
+//        dialog.show();
+//
+//    }
 
 }
