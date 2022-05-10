@@ -17,10 +17,12 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,6 +39,7 @@ import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +47,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,7 +57,6 @@ import com.abbp.istockmobilesalenew.CashInAdapter;
 import com.abbp.istockmobilesalenew.CustGroupAdapter;
 import com.abbp.istockmobilesalenew.CustomerAdapter;
 import com.abbp.istockmobilesalenew.DatabaseHelper;
-import com.abbp.istockmobilesalenew.DisTypeAdapter;
 import com.abbp.istockmobilesalenew.Dis_Type;
 import com.abbp.istockmobilesalenew.GetAppSetting;
 import com.abbp.istockmobilesalenew.GettingIMEINumber;
@@ -102,7 +103,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.microsoft.signalr.HubConnection;
 import com.rt.printerlibrary.exception.SdkException;
 import com.rt.printerlibrary.printer.RTPrinter;
 
@@ -187,8 +187,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static UnitAdapter uad;
     Date voudate;
     AlertDialog disDa = null;
-    TextView txtChangeQty;
-    TextView txtChangePrice;
+    EditText txtChangeQty;
+    EditText txtChangePrice;
     TextView txtamt;
     TextView txtdate;
     TextView tvBillCount;
@@ -294,6 +294,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ImageView imgConnectionStatus;
     ImageView imgSortCode;
     ClassAdapter classAdapter;
+    Spinner spinDis, spinPricelvl, spinUnit;
+    public int billPrintCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1634,7 +1636,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 selected_custgroupid = -1;
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry_tv.this);
-                View view = getLayoutInflater().inflate(R.layout.headerinfo, null);
+                View view = getLayoutInflater().inflate(R.layout.headerinfo_tv, null);
                 //builder.setCancelable(false);
                 builder.setView(view);
                 RelativeLayout rlCustGroup = view.findViewById(R.id.rlCustGroup);
@@ -1901,7 +1903,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 });
 //
                 //added by EKK on 16-11-2020
-                Button btnCashIn = view.findViewById(R.id.cashin);
+                Button btnCashIn = view.findViewById(R.id.cash);
                 btnCashIn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -2565,7 +2567,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         contentValues1.put("itemdiscounttypeid", sd.get(i).getDis_type());
                         contentValues1.put("discountpercent", sd.get(i).getDis_percent());
                         contentValues1.put("remark", detRemark);
-                        contentValues1.put("unittypeid", sd.get(i).getUnt_type());
+                        contentValues1.put("unittypeid", sd.get(i).getUnit_type());
                         contentValues1.put("code", sd.get(i).getCode());
                         contentValues1.put("sr", i + 1);
                         contentValues1.put("srno", i + 1);
@@ -2618,7 +2620,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         contentValues1.put("itemdiscounttypeid", sd.get(i).getDis_type());
                         contentValues1.put("discountpercent", sd.get(i).getDis_percent());
                         contentValues1.put("remark", detRemark);
-                        contentValues1.put("unittypeid", sd.get(i).getUnt_type());
+                        contentValues1.put("unittypeid", sd.get(i).getUnit_type());
                         contentValues1.put("code", sd.get(i).getCode());
                         contentValues1.put("sr", i + 1);
                         contentValues1.put("srno", i + 1);
@@ -3551,47 +3553,63 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         if (sh.get(0).getPay_type() == 1) {
             AlertDialog.Builder change = new AlertDialog.Builder(sale_entry_tv.this);
             change.setCancelable(false);
-            View v = getLayoutInflater().inflate(R.layout.savechange, null);
-            LinearLayout rlBT = v.findViewById(R.id.rlBT); //Add by TZW for BlueToothPrinter
+            View v = getLayoutInflater().inflate(R.layout.savechange_tv, null);
+//            LinearLayout rlBT = v.findViewById(R.id.rlBT); //Add by TZW for BlueToothPrinter
             ImageButton imgSave = v.findViewById(R.id.imgSave);
-            ImageButton imgClose = v.findViewById(R.id.imgClose);
+            ImageView imgClose = v.findViewById(R.id.img_close_change);
             tvAmount = v.findViewById(R.id.txtAmount);
             tvAmount.setText(txtnet.getText().toString());
             tvChange = v.findViewById(R.id.txtChange);
-            TextView tvPaid = v.findViewById(R.id.txtpaidAmount);
+            EditText tvPaid = v.findViewById(R.id.txtpaidAmount);
             CheckBox chkPrint = v.findViewById(R.id.chkPrint);
-            chkPrint.setChecked(false);
-            bill_not_print = false;
-
-            rlBT.setVisibility(View.VISIBLE);//Add by TZW for BlueToothPrinter
-            RadioButton chkBT = v.findViewById(R.id.chkBT);//Add by TZW for BlueToothPrinter
-            chkBT.setChecked(true);//Add by TZW for BlueToothPrinter
-            use_bluetooth = true;//Add by tZW for BlueToothPrinter
-
-            chkBT.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            CheckBox chkBluetooth = v.findViewById(R.id.chkBluetooth);
+            chkBluetooth.setChecked(true);
+            use_bluetooth = true;
+            chkBluetooth.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        use_bluetooth = true;
-                        //Show_BT_Deivice();
-                        // showPrinterList();
-                        //getSavedPrinter();
-                        // printView();
-                    } else {
-                        use_bluetooth = false;
-                    }
-
+                    use_bluetooth = isChecked;
+                }
+            });
+            chkPrint.setChecked(false);
+            bill_not_print = false;
+            chkPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    bill_not_print = isChecked;
                 }
             });
 
-            //Added by ZYP for localprint
-            RadioButton chkLocalPrint = v.findViewById(R.id.chkLocalPrint);
-            //use_localprint = chkLocalPrint.isChecked();
-            chkLocalPrint.setChecked(use_localprint);
 
-            chkLocalPrint.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                use_localprint = isChecked;
-            });
+//            rlBT.setVisibility(View.VISIBLE);//Add by TZW for BlueToothPrinter
+//            RadioButton chkBT = v.findViewById(R.id.chkBT);//Add by TZW for BlueToothPrinter
+//            chkBT.setChecked(true);//Add by TZW for BlueToothPrinter
+            use_bluetooth = true;//Add by tZW for BlueToothPrinter
+
+//            chkBT.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        use_bluetooth = true;
+//                        //Show_BT_Deivice();
+//                        // showPrinterList();
+//                        //getSavedPrinter();
+//                        // printView();
+//                    } else {
+//                        use_bluetooth = false;
+//                    }
+//
+//                }
+//            });
+
+            //Added by ZYP for localprint
+//            RadioButton chkLocalPrint = v.findViewById(R.id.chkLocalPrint);
+//            //use_localprint = chkLocalPrint.isChecked();
+//            chkLocalPrint.setChecked(use_localprint);
+//
+//            chkLocalPrint.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//                use_localprint = isChecked;
+//            });
 
             chkPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -3615,15 +3633,15 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             });
 
 
-            rlBillCount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    frombillcount = true;
-                    keynum = tvBillCount.getText().toString();
-                    showKeyPad(txtAmounttext, tvBillCount);
-
-                }
-            });
+//            rlBillCount.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    frombillcount = true;
+//                    keynum = tvBillCount.getText().toString();
+//                    showKeyPad(txtAmounttext, tvBillCount);
+//
+//                }
+//            });
 
             RelativeLayout rlPaid = v.findViewById(R.id.rlPaid);
             rlPaid.setOnClickListener(new View.OnClickListener() {
@@ -3636,14 +3654,55 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 }
             });
-            tvPaid.setOnClickListener(new View.OnClickListener() {
+
+            tvPaid.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
-                public void onClick(View v) {
-                    keynum = tvPaid.getText().toString();
-                    fromSaleChange = true;
-                    showKeyPad(tvAmount, tvPaid);
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    try {
+
+                        if (actionId == EditorInfo.IME_ACTION_DONE) {
+                            String paidAmount = tvPaid.getText().toString();
+                            fromSaleChange = true;
+                            //showKeyPad(tvAmount, tvPaid);
+                            if (fromSaleChange) {
+                                if (Double.parseDouble(paidAmount) < Double.parseDouble(ClearFormat(txtnet.getText().toString())) && Double.parseDouble(paidAmount) > 0) {
+                                    AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
+                                    bd.setTitle("iStock");
+                                    bd.setMessage("Paid Amount is less than Net Amount!");
+                                    bd.setCancelable(false);
+                                    bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            changeamount = 0;
+                                            tvChange.setText("0");
+                                            tvPaid.setText(paidAmount);
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    bd.create().show();
+                                } else {
+                                    changeamount = Double.parseDouble(paidAmount) - Double.parseDouble(ClearFormat(txtnet.getText().toString()));
+                                    SummaryFormat(tvPaid, Double.parseDouble(paidAmount));
+                                    SummaryFormat(tvChange, changeamount);
+                                }
+                            }
+                            fromSaleChange = false;
+                            if (frombillcount) {
+                                changeamount = Integer.parseInt(paidAmount);
+                                tvChange.setText(String.valueOf(paidAmount));
+                            }
+                            frombillcount = false;
+//                        InputMethodManager keyboard = (InputMethodManager)
+//                                getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        keyboard.hideSoftInputFromWindow(tvPaid.getWindowToken(), 0);
+                        }
+                    } catch (Exception ex) {
+                        GlobalClass.showAlertDialog(sale_entry_tv.this, "iStock", "Incorrect number format!");
+                    }
+                    return false;
                 }
             });
+
 
             imgSave.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -4142,10 +4201,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         //added by EKK on 11-11-2020
                         if (source == txtChangeQty) {
                             if (frmmain.isusespecialprice == 1) {
-                                View view = getLayoutInflater().inflate(R.layout.editinfo, null);
+                                View view = getLayoutInflater().inflate(R.layout.editinfo_tv, null);
                                 RecyclerView rcvSP = view.findViewById(R.id.rcvSP);
                                 txtChangeQty.setText(keynum);
-                                chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                                chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                             }
 
                         }
@@ -4937,7 +4996,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             (int) sd.get(i).getDis_type(),
                             sd.get(i).getDis_percent(),
                             detRemark,
-                            sd.get(i).getUnt_type(),
+                            sd.get(i).getUnit_type(),
                             (int) sd.get(i).getCode(),
                             (i + 1),
                             (i + 1), selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel()),
@@ -5100,7 +5159,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             Cursor cursor = null;
             String sqlString = "";
             AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
-            View view = getLayoutInflater().inflate(R.layout.editinfo, null);
+            View view = getLayoutInflater().inflate(R.layout.editinfo_tv, null);
             builder.setCancelable(false);
             builder.setView(view);
             rlUnit = view.findViewById(R.id.rlUnit);
@@ -5121,7 +5180,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             RecyclerView rcvUnit = view.findViewById(R.id.rcvUnit);
             RecyclerView rcvSP = view.findViewById(R.id.rcvSP);
             btndiscount = view.findViewById(R.id.btndiscountype);
-            ArrayList<unitforcode> cg = new ArrayList<>();
+            ArrayList<unitforcode> unitforcodes = new ArrayList<>();
 
 //            sd.get(itemPosition).setDis_price(0);
             boolean use_multipricelvl = false;
@@ -5148,6 +5207,68 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 btndiscount.setEnabled(true);
             }
 
+            spinDis = view.findViewById(R.id.spinDis);
+            if (frmlogin.candiscount == 0) {
+                spinDis.setEnabled(false);
+            } else {
+                spinDis.setEnabled(true);
+            }
+            ArrayList<Dis_Type> disTypes = new ArrayList<>();
+            String sqlDis = "select * from Dis_Type ";
+            Cursor curDis = DatabaseHelper.rawQuery(sqlDis);
+            if (curDis != null && curDis.getCount() != 0) {
+                if (curDis.moveToFirst()) {
+                    do {
+                        int dis_type = curDis.getInt(curDis.getColumnIndex("itemdiscounttypeid"));
+                        String name = curDis.getString(curDis.getColumnIndex("name"));
+                        String shortname = curDis.getString(curDis.getColumnIndex("shortdesc"));
+                        int paid = curDis.getInt(curDis.getColumnIndex("ispaid"));
+                        long discount = curDis.getLong(curDis.getColumnIndex("discount"));
+                        disTypes.add(new Dis_Type(dis_type, name, shortname, discount));
+                    } while (curDis.moveToNext());
+                }
+            }
+            // Creating adapter for spinner
+            ArrayAdapter disAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, disTypes);
+            disAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinDis.setAdapter(disAdapter);
+
+            for (int i = 0; i < disTypes.size(); i++) {
+                if (sd.get(itemPosition).getDis_type() == disTypes.get(i).getDis_type()) {
+                    spinDis.setSelection(i);
+                    if (disTypes.get(i).getDis_type() == 5) {
+                        if (sd.get(itemPosition).getDis_percent() > 0) {
+                            btndiscount.setText(String.format("%s%%", sd.get(itemPosition).getDis_percent()));
+                        } else {
+                            double dis = sd.get(itemPosition).getSale_price() - sd.get(itemPosition).getDis_price();
+                            btndiscount.setText(String.valueOf(dis));
+                        }
+                    } else {
+                        btndiscount.setText(disTypes.get(i).getName());
+                    }
+                    break;
+                }
+            }
+
+            spinDis.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    sd.get(itemPosition).setDis_type(disTypes.get(position).getDis_type());
+                    btndiscount.setText(disTypes.get(position).getName());
+                    if (sd.get(itemPosition).getDis_type() == 5) {
+                        DiscountDialog(spinDis);
+                    }
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // TODO Auto-generated method stub
+                }
+            });
+            //endregion not use
+
+            //price level
+            spinPricelvl = view.findViewById(R.id.spinPricelvl);
             if (use_multipricelvl) {
 
                 //binding pricelevel
@@ -5174,21 +5295,63 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         break;
 
                 }
-                pad = new priceLevelAdapter(sale_entry_tv.this, itemPosition, txtChangePrice, txtChangeQty, txtamt, btndiscount, row_index);
+               /* pad = new priceLevelAdapter(sale_entry_tv.this, itemPosition, txtChangePrice, txtChangeQty, txtamt, btndiscount, row_index);
                 rcvSP.setAdapter(pad);
                 GridLayoutManager gridPricelevel = new GridLayoutManager(getApplicationContext(), 4);
-                rcvSP.setLayoutManager(gridPricelevel);
+                rcvSP.setLayoutManager(gridPricelevel);*/
+                ArrayList<PriceLevel> priceLevels = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    String SP = i == 0 ? "SP" : "SP" + i;
+                    PriceLevel priceLevel = new PriceLevel(i, SP);
+                    priceLevels.add(priceLevel);
+                }
+
+                ArrayAdapter levelAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, priceLevels);
+                levelAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinPricelvl.setAdapter(levelAdapter);
+
+                for (int i = 0; i < priceLevels.size(); i++) {
+                    if (sd.get(itemPosition).getPriceLevel().equals(priceLevels.get(i).getLevel_name())) {
+                        spinPricelvl.setSelection(i);
+                        break;
+                    }
+                }
+
+                final int[] isSelected = {0};
+                spinPricelvl.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (++isSelected[0] > 1) {  //to avoid initial selected
+                            sd.get(itemPosition).setPriceLevel(priceLevels.get(position).getLevel_name());
+                            double sale_price = getSalePrice(priceLevels.get(position).getLevel_name());
+                            sd.get(itemPosition).setSale_price(sale_price);
+                            String priceString = String.format("%,." + frmmain.price_places + "f", sale_price);
+                            txtChangePrice.setText(priceString);
+
+                            double amt = getQtyValue(txtChangeQty) * sale_price;
+                            String numberString = String.format("%,." + frmmain.price_places + "f", amt);
+                            txtamt.setText(numberString);
+                        }
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // TODO Auto-generated method stub
+                    }
+                });
             } else {
                 rlLevel.setVisibility(View.GONE);
             }
 
             //binding unit
+            spinUnit = view.findViewById(R.id.spinUnit);
             if (use_unit) {
                 rlUnit.setVisibility(View.VISIBLE);
-                if (cg.size() > 0) {
-                    cg.clear();
+                if (unitforcodes.size() > 0) {
+                    unitforcodes.clear();
                 }
-                sqlString = "select * from Usr_Code where unit_type>0 and code=" + sd.get(itemPosition).getCode() + " order by unit_type ";
+                sqlString = "select * from Usr_Code where unit_type>0 and code=" + sd.get(itemPosition).getCode() + " and unitname!='null' order by unit_type ";
                 cursor = DatabaseHelper.rawQuery(sqlString);
                 if (cursor != null && cursor.getCount() != 0) {
                     if (cursor.moveToFirst()) {
@@ -5207,7 +5370,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             double saleprice5 = cursor.getDouble(cursor.getColumnIndex("saleprice5"));
 
                             double sqty = cursor.getDouble((cursor.getColumnIndex("smallest_unit_qty")));
-                            cg.add(new unitforcode(code, usr_code, unit_type, unit, unitname, shortdes, saleprice, saleprice1, saleprice2, saleprice3, saleprice4, saleprice5, sqty));
+                            unitforcodes.add(new unitforcode(code, usr_code, unit_type, unit, unitname, shortdes, saleprice, saleprice1, saleprice2, saleprice3, saleprice4, saleprice5, sqty));
 // public unitforcode(int code, String usr_code, int unit_type, int unit, String unitname, String shortdes, double sale_price, double smallest_unit_qty, double sale_Price1, double sale_price2, double sale_price3) {
                         } while (cursor.moveToNext());
 
@@ -5225,7 +5388,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
 
 
-                switch (sd.get(itemPosition).getUnt_type()) {
+                switch (sd.get(itemPosition).getUnit_type()) {
                     case 1:
                         row_index = 0;
                         defunit = -1;
@@ -5241,11 +5404,49 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
 
 
-                uad = new UnitAdapter(sale_entry_tv.this, cg, itemPosition, txtChangePrice, txtsqty, txtChangeQty, txtamt, btndiscount, row_index);
+                /*uad = new UnitAdapter(sale_entry_tv.this, unitforcodes, itemPosition, txtChangePrice, txtsqty, txtChangeQty, txtamt, btndiscount, row_index);
                 rcvUnit.setAdapter(uad);
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 4);
                 rcvUnit.setLayoutManager(gridLayoutManager);
-                cursor = null;
+                cursor = null;*/
+
+                // Creating adapter for spinner
+                ArrayAdapter unitAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, unitforcodes);
+                unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinUnit.setAdapter(unitAdapter);
+
+                for (int i = 0; i < unitforcodes.size(); i++) {
+                    if (sd.get(itemPosition).getUnit_type() == unitforcodes.get(i).getUnit_type()) {
+                        spinUnit.setSelection(i);
+                        break;
+                    }
+                }
+
+                final int[] isSelected = {0};
+                spinUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (++isSelected[0] > 1) {  //to avoid initial selected
+                            sd.get(itemPosition).setUnit_type(unitforcodes.get(position).getUnit_type());
+                            sd.get(itemPosition).setUnit_short(unitforcodes.get(position).getShortdes());
+//                            String priceString = String.format("%,." + frmmain.price_places + "f", unitforcodes.get(position).getSale_price());
+//                            String priceString = String.format("%,." + frmmain.price_places + "f", sd.get(itemPosition).getSale_price());
+//                            txtChangePrice.setText(priceString);
+                           double price= getSalePrice(sd.get(itemPosition).getPriceLevel());
+                            txtChangePrice.setText(price+"");
+//                            double amt = getQtyValue(txtChangeQty) * unitforcodes.get(position).getSale_price();
+                            double amt = getQtyValue(txtChangeQty) * price;
+                            String numberString = String.format("%,." + frmmain.price_places + "f", amt);
+                            txtamt.setText(numberString);
+
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        // TODO Auto-generated method stub
+                    }
+                });
             } else {
                 rlUnit.setVisibility(View.GONE);
             }
@@ -5254,7 +5455,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             imgsubQty = view.findViewById(R.id.imgSubqty);
 
 
-            //Initialize Dis_Type
+           /* //Initialize Dis_Type
             sqlString = "select * from Dis_Type where itemdiscounttypeid= " + sd.get(itemPosition).getDis_type();
             cursor = DatabaseHelper.rawQuery(sqlString);
             if (cursor != null && cursor.getCount() != 0) {
@@ -5311,9 +5512,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                 disDa.dismiss();
                             }
                         });
-                        ArrayList<Dis_Type> cg = new ArrayList<>();
-                        if (cg.size() > 0) {
-                            cg.clear();
+                        ArrayList<Dis_Type> unitforcodes = new ArrayList<>();
+                        if (unitforcodes.size() > 0) {
+                            unitforcodes.clear();
                         }
 
                         sqlString = "select * from Dis_Type ";
@@ -5326,7 +5527,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                     String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
                                     int paid = cursor.getInt(cursor.getColumnIndex("ispaid"));
                                     long discount = cursor.getLong(cursor.getColumnIndex("discount"));
-                                    cg.add(new Dis_Type(dis_type, name, shortname, discount));
+                                    unitforcodes.add(new Dis_Type(dis_type, name, shortname, discount));
                                 } while (cursor.moveToNext());
 
                             }
@@ -5337,7 +5538,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                         cursor.close();
 
-                        DisTypeAdapter ad = new DisTypeAdapter(sale_entry_tv.this, cg, btndiscount, disDa, itemPosition, txtChangeQty);
+                        DisTypeAdapter ad = new DisTypeAdapter(sale_entry_tv.this, unitforcodes, btndiscount, disDa, itemPosition, txtChangeQty);
                         rv.setAdapter(ad);
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 4);
                         rv.setLayoutManager(gridLayoutManager);
@@ -5349,7 +5550,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         disDa.dismiss();
                     }
                 }
-            });
+            });*/
 //add detremark in editinfo
             detremark = view.findViewById(R.id.txtDetRemark);
             detremark.setText(sd.get(itemPosition).getDetremark() == "NULL" ? "" : sd.get(itemPosition).getDetremark());
@@ -5374,7 +5575,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     txtsqty.setText(String.valueOf(sqty));
 
                     if (frmmain.isusespecialprice == 1)
-                        chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                        chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                 }
             });
 
@@ -5396,7 +5597,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         txtsqty.setText(String.valueOf(sqty));
 
                         if (frmmain.isusespecialprice == 1)
-                            chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                            chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                     }
                 }
             });
@@ -5412,7 +5613,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     txtsqty.setText(String.valueOf(sqty));
 
                     if (frmmain.isusespecialprice == 1)
-                        chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                        chooseSpecialPrice(rcvSP, sale_entry_tv.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                 }
 
             });
@@ -5433,6 +5634,49 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 txtChangePrice.setEnabled(true);
             }
 
+            ImageView img_qty_minus, img_qty_plus;
+            img_qty_minus = view.findViewById(R.id.img_qty_minus);
+            img_qty_plus = view.findViewById(R.id.img_qty_plus);
+            img_qty_plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Toast.makeText(sale_entry_tv.this,"toast me",Toast.LENGTH_SHORT).show();
+//                    txtChangeQty.setText(String.valueOf(Double.parseDouble(txtChangeQty.getText().toString()) + 1));
+//                    sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
+                    Double unit_qty = Double.parseDouble(txtChangeQty.getText().toString().length()==0?"0":txtChangeQty.getText().toString()) + 1;//Modify by KLM
+//                    sd.get(itemPosition).setUnit_qty(unit_qty);
+                    String qtyAsString = String.format("%." + frmmain.qty_places + "f", unit_qty);
+                    txtChangeQty.setText(qtyAsString);
+//                    GetSpecialPrice(itemPosition, Double.parseDouble(txtChangeQty.getText().toString()), editUnit_type);
+                    Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * Double.parseDouble(ClearFormat(txtChangePrice.getText().toString()));
+                    String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
+                    txtamt.setText(numberAsString);
+                    double sqty = sd.get(itemPosition).getQty() * Double.parseDouble(txtChangeQty.getText().toString());
+                    txtsqty.setText(String.valueOf(sqty));
+
+
+                }
+            });
+
+            img_qty_minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Double.parseDouble(txtChangeQty.getText().toString().length()==0?"0":txtChangeQty.getText().toString()) >= 2) {//Modify by KLM
+//                        txtChangeQty.setText(String.valueOf(Double.parseDouble(txtChangeQty.getText().toString()) - 1));
+//                        sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
+                        Double unit_qty = Double.parseDouble(txtChangeQty.getText().toString()) - 1;
+//                        sd.get(itemPosition).setUnit_qty(unit_qty);
+                        String qtyAsString = String.format("%." + frmmain.qty_places + "f", unit_qty);
+                        txtChangeQty.setText(qtyAsString);
+//                        GetSpecialPrice(itemPosition, Double.parseDouble(txtChangeQty.getText().toString()), editUnit_type);
+                        Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * Double.parseDouble(ClearFormat(txtChangePrice.getText().toString()));
+                        String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
+                        txtamt.setText(numberAsString);
+                        double sqty = sd.get(itemPosition).getQty() * Double.parseDouble(txtChangeQty.getText().toString());
+                        txtsqty.setText(String.valueOf(sqty));
+                    }
+                }
+            });
 
             ImageButton imgChangePrice = view.findViewById(R.id.imgChangePrice);
             imgChangePrice.setOnClickListener(new View.OnClickListener() {
@@ -5482,7 +5726,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 txtamt.setText(numberAsString);
             }
 
-            ImageButton save = view.findViewById(R.id.imgSave);
+            Button save = view.findViewById(R.id.imgSave);
+            Button cancel = view.findViewById(R.id.Cancel);
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -5513,11 +5758,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 
                         } else {
-                            double dis_percent = sale_entry_tv.dis_percent;
-                            sd.get(itemPosition).setDis_percent(dis_percent);
-                            double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
-                            //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
-                            sd.get(itemPosition).setDis_price(dis_price);
+//                            double dis_percent = sale_entry_tv.dis_percent;
+//                            sd.get(itemPosition).setDis_percent(dis_percent);
+//                            double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
+//                            //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
+//                            sd.get(itemPosition).setDis_price(dis_price);
                         }
                     }
 //                    else if(sd.get(itemPosition).getDis_type()==5){
@@ -5542,6 +5787,314 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
         }
     }
+
+    private Double getQtyValue(EditText editText) {
+        String unitQty = editText.getText().toString().trim();
+        double returnValue = Double.parseDouble(unitQty.isEmpty() ? "1" : unitQty);
+        returnValue = (returnValue < 1) ? 1 : returnValue;
+        return returnValue;
+    }
+
+    public double getSalePrice(String pricelevel) {
+
+        double sale_price = 0;
+        String level = "";
+        switch (pricelevel) {
+            case "SP":
+                level = "uc.sale_price";
+                break;
+            case "SP1":
+                level = "uc.saleprice1";
+                break;
+            case "SP2":
+                level = "uc.saleprice2";
+                break;
+            case "SP3":
+                level = "uc.saleprice3";
+                break;
+            case "SP4":
+                level = "uc.saleprice4";
+                break;
+            case "SP5":
+                level = "uc.saleprice5";
+                break;
+        }
+
+
+        String sqlString = "";
+
+            sqlString = "select uc.unit_type,code,description," + level + ",smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                    " where code=" + sale_entry_tv.sd.get(itemPosition).getCode() + " and unit_type=" + sale_entry_tv.sd.get(itemPosition).getUnit_type();
+
+
+        Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    switch (pricelevel) {
+                        case "SP":
+                            level = "uc.sale_price";
+//                            sale_entry.sd.set()
+                            break;
+                        case "SP1":
+                            level = "uc.saleprice1";
+                            break;
+                        case "SP2":
+                            level = "uc.saleprice2";
+                            break;
+                        case "SP3":
+                            level = "uc.saleprice3";
+                            break;
+                        case "SP4":
+                            level = "uc.saleprice4";
+                            break;
+                        case "SP5":
+                            level = "uc.saleprice5";
+                            break;
+                    }
+                    sale_price = cursor.getDouble(cursor.getColumnIndex(level));
+
+                } while (cursor.moveToNext());
+
+
+            }
+
+        }
+        cursor.close();
+        return sale_price;
+
+    }
+
+    private void DiscountDialog(View source) {
+        startOpen = true;
+        LayoutInflater inflater = (LayoutInflater) sale_entry_tv.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.keypad, null);
+        float density = sale_entry_tv.this.getResources().getDisplayMetrics().density;
+        final PopupWindow pw = new PopupWindow(layout, (int) density * 310, (int) density * 500, true);
+        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pw.setOutsideTouchable(false);
+        pw.showAsDropDown(source);
+        Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnc, btndec, btndel, btnenter, btnpercent;
+        btn1 = layout.findViewById(R.id.txt1);
+        btn2 = layout.findViewById(R.id.txt2);
+        btn3 = layout.findViewById(R.id.txt3);
+        btn4 = layout.findViewById(R.id.txt4);
+        btn5 = layout.findViewById(R.id.txt5);
+        btn6 = layout.findViewById(R.id.txt6);
+        btn7 = layout.findViewById(R.id.txt7);
+        btn8 = layout.findViewById(R.id.txt8);
+        btn9 = layout.findViewById(R.id.txt9);
+        btn0 = layout.findViewById(R.id.txt0);
+        btnc = layout.findViewById(R.id.txtc);
+        btndec = layout.findViewById(R.id.txtdec);
+        btnenter = layout.findViewById(R.id.txtenter);
+        btndel = layout.findViewById(R.id.txtdel);
+        TextView txtNum = layout.findViewById(R.id.txtNum);
+        btnpercent = layout.findViewById(R.id.btnpercent);
+        btnpercent.setVisibility(View.VISIBLE);
+        txtNum.setText(String.valueOf(keynum));
+        btnpercent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btnpercent.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn1.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn2.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtNum.setText(keynum + btn3.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn4.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn5.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn6.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn7.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn8.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn9.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn9.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btn0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btn0.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btnc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText("0");
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btndec.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (startOpen) {
+                    keynum = "";
+                    startOpen = false;
+                }
+                txtNum.setText(keynum + btndec.getText());
+                keynum = txtNum.getText().toString();
+            }
+        });
+        btndel.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (keynum.length() != 0) {
+                    keynum = keynum.substring(0, keynum.length() - 1);
+                    txtNum.setText(keynum);
+                    startOpen = false;
+
+                }
+
+            }
+        });
+        btnenter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (keynum.length() > 0) {
+                        if (keynum.contains("%")) {
+                            keynum = keynum.substring(0, keynum.length() - 1);
+                            sale_entry.dis_percent = Double.parseDouble(keynum);
+                            sale_entry.dis_typepercent = true;
+                            if (sale_entry.dis_percent > 99) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
+                                builder.setTitle("iStock");
+                                builder.setMessage("Discount Percent should be 0 to 99!");
+                                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        sale_entry.dis_percent = 0.0;
+                                        //source.setText(sale_entry.dis_percent + "%");
+                                        msg.dismiss();
+
+                                    }
+                                });
+                                msg = builder.create();
+                                msg.show();
+                            } else {
+                                btndiscount.setText(sale_entry.dis_percent + "%");
+                            }
+
+                        } else {
+                            sale_entry.disamt = Double.parseDouble(keynum);
+                            sale_entry.dis_typepercent = true;
+                            sale_entry.dis_percent = 0;
+                            btndiscount.setText(String.valueOf(sale_entry.disamt));
+                            sale_entry.dis_typepercent = false;
+                        }
+                    }
+//                    sale_entry.getSummary();
+
+                    startOpen = false;
+                    pw.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        startOpen = false;
+    }
+
 
     public void chooseSpecialPrice(@Nullable RecyclerView view, Context c, long code, int unittype) {
 

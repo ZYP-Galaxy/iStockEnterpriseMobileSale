@@ -193,7 +193,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
 
                 }//end sale order
                 else {*/
-                sale_entry_tv.sd.get(itemposition).setUnt_type(data.get(position).getUnit_type());
+                sale_entry_tv.sd.get(itemposition).setUnit_type(data.get(position).getUnit_type());
                 sale_entry_tv.sd.get(itemposition).setUnit_short(data.get(position).getShortdes());
 
 
@@ -277,7 +277,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
     private void GetDiscountCode(int position) {
         long code = sale_entry_tv.sd.get(position).getCode();
         long locationid = sale_entry_tv.sh.get(0).getLocationid();
-        int unit_type = sale_entry_tv.sd.get(position).getUnt_type();
+        int unit_type = sale_entry_tv.sd.get(position).getUnit_type();
         long level = sale_entry_tv.sd.get(position).getPricelevelid();
         double discount = 0;
         double dispercent = 0;
@@ -338,10 +338,10 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
         int unit_type;
         if (isSaleEntry == true) {
             code = sale_entry_tv.sd.get(itemposition).getCode();
-            unit_type = sale_entry_tv.sd.get(itemposition).getUnt_type();
+            unit_type = sale_entry_tv.sd.get(itemposition).getUnit_type();
         } else {
             code = saleorder_entry.sd.get(itemposition).getCode();
-            unit_type = saleorder_entry.sd.get(itemposition).getUnt_type();
+            unit_type = saleorder_entry.sd.get(itemposition).getUnit_type();
         }
 
         String sqlString = "select usr_code,unit_type from Usr_Code where  code=" + code;

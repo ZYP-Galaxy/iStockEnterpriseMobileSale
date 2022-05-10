@@ -10,6 +10,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
 public class CustGroupAdapter extends RecyclerView.Adapter<CustGroupAdapter.MyViewHolder> {
@@ -46,7 +48,14 @@ public class CustGroupAdapter extends RecyclerView.Adapter<CustGroupAdapter.MyVi
                     BindMaxCustTownship(CustGroupAdapter.this.context);
                     da.dismiss();
 
-                } else {
+                }
+                else if(CustGroupAdapter.this.context.toString().contains("sale_entry_tv")){
+                    btn.setText(/*data.get(position).getCustgroupid()+":"+*/data.get(position).getName());
+                    sale_entry_tv.selected_custgroupid = data.get(position).getCustgroupid();
+                    BindMaxCustTownship(CustGroupAdapter.this.context);
+                    da.dismiss();
+                }
+                else {
                     btn.setText(/*data.get(position).getCustgroupid()+":"+*/data.get(position).getName());
                     sale_entry.selected_custgroupid = data.get(position).getCustgroupid();
                     BindMaxCustTownship(CustGroupAdapter.this.context);

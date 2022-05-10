@@ -660,7 +660,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
                                 //Toast.makeText(saleorder_entry.this,"KeyNum "+keynum,Toast.LENGTH_LONG).show();
 
-                                chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnt_type());
+                                chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnit_type());
                             }
 
                         }
@@ -1695,7 +1695,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 }
 
 
-                switch (sd.get(itemPosition).getUnt_type()) {
+                switch (sd.get(itemPosition).getUnit_type()) {
                     case 1:
                         row_index = 0;
                         defunit = -1;
@@ -1842,7 +1842,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                     txtsqty.setText(String.valueOf(sqty));
 
                     if (frmmain.isusespecialprice == 1)
-                        chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnt_type());
+                        chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnit_type());
 
                 }
             });
@@ -1864,7 +1864,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                         txtsqty.setText(String.valueOf(sqty));
 
                         if (frmmain.isusespecialprice == 1)
-                            chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnt_type());
+                            chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnit_type());
 
                     }
                 }
@@ -1881,7 +1881,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
 
                     if (frmmain.isusespecialprice == 1)
-                        chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnt_type());
+                        chooseSpecialPrice(rcvSP, saleorder_entry.this, usr_codes.get(itemPosition).getUsr_code(), sd.get(itemPosition).getUnit_type());
 
                 }
 
@@ -2214,7 +2214,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                             (int) sd.get(i).getDis_type(),
                             sd.get(i).getDis_percent(),
                             detRemark,
-                            sd.get(i).getUnt_type(),
+                            sd.get(i).getUnit_type(),
                             (int) sd.get(i).getCode(),
                             (i + 1),
                             (i + 1), selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel()), false,

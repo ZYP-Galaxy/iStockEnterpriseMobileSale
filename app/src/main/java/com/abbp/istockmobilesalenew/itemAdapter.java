@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 
 import static com.abbp.istockmobilesalenew.sale_entry.itemPosition;
 import static com.abbp.istockmobilesalenew.sale_entry.pad;
-import static com.abbp.istockmobilesalenew.sale_entry.priceLevels;
 
 public class itemAdapter extends BaseAdapter {
     Context context;
@@ -938,10 +936,10 @@ public class itemAdapter extends BaseAdapter {
 
         if (isSaleEntry) {
             code = sale_entry.sd.get(itemposition).getCode();
-            unit_type = sale_entry.sd.get(itemposition).getUnt_type();
+            unit_type = sale_entry.sd.get(itemposition).getUnit_type();
         } else {
             code = saleorder_entry.sd.get(itemposition).getCode();
-            unit_type = saleorder_entry.sd.get(itemposition).getUnt_type();
+            unit_type = saleorder_entry.sd.get(itemposition).getUnit_type();
         }
         String sqlString = "select usr_code,unit_type from Usr_Code where  code=" + code;
         Cursor cursor = DatabaseHelper.rawQuery(sqlString);

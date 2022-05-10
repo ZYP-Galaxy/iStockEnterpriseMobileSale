@@ -1,7 +1,6 @@
 package com.abbp.istockmobilesalenew;
 
 import android.content.Context;
-import android.content.SyncInfo;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -148,7 +147,7 @@ public class priceLevelAdapter extends RecyclerView.Adapter<priceLevelAdapter.My
     private void GetDiscountCode(int position) {
         long code = sale_entry.sd.get(position).getCode();
         long locationid = sale_entry.sh.get(0).getLocationid();
-        int unit_type = sale_entry.sd.get(position).getUnt_type();
+        int unit_type = sale_entry.sd.get(position).getUnit_type();
         long level = sale_entry.sd.get(position).getPricelevelid();
         double discount = 0;
         double dispercent = 0;
@@ -225,11 +224,11 @@ public class priceLevelAdapter extends RecyclerView.Adapter<priceLevelAdapter.My
         String sqlString = "";
         if (issaleentry) {
             sqlString = "select uc.unit_type,code,description," + level + ",smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
-                    " where code=" + sale_entry.sd.get(itemposistion).getCode() + " and unit_type=" + sale_entry.sd.get(itemposistion).getUnt_type();
+                    " where code=" + sale_entry.sd.get(itemposistion).getCode() + " and unit_type=" + sale_entry.sd.get(itemposistion).getUnit_type();
 
         } else {
             sqlString = "select uc.unit_type,code,description," + level + ",smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
-                    " where code=" + saleorder_entry.sd.get(itemposistion).getCode() + " and unit_type=" + saleorder_entry.sd.get(itemposistion).getUnt_type();
+                    " where code=" + saleorder_entry.sd.get(itemposistion).getCode() + " and unit_type=" + saleorder_entry.sd.get(itemposistion).getUnit_type();
 
         }
         Cursor cursor = DatabaseHelper.rawQuery(sqlString);

@@ -12,7 +12,7 @@ public class sale_det {
     private double dis_type;
     private double dis_percent;
     private String detremark;
-    private int unt_type;
+    private int unit_type;
     private long code;
     private int sr;
     private String unit_short;
@@ -28,7 +28,7 @@ public class sale_det {
         this.unit_qty = unit_qty;
         this.open_price = open_price;
         this.qty = qty;
-        this.unt_type = unit_type;
+        this.unit_type = unit_type;
         this.sale_price = sale_price;
         this.dis_price = dis_price;
         this.dis_type = dis_type;
@@ -73,12 +73,12 @@ public class sale_det {
         this.sr = sr;
     }
 
-    public int getUnt_type() {
-        return unt_type;
+    public int getUnit_type() {
+        return unit_type;
     }
 
-    public void setUnt_type(int unt_type) {
-        this.unt_type = unt_type;
+    public void setUnit_type(int unit_type) {
+        this.unit_type = unit_type;
     }
 
     public long getTranid() {

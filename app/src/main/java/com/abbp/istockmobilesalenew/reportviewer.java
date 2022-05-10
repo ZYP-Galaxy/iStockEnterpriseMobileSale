@@ -1,9 +1,7 @@
 package com.abbp.istockmobilesalenew;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -384,12 +382,12 @@ public class reportviewer extends AppCompatActivity {
                                 sale_entry. sd.get(i).getDis_type()+","+
                                 sale_entry. sd.get(i).getDis_percent()+ "," +
                                 detRemark+","+
-                                sale_entry.sd.get(i).getUnt_type() + "," +
+                                sale_entry.sd.get(i).getUnit_type() + "," +
                                 sale_entry.sd.get(i).getCode() + "," +
                                 (i + 1) + "," +
                                 (i + 1) + ",'"+
                                 sale_entry.sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sale_entry.sd.get(i).getCode(),sale_entry.sd.get(i).getUnit_qty(),sale_entry.sd.get(i).getUnt_type())+","+
+                                getSmallestQty(sale_entry.sd.get(i).getCode(),sale_entry.sd.get(i).getUnit_qty(),sale_entry.sd.get(i).getUnit_type())+","+
                                 getSPrice(sale_entry.sd.get(i).getCode()) +" ),";
 
 
@@ -406,12 +404,12 @@ public class reportviewer extends AppCompatActivity {
                                 sale_entry.sd.get(i).getDis_type()+","+
                                 sale_entry.sd.get(i).getDis_percent()+ "," +
                                 detRemark+","+
-                                sale_entry. sd.get(i).getUnt_type() + "," +
+                                sale_entry. sd.get(i).getUnit_type() + "," +
                                 sale_entry.sd.get(i).getCode() + "," +
                                 (i + 1)+ "," +
                                 (i + 1) + ",'"+
                                 sale_entry.sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sale_entry.sd.get(i).getCode(),sale_entry.sd.get(i).getUnit_qty(),sale_entry.sd.get(i).getUnt_type())+","+
+                                getSmallestQty(sale_entry.sd.get(i).getCode(),sale_entry.sd.get(i).getUnit_qty(),sale_entry.sd.get(i).getUnit_type())+","+
                                 getSPrice(sale_entry.sd.get(i).getCode()) +" )";
                     }
 

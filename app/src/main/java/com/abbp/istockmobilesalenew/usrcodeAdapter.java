@@ -963,7 +963,7 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
         if (sale_entry.sd.size() > 0) {
             long code = sale_entry.sd.get((sale_entry.sd.size() - 1)).getCode();
             long locationid = sale_entry.sh.get(0).getLocationid();
-            int unit_type = sale_entry.sd.get((sale_entry.sd.size() - 1)).getUnt_type();
+            int unit_type = sale_entry.sd.get((sale_entry.sd.size() - 1)).getUnit_type();
             long level = GetPriceLevel();
             double discount = 0;
             double dispercent = 0;

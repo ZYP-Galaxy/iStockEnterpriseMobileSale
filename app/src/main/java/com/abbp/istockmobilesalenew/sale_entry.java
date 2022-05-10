@@ -2624,7 +2624,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         contentValues1.put("itemdiscounttypeid", sd.get(i).getDis_type());
                         contentValues1.put("discountpercent", sd.get(i).getDis_percent());
                         contentValues1.put("remark", detRemark);
-                        contentValues1.put("unittypeid", sd.get(i).getUnt_type());
+                        contentValues1.put("unittypeid", sd.get(i).getUnit_type());
                         contentValues1.put("code", sd.get(i).getCode());
                         contentValues1.put("sr", i + 1);
                         contentValues1.put("srno", i + 1);
@@ -2677,7 +2677,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         contentValues1.put("itemdiscounttypeid", sd.get(i).getDis_type());
                         contentValues1.put("discountpercent", sd.get(i).getDis_percent());
                         contentValues1.put("remark", detRemark);
-                        contentValues1.put("unittypeid", sd.get(i).getUnt_type());
+                        contentValues1.put("unittypeid", sd.get(i).getUnit_type());
                         contentValues1.put("code", sd.get(i).getCode());
                         contentValues1.put("sr", i + 1);
                         contentValues1.put("srno", i + 1);
@@ -4204,7 +4204,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                 View view = getLayoutInflater().inflate(R.layout.editinfo, null);
                                 RecyclerView rcvSP = view.findViewById(R.id.rcvSP);
                                 txtChangeQty.setText(keynum);
-                                chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                                chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                             }
 
                         }
@@ -4996,7 +4996,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                             (int) sd.get(i).getDis_type(),
                             sd.get(i).getDis_percent(),
                             detRemark,
-                            sd.get(i).getUnt_type(),
+                            sd.get(i).getUnit_type(),
                             (int) sd.get(i).getCode(),
                             (i + 1),
                             (i + 1), selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel()),
@@ -5284,7 +5284,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 }
 
 
-                switch (sd.get(itemPosition).getUnt_type()) {
+                switch (sd.get(itemPosition).getUnit_type()) {
                     case 1:
                         row_index = 0;
                         defunit = -1;
@@ -5433,7 +5433,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     txtsqty.setText(String.valueOf(sqty));
 
                     if (frmmain.isusespecialprice == 1)
-                        chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                        chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                 }
             });
 
@@ -5455,7 +5455,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         txtsqty.setText(String.valueOf(sqty));
 
                         if (frmmain.isusespecialprice == 1)
-                            chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                            chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                     }
                 }
             });
@@ -5471,7 +5471,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     txtsqty.setText(String.valueOf(sqty));
 
                     if (frmmain.isusespecialprice == 1)
-                        chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnt_type());
+                        chooseSpecialPrice(rcvSP, sale_entry.this, sd.get(itemPosition).getCode(), sd.get(itemPosition).getUnit_type());
                 }
 
             });

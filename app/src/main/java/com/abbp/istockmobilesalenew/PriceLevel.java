@@ -1,5 +1,7 @@
 package com.abbp.istockmobilesalenew;
 
+import androidx.annotation.NonNull;
+
 public class PriceLevel {
     int level;
     String Level_name;
@@ -23,5 +25,11 @@ public class PriceLevel {
 
     public void setLevel_name(String level_name) {
         Level_name = level_name;
+    }
+
+
+    @Override
+    public String toString() {
+        return Level_name.toString();
     }
 }

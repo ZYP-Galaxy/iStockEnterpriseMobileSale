@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import com.abbp.istockmobilesalenew.categoryAdapter;
 import com.abbp.istockmobilesalenew.frmlogin;
 import com.abbp.istockmobilesalenew.frmmain;
 import com.abbp.istockmobilesalenew.sale_det;
-import com.abbp.istockmobilesalenew.sale_entry;
 import com.abbp.istockmobilesalenew.usr_code;
 import com.squareup.picasso.Picasso;
 
@@ -195,7 +193,7 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
         if (sale_entry_tv.sd.size() > 0) {
             long code = sale_entry_tv.sd.get((sale_entry_tv.sd.size() - 1)).getCode();
             long locationid = sale_entry_tv.sh.get(0).getLocationid();
-            int unit_type = sale_entry_tv.sd.get((sale_entry_tv.sd.size() - 1)).getUnt_type();
+            int unit_type = sale_entry_tv.sd.get((sale_entry_tv.sd.size() - 1)).getUnit_type();
             int level = GetPriceLevel();
             double discount = 0;
             double dispercent = 0;
