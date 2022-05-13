@@ -83,7 +83,7 @@
                             android:visibility="gone"
                             app:srcCompat="@drawable/addqtycopy" />
 
-                        <EditText
+                        <TextView
                             android:id="@+id/txtChangeQty"
                             android:layout_width="80dp"
                             android:layout_height="35dp"
@@ -97,7 +97,8 @@
                             android:text="1"
                             android:textColor="#000000"
                             android:textSize="15sp"
-                            android:textStyle="bold" />
+                            android:textStyle="bold"
+                           />
 
                         <ImageButton
                             android:id="@+id/imgSubqty"
@@ -205,9 +206,9 @@
                             android:background="@drawable/entrybtn"
                             android:text="Choose"
                             android:textAllCaps="false"
-                            android:textColor="#ffffff"
+                            android:textColor="#000000"
                             android:textSize="15sp"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
                         <Spinner
                             android:id="@+id/spinDis"

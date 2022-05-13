@@ -197,7 +197,7 @@ public class reportviewer extends AppCompatActivity {
                 String ip = sh_ip.getString("ip", "empty");
                 String port = sh_port.getString("port", "empty");
                 String sqlUrl="http://" + ip + ":" + port + "/api/DataSync/SaveData?update=true";
-                sqlstring=frmlogin.LoginUserid+"&"+sale_entry.sh.get(0).getTranid()+"&"+
+                sqlstring=frmlogin.LoginUserid+"&"+ sale_entry.sh.get(0).getTranid()+"&"+
                         sale_entry.sh.get(0).getLocationid()+"&"+UpdateString;
                 new SaveData().execute(sqlUrl);
                 
@@ -315,7 +315,7 @@ public class reportviewer extends AppCompatActivity {
                 }
                 else
                 {
-                    invoice_no="N'"+sale_entry.sh.get(0).getInvoice_no()+"'";
+                    invoice_no="N'"+ sale_entry.sh.get(0).getInvoice_no()+"'";
 
                 }
 
@@ -325,48 +325,48 @@ public class reportviewer extends AppCompatActivity {
                 }
                 else
                 {
-                    headRemark="N'"+sale_entry.sh.get(0).getHeadremark()+"'";
+                    headRemark="N'"+ sale_entry.sh.get(0).getHeadremark()+"'";
 
                 }
 
                 String head = "update Sale_Head_Main set\n" +
-                        "tranid="+sale_entry.sh.get(0).getTranid()+",\n" +
-                        "docid='"+sale_entry.sh.get(0).getDocid()+"',\n" +
+                        "tranid="+ sale_entry.sh.get(0).getTranid()+",\n" +
+                        "docid='"+ sale_entry.sh.get(0).getDocid()+"',\n" +
                         "date=" +"'" + String.format(sale_entry.sh.get(0).getDate(), "yyyy-MM-dd") + "'," +
                         "invoice_no="+invoice_no+",\n" +
-                        "locationid="+sale_entry.sh.get(0).getLocationid()+",\n" +
-                        "customerid="+sale_entry.sh.get(0).getCustomerid()+",\n" +
-                        "cash_id="+sale_entry.sh.get(0).getDef_cashid()+",\n" +
-                        "townshipid="+sale_entry.sh.get(0).getTownshipid()+",\n"+
-                        "pay_type="+sale_entry.sh.get(0).getPay_type()+",\n" +
-                        "due_indays="+sale_entry.sh.get(0).getDue_in_days()+",\n" +
+                        "locationid="+ sale_entry.sh.get(0).getLocationid()+",\n" +
+                        "customerid="+ sale_entry.sh.get(0).getCustomerid()+",\n" +
+                        "cash_id="+ sale_entry.sh.get(0).getDef_cashid()+",\n" +
+                        "townshipid="+ sale_entry.sh.get(0).getTownshipid()+",\n"+
+                        "pay_type="+ sale_entry.sh.get(0).getPay_type()+",\n" +
+                        "due_indays="+ sale_entry.sh.get(0).getDue_in_days()+",\n" +
                         "currency=1,\n" +
-                        "discount="+sale_entry.sh.get(0).getDiscount()+",\n" +
-                        "paid_amount="+sale_entry.sh.get(0).getPaid_amount()+",\n" +
-                        "invoice_amount="+sale_entry.sh.get(0).getInvoice_amount()+",\n" +
-                        "invoice_qty="+sale_entry.sh.get(0).getInvoice_qty()+",\n" +
-                        "foc_amount="+sale_entry.sh.get(0).getFoc_amount()+",\n" +
-                        "itemdis_amount="+sale_entry.sh.get(0).getIstemdis_amount()+",\n" +
+                        "discount="+ sale_entry.sh.get(0).getDiscount()+",\n" +
+                        "paid_amount="+ sale_entry.sh.get(0).getPaid_amount()+",\n" +
+                        "invoice_amount="+ sale_entry.sh.get(0).getInvoice_amount()+",\n" +
+                        "invoice_qty="+ sale_entry.sh.get(0).getInvoice_qty()+",\n" +
+                        "foc_amount="+ sale_entry.sh.get(0).getFoc_amount()+",\n" +
+                        "itemdis_amount="+ sale_entry.sh.get(0).getIstemdis_amount()+",\n" +
                         "net_amount="+header.get("net")+",\n" +
                         "Remark="+headRemark+",\n"+
-                        "tax_amount="+sale_entry.sh.get(0).getTax_amount()+",\n" +
-                        "tax_percent="+sale_entry.sh.get(0).getTax_per()+",\n" +
-                        "discount_per="+sale_entry.sh.get(0).getDiscount_per()+",\n"+
+                        "tax_amount="+ sale_entry.sh.get(0).getTax_amount()+",\n" +
+                        "tax_percent="+ sale_entry.sh.get(0).getTax_per()+",\n" +
+                        "discount_per="+ sale_entry.sh.get(0).getDiscount_per()+",\n"+
                         "exg_rate="+1+"\n"+
-                        " where tranid="+sale_entry.sd.get(0).getTranid();
+                        " where tranid="+ sale_entry.sd.get(0).getTranid();
 
-                String det = "delete from sale_det where tranid="+sale_entry.sh.get(0).getTranid()+
+                String det = "delete from sale_det where tranid="+ sale_entry.sh.get(0).getTranid()+
                         " insert into Sale_Det(tranid,date,unit_qty,qty,sale_price,dis_price,dis_type,dis_percent,remark,unit_type,code,sr,srno,PriceLevel,SQTY,SPrice) values ";
 
 
-                for(int i=0;i<sale_entry.sd.size();i++)
+                for(int i = 0; i< sale_entry.sd.size(); i++)
                 {
 
 
                     if(sale_entry.sd.get(i).getDetremark().equals("NULL") || sale_entry.sd.get(i).getDetremark().equals("")){
                         detRemark="NULL";
                     }else {
-                        detRemark="N'"+sale_entry.sd.get(i).getDetremark()+"'";
+                        detRemark="N'"+ sale_entry.sd.get(i).getDetremark()+"'";
                     }
 
 
@@ -387,7 +387,7 @@ public class reportviewer extends AppCompatActivity {
                                 (i + 1) + "," +
                                 (i + 1) + ",'"+
                                 sale_entry.sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sale_entry.sd.get(i).getCode(),sale_entry.sd.get(i).getUnit_qty(),sale_entry.sd.get(i).getUnit_type())+","+
+                                getSmallestQty(sale_entry.sd.get(i).getCode(), sale_entry.sd.get(i).getUnit_qty(), sale_entry.sd.get(i).getUnit_type())+","+
                                 getSPrice(sale_entry.sd.get(i).getCode()) +" ),";
 
 
@@ -409,21 +409,21 @@ public class reportviewer extends AppCompatActivity {
                                 (i + 1)+ "," +
                                 (i + 1) + ",'"+
                                 sale_entry.sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sale_entry.sd.get(i).getCode(),sale_entry.sd.get(i).getUnit_qty(),sale_entry.sd.get(i).getUnit_type())+","+
+                                getSmallestQty(sale_entry.sd.get(i).getCode(), sale_entry.sd.get(i).getUnit_qty(), sale_entry.sd.get(i).getUnit_type())+","+
                                 getSPrice(sale_entry.sd.get(i).getCode()) +" )";
                     }
 
                 }
                 sale_entry.sh.get(0).getDiscount_per();
                 sale_entry.sh.get(0).setDiscount_per(0.0);
-                custDis=sale_entry.sh.get(0).getDiscount_per();
+                custDis= sale_entry.sh.get(0).getDiscount_per();
                  UpdateString = head +" "+det;
                 if(use_salesperson && sale_entry.SaleVouSalesmen.size()>0)
                 {
-                    String salePerson=" delete from SalesVoucher_Salesmen_Tmp where Sales_TranID="+sale_entry.sh.get(0).getTranid()+" and userid="+frmlogin.LoginUserid+
+                    String salePerson=" delete from SalesVoucher_Salesmen_Tmp where Sales_TranID="+ sale_entry.sh.get(0).getTranid()+" and userid="+frmlogin.LoginUserid+
                             " insert into SalesVoucher_Salesmen_Tmp(Sales_TranID,Salesmen_ID,rmt_copy,userid)"+
                             "values ";
-                    for(int i=0;i<sale_entry.SaleVouSalesmen.size();i++)
+                    for(int i = 0; i< sale_entry.SaleVouSalesmen.size(); i++)
                     {
                         salePerson=salePerson+"("+
                                 sale_entry.sh.get(0).getTranid()+","+
@@ -603,9 +603,9 @@ public class reportviewer extends AppCompatActivity {
             try {
                 if (!s.equals("error"))
                 {
-                   sale_entry.sh.get(0).setDocid(s);
+                    sale_entry.sh.get(0).setDocid(s);
                    txtTitle.setText(title+" ( "+s+" )");
-                   sale_entry.txtdocid.setText(s);
+                    sale_entry.txtdocid.setText(s);
                    PrintVoucher();
 
                 }

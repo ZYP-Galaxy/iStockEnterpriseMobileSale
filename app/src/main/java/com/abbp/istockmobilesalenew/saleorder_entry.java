@@ -2,6 +2,7 @@ package com.abbp.istockmobilesalenew;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,14 +14,17 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -53,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -60,6 +65,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
 
 public class saleorder_entry extends AppCompatActivity implements AdapterView.OnItemLongClickListener, View.OnClickListener {
 
@@ -181,7 +188,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     public static double paid, changeamount;
     public static boolean fromSaleChange, frombillcount = false;
     public TextView tvChange;
-    static Double voudisper = 0.0, paiddispercent = 0.0;
+    static Double  paiddispercent = 0.0;
     public static RelativeLayout rlchangePrice;
     public static RelativeLayout taxlo;
     public static ArrayList<Salesmen> SaleVouSalesmen = new ArrayList<>();
@@ -195,6 +202,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     SharedPreferences sh_printer, sh_ptype;
     String ToDeliver = "";
     double tmpSalePrice;
+    static long specialPrice = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -446,7 +454,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         View layout = inflater.inflate(R.layout.keypad, null);
         float density = saleorder_entry.this.getResources().getDisplayMetrics().density;
         final PopupWindow pw = new PopupWindow(layout, (int) density * 310, (int) density * 500, true);
-        pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        pw.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pw.setOutsideTouchable(false);
         pw.showAsDropDown(txt);
         Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnc, btndec, btndel, btnenter, btnper;
@@ -671,6 +679,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                                 voudisAmt = Double.parseDouble(keynum);
                                 voudisAmt = Double.parseDouble(keynum);
                                 sh.get(0).setDiscount_per(voudisAmt);
+                                Double voudisper = 0.0;
                                 voudisper = voudisAmt;
                                 txtvouper.setText("Vou Discount" + (voudisper > 0 ? "( " + voudisper + "% )" : ""));
                                 voudispercent = true;
@@ -1043,7 +1052,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         }
     }
 
-    private void detailvou(String taxper, String total, String txtvou, String vouper, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
+    private void detailvou(String taxper, String total, String txtvou, String vouper,String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
         AlertDialog.Builder bd = new AlertDialog.Builder(saleorder_entry.this);
         View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher, null);
         bd.setCancelable(false);
@@ -1060,7 +1069,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         taxlo = view.findViewById(R.id.taxlo);
         txtitemDisAmt.setText(txtitem);
         txtpaid = view.findViewById(R.id.txtPaidlabel);
-        txtpaid.setText("Paid %");
+        txtpaid.setText(paidPer);
         txtvouper.setText(vouper);
         txtper.setText(taxper);
         txttotal.setText(total);
@@ -1330,80 +1339,81 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 }
             }
         });
+
+//        imgSearchCode = findViewById(R.id.imgSearchCode);
+//        imgSearchCode.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                try {
+//
+//                    AlertDialog.Builder searchBuilder = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+//                    View view = getLayoutInflater().inflate(R.layout.searchbox, null);
+//                    searchBuilder.setView(view);
+//                    EditText etdSearch = view.findViewById(R.id.etdSearch);
+//                    ImageButton btnSearch = view.findViewById(R.id.imgOK);
+//                    ImageButton btnFilterCode = view.findViewById(R.id.imgFilterCode);
+//                    etdSearch.setHint("By " + fitercode);
+//                    btnFilterCode.setVisibility(View.VISIBLE);
+//                    btnFilterCode.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            PopupMenu popup = new PopupMenu(saleorder_entry.this, btnFilterCode);
+//                            //Inflating the Popup using xml file
+//                            popup.getMenuInflater().inflate(R.menu.filtermenu, popup.getMenu());
+//                            Menu pp = popup.getMenu();
+//                            if (frmmain.withoutclass.equals("true")) {
+//                                pp.findItem(R.id.cclass).setVisible(false);
+//                            } else {
+//                                pp.findItem(R.id.cclass).setVisible(true);
+//                            }
+//                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                                @Override
+//                                public boolean onMenuItemClick(MenuItem item) {
+//                                    switch (item.getItemId()) {
+//                                        case R.id.code:
+//                                            fitercode = "Code";
+//
+//                                            break;
+//                                        case R.id.description:
+//                                            fitercode = "Description";
+////                                            etdSearch.setHint("By "+filteredCode);
+//                                            break;
+//                                        case R.id.category:
+//                                            fitercode = "Category";
+////                                            etdSearch.setHint("By "+filteredCode);
+//                                            break;
+//                                        case R.id.cclass:
+//                                            fitercode = "Class";
+////                                            etdSearch.setHint("By "+filteredCode);
+//                                            break;
+//
+//                                    }
+//                                    etdSearch.setHint("By " + fitercode);
+//                                    return true;
+//                                }
+//                            });
+//                            popup.show();//showing popup menu
+//                        }
+//                    });
+//                    btnSearch.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            if (!etdSearch.getText().toString().isEmpty()) {
+//                                SearchItem(etdSearch.getText().toString());
+//                                msg.dismiss();
+//                            }
+//                        }
+//                    });
+//
+//                    msg = searchBuilder.create();
+//                    msg.show();
+//                } catch (Exception ee) {
+//
+//                }
+//
+//            }
+//        });
         imgFilterCode = findViewById(R.id.imgFilterCode);
-        imgSearchCode = findViewById(R.id.imgSearchCode);
-        imgSearchCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-
-                    AlertDialog.Builder searchBuilder = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
-                    View view = getLayoutInflater().inflate(R.layout.searchbox, null);
-                    searchBuilder.setView(view);
-                    EditText etdSearch = view.findViewById(R.id.etdSearch);
-                    ImageButton btnSearch = view.findViewById(R.id.imgOK);
-                    ImageButton btnFilterCode = view.findViewById(R.id.imgFilterCode);
-                    etdSearch.setHint("By " + fitercode);
-                    btnFilterCode.setVisibility(View.VISIBLE);
-                    btnFilterCode.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            PopupMenu popup = new PopupMenu(saleorder_entry.this, btnFilterCode);
-                            //Inflating the Popup using xml file
-                            popup.getMenuInflater().inflate(R.menu.filtermenu, popup.getMenu());
-                            Menu pp = popup.getMenu();
-                            if (frmmain.withoutclass.equals("true")) {
-                                pp.findItem(R.id.cclass).setVisible(false);
-                            } else {
-                                pp.findItem(R.id.cclass).setVisible(true);
-                            }
-                            popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    switch (item.getItemId()) {
-                                        case R.id.code:
-                                            fitercode = "Code";
-
-                                            break;
-                                        case R.id.description:
-                                            fitercode = "Description";
-//                                            etdSearch.setHint("By "+filteredCode);
-                                            break;
-                                        case R.id.category:
-                                            fitercode = "Category";
-//                                            etdSearch.setHint("By "+filteredCode);
-                                            break;
-                                        case R.id.cclass:
-                                            fitercode = "Class";
-//                                            etdSearch.setHint("By "+filteredCode);
-                                            break;
-
-                                    }
-                                    etdSearch.setHint("By " + fitercode);
-                                    return true;
-                                }
-                            });
-                            popup.show();//showing popup menu
-                        }
-                    });
-                    btnSearch.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!etdSearch.getText().toString().isEmpty()) {
-                                SearchItem(etdSearch.getText().toString());
-                                msg.dismiss();
-                            }
-                        }
-                    });
-
-                    msg = searchBuilder.create();
-                    msg.show();
-                } catch (Exception ee) {
-
-                }
-
-            }
-        });
         imgFilterCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1451,8 +1461,8 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         viewEdit.setOnClickListener(this);
         viewConfirm.setOnClickListener(this);
         gridview = findViewById(R.id.gv);
-        gridclassview = findViewById(R.id.recycler_category);
-        gridcodeview = findViewById(R.id.recycler_code);
+        gridclassview = findViewById(R.id.cvv);
+        gridcodeview = findViewById(R.id.gvv);
         imgDelete = findViewById(R.id.delete);
         imgEdit = findViewById(R.id.edit);
         imgDeleteAll = findViewById(R.id.delall);
@@ -1477,6 +1487,8 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         txtdate.setOnClickListener(this);
         imgHeader = findViewById(R.id.imgHeader);
         imgHeader.setOnClickListener(this);
+        imgSearchCode = findViewById(R.id.imgSearchCode);
+        imgSearchCode.setOnClickListener(this);
         imgLogout = findViewById(R.id.imgLogout);
         imgLogout.setOnClickListener(this);
         txtfoc = findViewById(R.id.txtFocAmt);
@@ -1517,19 +1529,27 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 }
 
                 String vouper = "Vou Discount";
-                if (custDis > 0) {
+                if (sh.get(0).getDiscount_per() > 0) {
                     vouper = "Vou Discount( " + custDis + "% )";
                     sh.get(0).setDiscount_per(custDis);
                     getSummary();
                 } else {
                     vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
                 }
+                String paidPer="Paid%";
+                if (sh.get(0).getPaidpercent() > 0) {
+                    paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
+//                    sh.get(0).setDiscount_per(custDis);
+                    getSummary();
+                } else {
+                    paidPer = "Paid" + (sh.get(0).getPaidpercent() > 0 ? "( " + sh.get(0).getPaidpercent() + "% )" : "");
+                }
                 String total = txttotal.getText().toString();
                 String txtvou = String.valueOf(sh.get(0).getDiscount());
                 String txtpaidamt = String.valueOf(sh.get(0).getPaid_amount());
                 String txtfoc = String.valueOf(sh.get(0).getFoc_amount());
                 String txtitem = String.valueOf(sh.get(0).getIstemdis_amount());
-                detailvou(taxper, total, txtvou, vouper, txtpaidamt, txttax, txtfoc, txtitem);
+                detailvou(taxper, total, txtvou, vouper,paidPer, txtpaidamt, txttax, txtfoc, txtitem);
             }
         });
 
@@ -1575,7 +1595,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             String sqlString = "";
             AlertDialog.Builder builder = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
             View view = getLayoutInflater().inflate(R.layout.editinfo, null);
-            builder.setCancelable(false);
+//            builder.setCancelable(false);
             builder.setView(view);
             rlUnit = view.findViewById(R.id.rlUnit);
             rlLevel = view.findViewById(R.id.rllevel);
@@ -2230,7 +2250,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                            sd.get(i).getDis_type()+","+
 //                            sd.get(i).getDis_percent()+ "," +
 //                            detRemark+","+
-//                            sd.get(i).getUnt_type() + "," +
+//                            sd.get(i).getUnit_type() + "," +
 //                            sd.get(i).getCode() + "," +
 //                            (i + 1) + "," +
 //                            (i + 1) +" ),";
@@ -2249,12 +2269,12 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                                 sd.get(i).getDis_type()+","+
                                 sd.get(i).getDis_percent()+ "," +
                                 detRemark+","+
-                                sd.get(i).getUnt_type() + "," +
+                                sd.get(i).getUnit_type() + "," +
                                 sd.get(i).getCode() + "," +
                                 (i + 1)+ "," +
                                 (i + 1) + ",'"+
                                 sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sd.get(i).getCode(),sd.get(i).getUnit_qty(),sd.get(i).getUnt_type())+","+
+                                getSmallestQty(sd.get(i).getCode(),sd.get(i).getUnit_qty(),sd.get(i).getUnit_type())+","+
                                 getSPrice(sd.get(i).getCode()) +" )";
 
                          */
@@ -2268,7 +2288,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                            sd.get(i).getDis_type()+","+
 //                            sd.get(i).getDis_percent()+ "," +
 //                            detRemark+","+
-//                            sd.get(i).getUnt_type() + "," +
+//                            sd.get(i).getUnit_type() + "," +
 //                            sd.get(i).getCode() + "," +
 //                            (i + 1) + "," +
 //                            (i + 1) +" )";
@@ -2406,7 +2426,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                                sd.get(i).getDis_type()+","+
 //                                sd.get(i).getDis_percent()+ "," +
 //                                detRemark+","+
-//                                sd.get(i).getUnt_type() + "," +
+//                                sd.get(i).getUnit_type() + "," +
 //                                sd.get(i).getCode() + "," +
 //                                (i + 1) + "," +
 //                                (i + 1) +" ),";
@@ -2425,12 +2445,12 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                                sd.get(i).getDis_type()+","+
 //                                sd.get(i).getDis_percent()+ "," +
 //                                detRemark+","+
-//                                sd.get(i).getUnt_type() + "," +
+//                                sd.get(i).getUnit_type() + "," +
 //                                sd.get(i).getCode() + "," +
 //                                (i + 1)+ "," +
 //                                (i + 1) + ",'"+
 //                                sd.get(i).getPriceLevel()+"',"+
-//                                getSmallestQty(sd.get(i).getCode(),sd.get(i).getUnit_qty(),sd.get(i).getUnt_type())+","+
+//                                getSmallestQty(sd.get(i).getCode(),sd.get(i).getUnit_qty(),sd.get(i).getUnit_type())+","+
 //                                getSPrice(sd.get(i).getCode()) +" )";
 //
 //                         */
@@ -2444,7 +2464,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                                sd.get(i).getDis_type()+","+
 //                                sd.get(i).getDis_percent()+ "," +
 //                                detRemark+","+
-//                                sd.get(i).getUnt_type() + "," +
+//                                sd.get(i).getUnit_type() + "," +
 //                                sd.get(i).getCode() + "," +
 //                                (i + 1) + "," +
 //                                (i + 1) +" )";
@@ -3752,6 +3772,9 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                     bd.create().show();
                 }
                 break;
+            case R.id.imgSearchCode:
+                CodeFind();
+                break;
             case R.id.imgLogout:
                 logout = true;
                 LogOut();
@@ -3833,7 +3856,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(saleorder_entry.this);
                 View view = getLayoutInflater().inflate(R.layout.headerinfo, null);
-                builder.setCancelable(false);
+//                builder.setCancelable(false);
                 builder.setView(view);
                 RelativeLayout rlCustGroup = view.findViewById(R.id.rlCustGroup);
                 RelativeLayout rlTownship = view.findViewById(R.id.rlTownship);
@@ -3893,6 +3916,127 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
 
                 ImageButton btnsave = view.findViewById(R.id.imgSave);
+
+                btncustadd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder custb = new AlertDialog.Builder(view.getContext());
+                        View layout = getLayoutInflater().inflate(R.layout.custquickadd, null);
+                        custb.setCancelable(true);
+                        custb.setView(layout);
+                        final EditText name = layout.findViewById(R.id.txtName);
+//                        final EditText shortdesc = layout.findViewById(R.id.txtShort);
+                        final EditText code = layout.findViewById(R.id.txtCode);
+                        final CheckBox chkCredit = layout.findViewById(R.id.chkCredit);
+                        Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
+                        Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
+                        EditText credit = layout.findViewById(R.id.txtCredit);
+                        credit.setEnabled(false);
+                        Button btnclose = layout.findViewById(R.id.btnclose);
+                        Button btnok = layout.findViewById(R.id.btnok);
+                        btnclose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                custdia.dismiss();
+                            }
+                        });
+                        custdia = custb.create();
+                        custdia.show();
+
+                        //modified by ZYP 01-09-2021 for customer setup
+
+                        imgCustomerTownship.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ChangeHeader("Township", imgCustomerTownship, imgCustomerTownship);
+                            }
+                        });
+                        imgCustomerGroup.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ChangeHeader("Customer Group", imgCustomerGroup, imgCustomerGroup);
+                            }
+                        });
+
+                        chkCredit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                if (isChecked) {
+                                    credit.setEnabled(true);
+                                } else {
+                                    credit.setEnabled(false);
+                                }
+                            }
+                        });
+
+                        btnok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (name.getText().toString().trim().isEmpty()) {
+                                    //|| code.getText().toString().trim().isEmpty()
+                                    AlertDialog.Builder bd = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+                                    bd.setTitle("iStock");
+                                    bd.setMessage("No data to Confirm!");
+                                    bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    bd.create().show();
+                                } else {
+                                    try {
+                                        boolean iscredit = false;
+                                        double creditL = 0.0;
+                                        String nameSt = name.getText().toString().trim();
+                                        String codeSt = code.getText().toString().trim();
+                                        String creditLimit = credit.getText().toString();
+                                        int custid = sale_entry.getCustomerCount() + 1;
+                                        if (chkCredit.isChecked()) {
+                                            iscredit = true;
+                                            creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
+                                        }
+
+                                        ArrayList<customer> customers = new ArrayList<>();
+
+                                        customer newcustomer = new customer();
+                                        newcustomer.setCustomerid(custid);
+                                        newcustomer.setName(nameSt);
+                                        newcustomer.setIscredit(iscredit);
+                                        newcustomer.setCreditlimit((int) creditL);
+                                        newcustomer.setCustomerid(Integer.parseInt(String.valueOf(selected_custgroupid)));
+                                        newcustomer.setTownshipid(Integer.parseInt(String.valueOf(selected_townshipid)));
+                                        newcustomer.setIsdeleted(false);
+                                        newcustomer.setIsinactive(false);
+
+                                        customers.add(newcustomer);
+
+                                        //modified by ZYP 31-08-2021 for customer setup
+                                        sqlstring = "insert into customer(customerid, shortdesc, sortid, name, companyname, townshipid, contact," +
+                                                "pricelevelid, address, phone, fax, email, iscredit, balance, creditlimit, dueindays, " +
+                                                "discountpercent, isinactive, discountamount, custgroupid, lastinvoiceno, branchid, " +
+                                                "nationalcardid, birthdate, updateddatetime,isdeleted) " +
+                                                "values (" + custid + ",'" + codeSt + "',null,'" + nameSt + "',null," + selected_townshipid + ",null, " +
+                                                "null,null,null,null,null," + iscredit + ",null," + creditL + ",null, " +
+                                                "null,false,null, " + selected_custgroupid + ",null,null, " +
+                                                "null,null,localtimestamp,false)"; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
+
+                                        InsertCustomer();
+                                        name.setText("");
+                                        code.setText("");
+                                        credit.setText("");
+                                        chkCredit.setChecked(false);
+
+                                    } catch (Exception eee) {
+                                        Toast.makeText(getBaseContext(), eee.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                            }
+                        });
+                    }
+                });
 
                 btncustgroup.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -3999,4 +4143,608 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         }
 
     }
+
+    private void InsertCustomer() {
+        String ip = sh_ip.getString("ip", "empty");
+        String port = sh_port.getString("port", "empty");
+        String sqlUrl = "http://" + ip + ":" + port + "/api/mobile/AddCustomer";
+        new addCust().execute(sqlUrl);
+
+    }
+
+
+    private void CodeFind() {
+        AlertDialog.Builder searchBuilder = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+        View view = getLayoutInflater().inflate(R.layout.codefind, null);
+        searchBuilder.setView(view);
+        Dialog dialog = searchBuilder.create();
+        dialog.show();
+        dialog.getWindow().setGravity(Gravity.RIGHT);
+        ListView codefindListView = dialog.findViewById(R.id.codefindlist);
+        EditText txtcodeSearch = dialog.findViewById(R.id.txtcodeSearch);
+        EditText txtdesSearch = dialog.findViewById(R.id.txtdesSearch);
+        final List<usr_code> codes = GetCodes();
+        final List<usr_code> tmpCodes = new ArrayList<>();
+        tmpCodes.addAll(codes);
+//        String formname="sale_entry";
+        CodeFindListViewAdapter codeFindListViewAdapter = new CodeFindListViewAdapter(saleorder_entry.this, R.layout.codefinditemlist, codes/*,"sale_entry"*/);
+        codefindListView.setAdapter(codeFindListViewAdapter);
+
+        txtcodeSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                tmpCodes.clear();
+                String searchText = charSequence.toString().replaceAll("%", "").toLowerCase().trim();
+                int textlength = searchText.length();
+                if (charSequence.toString().startsWith("%") && charSequence.toString().endsWith("%")) {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getUsr_code().length()) {
+                            if (item.getUsr_code().toLowerCase().contains(searchText) &&
+                                    !item.getUsr_code().toLowerCase().startsWith(searchText) &&
+                                    !item.getUsr_code().toLowerCase().endsWith(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+                } else if (charSequence.toString().startsWith("%")) {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getUsr_code().length()) {
+                            if (item.getUsr_code().toLowerCase().endsWith(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+                } else {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getUsr_code().length()) {
+                            if (item.getUsr_code().toLowerCase().startsWith(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+
+                }
+                CodeFindListViewAdapter codeFindListViewAdapter = new CodeFindListViewAdapter(saleorder_entry.this, R.layout.codefinditemlist, tmpCodes/*,formname*/);
+                codefindListView.setAdapter(codeFindListViewAdapter);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        txtdesSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                tmpCodes.clear();
+                String searchText = charSequence.toString().replaceAll("%", "").toLowerCase().trim();
+                int textlength = searchText.length();
+
+                if (!charSequence.toString().contains("%")) {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getDescription().length()) { //modified by MPPA [07-05-2021]
+                            if (item.getDescription().toLowerCase().contains(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+                } else if (charSequence.toString().startsWith("%") && charSequence.toString().endsWith("%")) {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getDescription().length()) { //modified by MPPA [07-05-2021]
+                            if (item.getDescription().toLowerCase().contains(searchText) &&
+                                    !item.getDescription().toLowerCase().startsWith(searchText) &&
+                                    !item.getDescription().toLowerCase().endsWith(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+                } else if (charSequence.toString().startsWith("%")) {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getDescription().length()) { //modified by MPPA [07-05-2021]
+                            if (item.getDescription().toLowerCase().endsWith(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+                } else if (charSequence.toString().endsWith("%")) {
+
+                    for (usr_code item : codes) {
+                        if (textlength <= item.getDescription().length()) { //modified by MPPA [07-05-2021]
+                            if (item.getDescription().toLowerCase().startsWith(searchText)) {
+                                tmpCodes.add(item);
+                            }
+                        }
+                    }
+                }
+                CodeFindListViewAdapter codeFindListViewAdapter = new CodeFindListViewAdapter(saleorder_entry.this, R.layout.codefinditemlist, tmpCodes/*,formname*/);
+                codefindListView.setAdapter(codeFindListViewAdapter);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        codefindListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int defunit = 1;
+                defunit = frmmain.defunit;
+                int[] ut = new int[3];
+                int i = 0;
+                Cursor cc = DatabaseHelper.rawQuery("select unit_type from Usr_Code where usr_code='" + tmpCodes.get(position).getUsr_code() + "'");
+                if (cc != null && cc.getCount() != 0) {
+                    if (cc.moveToFirst()) {
+                        do {
+                            int utt = cc.getInt(cc.getColumnIndex("unit_type"));
+                            ut[i] = utt;
+                            i++;
+                        } while (cc.moveToNext());
+                    }
+                }
+                if (i > 1) {
+
+                    if (i == 3) {
+                        specialPrice = usrcodeAdapter.GetPriceLevel();
+                        String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.sale_price" + specialPrice;
+                        String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
+                        String sqlString = "select uc.unit_type,code,description," + sale_price + ",open_price,smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                                " where uc.unit_type=" + defunit + " and uc.usr_code='" + tmpCodes.get(position).getUsr_code() + "'";
+                        Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+                        if (cursor != null && cursor.getCount() != 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
+
+                                    long code = cursor.getLong(cursor.getColumnIndex("code"));
+                                    double price = cursor.getDouble(cursor.getColumnIndex(sale_price));
+                                    int open_price = cursor.getInt(cursor.getColumnIndex("open_price"));
+                                    double smallest_unit_qty = cursor.getDouble(cursor.getColumnIndex("smallest_unit_qty"));
+                                    int unit_type = cursor.getInt(cursor.getColumnIndex("unit_type"));
+                                    String unit_short = cursor.getString(cursor.getColumnIndex("unitshort")).equals("null") ? "" : cursor.getString(cursor.getColumnIndex("unitshort"));
+                                    String unitname = cursor.getString(cursor.getColumnIndex("unitname"));
+                                    String desc = cursor.getString(cursor.getColumnIndex("description"));
+                                    int CalNoTax = cursor.getInt(cursor.getColumnIndex("CalNoTax"));
+                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                    sd.add(new sale_det(
+                                            tranid,
+                                            sd.size() + 1,
+                                            df.format(new Date()),
+                                            1,
+                                            open_price,
+                                            smallest_unit_qty,
+                                            unit_type,
+                                            price,
+                                            price,
+                                            0,
+                                            0,
+                                            "",
+                                            code, unit_short, desc, CalNoTax, SP, smallest_unit_qty));
+                                } while (cursor.moveToNext());
+                            }
+
+                        }
+                        cursor.close();
+                        itemAdapter.notifyDataSetChanged();
+                        entrygrid.setSelection(sale_entry.sd.size());
+                        getSummary();
+                    } else {
+                        int utt = 2;
+                        if (defunit == 2 || defunit == 3) {
+                            utt = 2;
+                        } else if (defunit == 1) {
+                            utt = 1;
+                        }
+                        specialPrice = usrcodeAdapter.GetPriceLevel();
+                        String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.sale_price" + specialPrice;
+                        String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
+                        String sqlString = "select uc.unit_type,code,description," + sale_price + ",open_price,smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                                " where uc.unit_type=" + utt + " and uc.usr_code='" + tmpCodes.get(position).getUsr_code() + "'";
+                        Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+                        if (cursor != null && cursor.getCount() != 0) {
+                            if (cursor.moveToFirst()) {
+                                do {
+
+                                    long code = cursor.getLong(cursor.getColumnIndex("code"));
+                                    double price = cursor.getDouble(cursor.getColumnIndex(sale_price));
+                                    int open_price = cursor.getInt(cursor.getColumnIndex("open_price"));
+                                    double smallest_unit_qty = cursor.getDouble(cursor.getColumnIndex("smallest_unit_qty"));
+                                    int unit_type = cursor.getInt(cursor.getColumnIndex("unit_type"));
+                                    String unit_short = cursor.getString(cursor.getColumnIndex("unitshort")).equals("null") ? "" : cursor.getString(cursor.getColumnIndex("unitshort"));
+                                    String unitname = cursor.getString(cursor.getColumnIndex("unitname"));
+                                    String desc = cursor.getString(cursor.getColumnIndex("description"));
+                                    int CalNoTax = cursor.getInt(cursor.getColumnIndex("CalNoTax"));
+                                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                    sd.add(new sale_det(
+                                            tranid,
+                                            sd.size() + 1,
+                                            df.format(new Date()),
+                                            1,
+                                            open_price,
+                                            smallest_unit_qty,
+                                            unit_type,
+                                            price,
+                                            price,
+                                            0,
+                                            0,
+                                            "",
+                                            code, unit_short, desc, CalNoTax, SP, smallest_unit_qty));
+                                } while (cursor.moveToNext());
+                            }
+
+                        }
+                        cursor.close();
+                        itemAdapter.notifyDataSetChanged();
+                        entrygrid.setSelection(sale_entry.sd.size());
+                        getSummary();
+                    }
+
+                } else if (i == 1 || defunit == 1) {
+
+                    specialPrice = usrcodeAdapter.GetPriceLevel();
+                    String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.sale_price" + specialPrice;
+                    String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
+                    String sqlString = "select uc.unit_type,code,description," + sale_price + ",open_price,smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                            " where uc.unit_type=1 and uc.usr_code='" + tmpCodes.get(position).getUsr_code() + "'";
+                    Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+                    if (cursor != null && cursor.getCount() != 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+
+                                long code = cursor.getLong(cursor.getColumnIndex("code"));
+                                double price = cursor.getDouble(cursor.getColumnIndex(sale_price));
+                                int open_price = cursor.getInt(cursor.getColumnIndex("open_price"));
+                                double smallest_unit_qty = cursor.getDouble(cursor.getColumnIndex("smallest_unit_qty"));
+                                int unit_type = cursor.getInt(cursor.getColumnIndex("unit_type"));
+                                String unit_short = cursor.getString(cursor.getColumnIndex("unitshort")).equals("null") ? "" : cursor.getString(cursor.getColumnIndex("unitshort"));
+                                String unitname = cursor.getString(cursor.getColumnIndex("unitname"));
+                                String desc = cursor.getString(cursor.getColumnIndex("description"));
+                                int CalNoTax = cursor.getInt(cursor.getColumnIndex("CalNoTax"));
+                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                                sd.add(new sale_det(
+                                        tranid,
+                                        sd.size() + 1,
+                                        df.format(new Date()),
+                                        1,
+                                        open_price,
+                                        smallest_unit_qty,
+                                        unit_type,
+                                        price,
+                                        price,
+                                        0,
+                                        0,
+                                        "",
+                                        code, unit_short, desc, CalNoTax, SP, smallest_unit_qty));
+                            } while (cursor.moveToNext());
+                        }
+
+                    }
+                    cursor.close();
+                    itemAdapter.notifyDataSetChanged();
+                    entrygrid.setSelection(sale_entry.sd.size());
+                    getSummary();
+                }
+
+
+            }
+        });
+        Button btnClose = (Button) dialog.findViewById(R.id.btnClose);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private List<usr_code> GetCodes() {
+        List<usr_code> codes = new ArrayList<>();
+        Cursor cursor = DatabaseHelper.rawQuery("select code,usr_code,description,sale_price from Usr_Code where unit_type=1 order by sortcode,categoryname");
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    int code = cursor.getInt(cursor.getColumnIndex("code"));
+                    String usr_code = cursor.getString(cursor.getColumnIndex("usr_code"));
+                    String description = cursor.getString(cursor.getColumnIndex("description"));
+                    double sale_price = cursor.getDouble(cursor.getColumnIndex("sale_price"));
+                    codes.add(new usr_code(code, usr_code, description, sale_price));
+
+                } while (cursor.moveToNext());
+
+            }
+
+        }
+        cursor.close();
+        return codes;
+    }
+
+    public class addCust extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pb.show();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            HttpURLConnection connection;
+            StringBuffer response = new StringBuffer();
+//            try {
+//                URL url = new URL(strings[0]);
+//                connection = (HttpURLConnection) url.openConnection();
+//                connection.setRequestMethod("POST");
+//                connection.addRequestProperty("Content-Type", "text/plain");
+//                connection.setDoOutput(true);
+//                connection.setDoInput(true);
+//                if (sqlstring != null) {
+//                    //connection.setRequestProperty("Content-Length", Integer.toString(sqlstring.length()));
+//                    connection.getOutputStream().write(sqlstring.getBytes("UTF8"));
+//                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//                    String inputLine;
+//
+//
+//                    while ((inputLine = in.readLine()) != null) {
+//                        response.append(inputLine);
+//                    }
+//                    in.close();
+//
+//                }
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+
+            SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+            response = selectInsertLibrary.PostToApi(sqlstring, strings);
+
+            return response.toString();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            pb.dismiss();
+            try {
+
+                AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+                b.setTitle("iStock");
+                if (result.equals("Success")) {
+                    b.setMessage("Save Successful.");
+                    FillDataWithSignalr();
+
+                } else {
+                    b.setMessage("Save Fail.");
+                }
+                b.setCancelable(false);
+                b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        b.create().dismiss();
+                    }
+                });
+//                dialog =
+                        b.create().show();
+//                dialog.show();
+            } catch (Exception ee) {
+                pb.dismiss();
+                dialog.dismiss();
+            }
+        }
+    }
+
+    private void FillDataWithSignalr() {
+//        String ippp = sh_ip.getString("ip", "empty");
+//        String porttt = sh_port.getString("port", "empty");
+//        String server = "http://"+ippp+":"+porttt+"/signalr";//159.138.231.20
+//
+//        /* Your logic here */
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String currentDateandTime = sdf.format(new Date());
+//        String ipp = sh_ip.getString("ip", "empty");
+//        String portt = sh_port.getString("port", "empty");
+//        String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei="+GettingIMEINumber.IMEINO+"&lastupdatedatetime="+currentDateandTime+"&lastaccesseduserid="+frmlogin.LoginUserid+"&clientname="+frmlogin.Device_Name;
+//        RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+//        final Response.Listener<String> listenerr=new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                JSONArray jarr = null;
+//                try {
+//                    jarr = new JSONArray(response);
+//                    jobj = jarr.getJSONObject(0);
+//                    System.out.println(jobj+"this is json");
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        };
+//        final Response.ErrorListener errorr=new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+//
+//            }
+//        };
+//
+//        StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
+//        requestt.add(reqq);
+
+        String ip = sh_ip.getString("ip", "empty");
+        String port = sh_port.getString("port", "empty");
+        String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+        RequestQueue request = Volley.newRequestQueue(getApplicationContext());
+        final Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jobj=new JSONObject();
+                    jobj = jsonArray.getJSONObject(0);
+
+                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+                    //instead of Signalr to check what data are changes
+                    String tablename = "";
+                    if (jobj.getJSONArray("posuser").length() > 0) {
+                        tablename = "Posuser";
+                        selectInsertLibrary.UpSertingData(tablename, jobj);
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("customer").length() > 0) {
+                            tablename = "Customer";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("location").length() > 0) {
+                            tablename = "Location";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("usr_code").length() > 0 || jobj.getJSONArray("unit").length() > 0) {
+                            tablename = "Usr_Code";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("paymenttype").length() > 0) {
+                            tablename = "Payment_Type";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("dis_Type").length() > 0) {
+                            tablename = "Dis_Type";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("systemSetting").length() > 0) {
+                            tablename = "SystemSetting";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("salesmen").length() > 0) {
+                            tablename = "Salesmen";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("class").length() > 0) {
+                            tablename = "Class";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("category").length() > 0) {
+                            tablename = "Category";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        if (jobj.getJSONArray("discount_code").length() > 0) {
+                            tablename = "discount_code";
+                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                        }
+                    } catch (JSONException e) {
+                        DatabaseHelper.rawQuery("delete from discount_code");
+                        e.printStackTrace();
+                    }
+
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentDateandTime = sdf.format(new Date());
+                    String ipp = sh_ip.getString("ip", "empty");
+                    String portt = sh_port.getString("port", "empty");
+                    String urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + frmlogin.LoginUserid + "&clientname=" + frmlogin.Device_Name;
+                    RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+                    final Response.Listener<String> listenerr = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            System.out.println(response);
+                        }
+                    };
+                    final Response.ErrorListener errorr = new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(saleorder_entry.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+                        }
+                    };
+
+                    StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
+                    requestt.add(reqq);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        };
+
+        final Response.ErrorListener error = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+        request.add(req);
+
+
+    }
+
 }
+

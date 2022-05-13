@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Build;
@@ -24,12 +25,14 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
@@ -41,6 +44,7 @@ import androidx.core.content.ContextCompat;
 import com.abbp.istockmobilesalenew.bluetoothprinter.BaseEnum;
 import com.abbp.istockmobilesalenew.bluetoothprinter.BluetoothDeviceChooseDialog;
 import com.abbp.istockmobilesalenew.bluetoothprinter.BluetoothPrinter;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -61,12 +65,10 @@ import com.rt.printerlibrary.observer.PrinterObserverManager;
 import com.rt.printerlibrary.printer.RTPrinter;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -77,6 +79,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private Button btnlogin, btnexit, btnok, btncancel, btnrgok;
     private TextView btnconnect, btnposdown, btnRegister, txtTable, txtProgress, txtSetting;
     private EditText useredit, passedit, edtserver, edtport, edtkey;
+    private ToggleButton toggleButton;
     private ListView lv;
     AlertDialog dialog, msg, downloadAlert;
     AlertDialog.Builder builder;
@@ -132,7 +135,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     public static int isallowsysdatechange;
     public static int isallowovercreditlimit;
     public static String isknockcode;
-    public static int istabletuser;
+    public static int istabletuser,istvuser;
     public static int isallowpricelevel;
     public static int canselectcustomer;
     public static int canselectlocation;
@@ -165,6 +168,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private PrinterFactory printerFactory;
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private PrinterInterface curPrinterInterface = null;
+    public static boolean isTabletMode=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +188,11 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         sh_ptype = getSharedPreferences("ptype", MODE_PRIVATE);
         updatetime = getSharedPreferences("datetime", MODE_PRIVATE);
         setUI();
+        if(!checkIsTelevision()){
+            Log.i("frmlogin","not tv device");
+            Toast.makeText(getApplicationContext(),"this is not tv device",Toast.LENGTH_LONG).show();
+        }
+
         CheckConnection();
         context = this;
         isRegister();
@@ -209,6 +218,13 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
     }
 
+    private boolean checkIsTelevision() {
+        int uiMode = getApplicationContext().getResources().getConfiguration().uiMode;
+        System.out.println("tablet device");
+        return (uiMode & Configuration.UI_MODE_TYPE_MASK) == Configuration.UI_MODE_TYPE_TELEVISION;
+
+    }
+
     //set up UI
     private void setUI() {
         btnlogin = findViewById(R.id.login);
@@ -219,6 +235,19 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         btnRegister = findViewById(R.id.btnRegister);
         btnposdown = findViewById(R.id.btnposdown);
         txtSetting = findViewById(R.id.btnSetting);
+        toggleButton=findViewById(R.id.toggleButton);
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isTabletMode=toggleButton.isChecked();
+            }
+        });
+//        if(!toggleButton.isChecked()){
+//            isTabletMode=false;
+//        }
+        if(!isTabletMode){
+            toggleButton.setChecked(false);
+        }
         btnlogin.setOnClickListener(this);
         btnexit.setOnClickListener(this);
         useredit.setOnClickListener(this);
@@ -606,6 +635,26 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                             editor.putString("register", result[1]);
                             editor.commit();
                             isRegister();
+
+                            //Update Downloaded DateTime to AccessedUser
+                            String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + "1990-01-01" + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                            Log.i("frmlogin", url);
+                            RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+                            final Response.Listener<String> listenerr = new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    System.out.println(response);
+                                }
+                            };
+
+                            final Response.ErrorListener errorr = new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+                                }
+                            };
+                            StringRequest reqq = new StringRequest(Request.Method.GET, url, listenerr, errorr);
+                            requestt.add(reqq);
                             showmsg.dismiss();
                         }
                         dialog.dismiss();
@@ -737,65 +786,27 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                 public void onShow(final DialogInterface dialog) {
                     ResetData();
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String currentDateandTime = sdf.format(new Date());
+                    String currentDateTime = sdf.format(new Date());
 
-                    System.out.println(updatetime.getString("datetime", ""));
-                    if (updatetime.getString("datetime", "").equals("1990-01-01")) {
-                        currentDateandTime = updatetime.getString("datetime", "");
-                        dateEditor = updatetime.edit();
-                        dateEditor.remove("datetime");
-                        dateEditor.commit();
-
-                        dateEditor = updatetime.edit();
-                        dateEditor.putString("datetime", "");
-                        dateEditor.commit();
-                    }
-
-                    /*String ipp = sh_ip.getString("ip", "empty");
-                    String portt = sh_port.getString("port", "empty");
-                    String urll = "";
-                    try {
-                        urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + URLEncoder.encode(currentDateandTime, "UTF-8") + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    Log.i("frmlogin", urll);
-                    RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
-                    final Response.Listener<String> listenerr = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            System.out.println(response);
-                        }
-                    };
-
-                    final Response.ErrorListener errorr = new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
-                    requestt.add(reqq);*/
-
-
+//                    System.out.println(updatetime.getString("datetime", ""));
+//                    if (updatetime.getString("datetime", "").equals("1990-01-01")) {
+//                        currentDateTime = updatetime.getString("datetime", "");
+//                        dateEditor = updatetime.edit();
+//                        dateEditor.remove("datetime");
+//                        dateEditor.apply();
+//
+//                        dateEditor = updatetime.edit();
+//                        dateEditor.putString("datetime", "");
+//                        dateEditor.commit();
+//                    }
                     ip = sh_ip.getString("ip", "empty");
                     port = sh_port.getString("port", "empty");
-                    //String url = "http://" + ip + ":" + port + "/api/DataSync/GetData?download=true";
-                    String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
-
-                    Log.i("frmlogin", url);
+                    String urlString = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+                    Log.i("frmlogin", urlString);
                     RequestQueue request = Volley.newRequestQueue(context);
-                    String finalCurrentDateandTime = currentDateandTime;
                     final Response.Listener<String> listener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-//                            JSONArray jarr = null;
-//                            try {
-//                                jarr = new JSONArray(response);
-//                                jobj = jarr.getJSONObject(0);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
 
                             new Thread(new Runnable() {
                                 @Override
@@ -822,7 +833,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                         }
 
                                         //Update Downloaded DateTime to AccessedUser
-                                        String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + URLEncoder.encode(finalCurrentDateandTime, "UTF-8") + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                                        String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateTime + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
                                         Log.i("frmlogin", url);
                                         RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
                                         final Response.Listener<String> listenerr = new Response.Listener<String>() {
@@ -849,6 +860,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                 }
                             }).start();
 
+
                         }
                     };
 
@@ -858,7 +870,11 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                             Toast.makeText(frmlogin.this, "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
                         }
                     };
-                    StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+                    StringRequest req = new StringRequest(Request.Method.GET, urlString, listener, error);
+                    req.setRetryPolicy(new DefaultRetryPolicy(
+                            60000,
+                            1,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     request.add(req);
 
 
@@ -1030,6 +1046,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     int isallowovercreditlimit = cursor.getInt(cursor.getColumnIndex("isallowovercreditlimit"));
                     String isknockcode = cursor.getString(cursor.getColumnIndex("isknockcode"));
                     int istabletuser = cursor.getInt(cursor.getColumnIndex("istabletuser"));
+                    int istvuser = cursor.getInt(cursor.getColumnIndex("istvuser"));
 
                     int isallowpricelevel = cursor.getInt(cursor.getColumnIndex("isallowpricelevel"));
                     int canselectcustomer = cursor.getInt(cursor.getColumnIndex("canselectcustomer"));
@@ -1056,7 +1073,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     String Cashier_Printer=cursor.getString(cursor.getColumnIndex("Cashier_Printer"));
                     int CAshier_PrinterType=cursor.getInt(cursor.getColumnIndex("Cashier_PrinterType"));
                     */
-                    aryUsers.add(new posuser(userid, name, branchid, shortdesc, password, canchangesaleprice, canchangepurprice, canchangedate, defaultlocationid, candiscount, isusetax, ishidepurprice, ishidesaleprice, ishidepurcostprice, isviewallsalepricelevel, isinactive, defaultbranchid, defaultcashid, isallowsysdatechange, isallowovercreditlimit, isknockcode, istabletuser, isallowpricelevel, canselectcustomer, canselectlocation));/*posuser(userid,name,branchid,password,canchangesaleprice,canchangepurprice,defaultlocationid,candiscount,isusetax,ishidepurprice,ishidesaleprice,ishidepurcostprice,isviewallsalepricelevel,isinactive,defaultbranchid,defaultcashid,isallowsysdatechange,isallowovercreditlimit,isknockcode,istabletuser,isallowpricelevel));*///,Confirm_PrintVou,allow_priceLevel,select_location,select_customer, change_date,tax,discount,change_price,pass,locid,def_payment,Allow_Over_Credit_Limit,def_cashid,Cashier_Printer,CAshier_PrinterType));
+                    aryUsers.add(new posuser(userid, name, branchid, shortdesc, password, canchangesaleprice, canchangepurprice, canchangedate, defaultlocationid, candiscount, isusetax, ishidepurprice, ishidesaleprice, ishidepurcostprice, isviewallsalepricelevel, isinactive, defaultbranchid, defaultcashid, isallowsysdatechange, isallowovercreditlimit, isknockcode, istabletuser,istvuser, isallowpricelevel, canselectcustomer, canselectlocation));/*posuser(userid,name,branchid,password,canchangesaleprice,canchangepurprice,defaultlocationid,candiscount,isusetax,ishidepurprice,ishidesaleprice,ishidepurcostprice,isviewallsalepricelevel,isinactive,defaultbranchid,defaultcashid,isallowsysdatechange,isallowovercreditlimit,isknockcode,istabletuser,isallowpricelevel));*///,Confirm_PrintVou,allow_priceLevel,select_location,select_customer, change_date,tax,discount,change_price,pass,locid,def_payment,Allow_Over_Credit_Limit,def_cashid,Cashier_Printer,CAshier_PrinterType));
 
 
                 } while (cursor.moveToNext());
@@ -1093,6 +1110,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                 frmlogin.isallowovercreditlimit = aryUsers.get(position).getIsallowovercreditlimit();
                 frmlogin.isknockcode = aryUsers.get(position).getIsknockcode();
                 frmlogin.istabletuser = aryUsers.get(position).getIstabletuser();
+//                frmlogin.istvuser=aryUsers.get(position).getIstvuser();
                 frmlogin.isallowpricelevel = aryUsers.get(position).getIsallowpricelevel();
                 frmlogin.canselectcustomer = aryUsers.get(position).getCanselectcustomer();
                 frmlogin.canselectlocation = aryUsers.get(position).getCanselectlocation();
@@ -1311,6 +1329,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Object response) {
+                try {//Added by KLM for YGN1-220410 21042022
                 String[] str = response.toString().split("&&");
                 String[] prt = str[0].split(",");
                 String[] pty = str[1].split(",");
@@ -1329,6 +1348,9 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 //                        ptype.add(new Printer_Type((i), pty[i]));
 //                    }
 //                }
+                }catch (Exception ex){
+                    Toast.makeText(frmlogin.this,"Something went wong! Please check Local Printer Link!",Toast.LENGTH_SHORT).show();
+                }
             }
         };
         final Response.ErrorListener error = new Response.ErrorListener() {

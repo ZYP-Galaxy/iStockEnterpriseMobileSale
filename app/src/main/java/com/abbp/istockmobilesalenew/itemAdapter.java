@@ -35,12 +35,13 @@ public class itemAdapter extends BaseAdapter {
     TextView tv5;
     TextView tv2; // added by EKK 12-11-2020
     boolean startOpen;
-    public itemAdapter itemAd;
+    public static itemAdapter itemAd;
     public static double disamt;
 
 
     public itemAdapter(Context context) {
         this.context = context;
+
     }
 
     @Override
@@ -50,6 +51,7 @@ public class itemAdapter extends BaseAdapter {
         } else {
             return sale_entry.sd.size();
         }
+
     }
 
     @Override
@@ -67,17 +69,17 @@ public class itemAdapter extends BaseAdapter {
         View conView;
         if (this.context.toString().contains("saleorder_entry")) {
             conView = saleorddetdatabind(position, convertView, parent);
+
         } else {
             conView = saledetdatabind(position, convertView, parent);
+
         }
         return conView;
     }
 
     private View saleorddetdatabind(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = lf.inflate(R.layout.dataitem, null, false);
-        }
+        LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = lf.inflate(R.layout.dataitem, null, false);
         TextView tv = (TextView) convertView.findViewById(R.id.sr);
         TextView tv1 = (TextView) convertView.findViewById(R.id.desc);
         tv2 = (TextView) convertView.findViewById(R.id.qty);
@@ -93,10 +95,9 @@ public class itemAdapter extends BaseAdapter {
 
             }
 
-            cursorplvl.close();
         }
-
-        tv3.setVisibility(use_unit ? View.VISIBLE : View.GONE);
+        cursorplvl.close();
+        tv3.setVisibility(use_unit == true ? View.VISIBLE : View.GONE);
         tv4 = (TextView) convertView.findViewById(R.id.amt);
         tv5 = convertView.findViewById(R.id.txtDelete);
         tv.setText(String.valueOf(saleorder_entry.sd.get(position).getSr()));
@@ -114,6 +115,11 @@ public class itemAdapter extends BaseAdapter {
         //modified by EKK on 27-10-2020
         if (frmlogin.ishidesaleprice != 0) {
             tv4.setText("****");
+           /* tv4.setCompoundDrawablesWithIntrinsicBounds(
+                    0, //left
+                    0, //top
+                    R.drawable.eyehide, //right
+                    0);*/
             tv4.setEnabled(false);
         } else {
             tv4.setText(String.valueOf(numberAsString));
@@ -131,14 +137,13 @@ public class itemAdapter extends BaseAdapter {
                 itemPosition = -1;
             }
         });
-
         tv5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 AlertDialog.Builder bd = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
                 bd.setTitle("iStock");
-                bd.setMessage("Are you sure want to delete this item?");
+                bd.setMessage("Are you sure want to delete this row?");
                 bd.setCancelable(false);
                 bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -345,12 +350,8 @@ public class itemAdapter extends BaseAdapter {
     }
 
     private View saledetdatabind(int position, View convertView, ViewGroup parent) {
-//        LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        convertView = lf.inflate(R.layout.dataitem, null, false);
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.dataitem, parent, false);
-        }
+        LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = lf.inflate(R.layout.dataitem, null, false);
         TextView tv = (TextView) convertView.findViewById(R.id.sr);
         TextView tv1 = (TextView) convertView.findViewById(R.id.desc);
         TextView tv2 = (TextView) convertView.findViewById(R.id.qty);
@@ -386,6 +387,11 @@ public class itemAdapter extends BaseAdapter {
         //modified by EKK on 27-10-2020
         if (frmlogin.ishidesaleprice != 0) {
             tv4.setText("****");
+           /* tv4.setCompoundDrawablesWithIntrinsicBounds(
+                    0, //left
+                    0, //top
+                    R.drawable.eyehide, //right
+                    0);*/
             tv4.setEnabled(false);
         } else {
             tv4.setText(String.valueOf(numberAsString));
@@ -408,7 +414,7 @@ public class itemAdapter extends BaseAdapter {
 
                 AlertDialog.Builder bd = new AlertDialog.Builder(context, R.style.AlertDialogTheme);
                 bd.setTitle("iStock");
-                bd.setMessage("Are you sure want to delete this item?");
+                bd.setMessage("Are you sure want to delete this row?");
                 bd.setCancelable(false);
                 bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -470,7 +476,7 @@ public class itemAdapter extends BaseAdapter {
                 txtamt.setText(numberAsString);
 
 
-                //not change_price in sale entry entrygrid amount click modified by ABBP
+//not change_price in sale entry entrygrid amount click modified by ABBP
                 //add open_price modified by ABBP
                 txtChangePrice.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -954,8 +960,8 @@ public class itemAdapter extends BaseAdapter {
                 } while (cursor.moveToNext());
 
             }
-            cursor.close();
         }
+        cursor.close();
 
         double minqty = 0, maxqty = 0;
         String pricelevel = "";
@@ -1006,9 +1012,9 @@ public class itemAdapter extends BaseAdapter {
 
 
                     } else {
-                        if (!isValidQty) {
+                        if(!isValidQty){
                             tmpPriceLevel = "SP";
-                            isValidQty = true;
+                            isValidQty=true;
                             pad = new priceLevelAdapter(context, itemposition, tv4, tv2, txtamt, 0);
                             pad.issaleentry = isSaleEntry;
                             sale_price = pad.getSalePrice(tmpPriceLevel);
@@ -1021,18 +1027,18 @@ public class itemAdapter extends BaseAdapter {
                     }
 
                     // Toast.makeText(context,"Price " + sale_price, Toast.LENGTH_LONG).show();
-                    if (isValidQty) {
-                        if (isSaleEntry) {
-                            sale_entry.sd.get(itemposition).setSale_price(sale_price);
-                            sale_entry.sd.get(itemposition).setDis_price(sale_price);
-                        } else {
-                            saleorder_entry.sd.get(itemposition).setSale_price(sale_price);
-                            saleorder_entry.sd.get(itemposition).setDis_price(sale_price);
-                        }
+                        if(isValidQty){
+                            if (isSaleEntry) {
+                                sale_entry.sd.get(itemposition).setSale_price(sale_price);
+                                sale_entry.sd.get(itemposition).setDis_price(sale_price);
+                            } else {
+                                saleorder_entry.sd.get(itemposition).setSale_price(sale_price);
+                                saleorder_entry.sd.get(itemposition).setDis_price(sale_price);
+                            }
 
-                        double amt = Double.parseDouble(keynum) * sale_price;
-                        tv4.setText(String.format("%,." + frmmain.price_places + "f", amt));
-                    }
+                            double amt = Double.parseDouble(keynum) * sale_price;
+                            tv4.setText(String.format("%,." + frmmain.price_places + "f", amt));
+                        }
 
 
                 } while (cursor.moveToNext());

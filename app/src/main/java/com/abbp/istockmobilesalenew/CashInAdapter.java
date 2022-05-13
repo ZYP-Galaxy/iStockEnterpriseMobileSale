@@ -13,7 +13,8 @@ import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 
 import java.util.ArrayList;
 
-public class CashInAdapter  extends RecyclerView.Adapter<CashInAdapter.MyViewHolder> {
+public class
+CashInAdapter  extends RecyclerView.Adapter<CashInAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<CashIn> data = new ArrayList<>();

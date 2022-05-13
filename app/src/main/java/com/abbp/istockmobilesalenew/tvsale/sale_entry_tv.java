@@ -37,7 +37,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,6 +56,7 @@ import com.abbp.istockmobilesalenew.CashInAdapter;
 import com.abbp.istockmobilesalenew.CustGroupAdapter;
 import com.abbp.istockmobilesalenew.CustomerAdapter;
 import com.abbp.istockmobilesalenew.DatabaseHelper;
+import com.abbp.istockmobilesalenew.DisTypeAdapter;
 import com.abbp.istockmobilesalenew.Dis_Type;
 import com.abbp.istockmobilesalenew.GetAppSetting;
 import com.abbp.istockmobilesalenew.GettingIMEINumber;
@@ -89,9 +89,10 @@ import com.abbp.istockmobilesalenew.priceLevelAdapter;
 import com.abbp.istockmobilesalenew.reportviewer;
 import com.abbp.istockmobilesalenew.sale_det;
 import com.abbp.istockmobilesalenew.sale_det_tmp;
-import com.abbp.istockmobilesalenew.sale_entry;
+import com.abbp.istockmobilesalenew.sale_entryold;
 import com.abbp.istockmobilesalenew.sale_head_tmp;
 import com.abbp.istockmobilesalenew.salechange;
+import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
 import com.abbp.istockmobilesalenew.unitforcode;
 import com.abbp.istockmobilesalenew.usr_code;
 import com.abbp.istockmobilesalenew.usrcodeAdapter;
@@ -187,7 +188,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static UnitAdapter uad;
     Date voudate;
     AlertDialog disDa = null;
-    EditText txtChangeQty;
+    TextView txtChangeQty;
     EditText txtChangePrice;
     TextView txtamt;
     TextView txtdate;
@@ -789,7 +790,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     // Add detail btn in sale entry on 18/6/2019
     private void detailvou(String taxper, String total, String txtvou, String vouper, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
         AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this);
-        View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher, null);
+        View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher_tv, null);
         bd.setCancelable(false);
         bd.setView(view);
         TextView txttotal = view.findViewById(R.id.txtTotalAmt);
@@ -1651,6 +1652,14 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 btnStlocation = view.findViewById(R.id.location);
                 btnSalesmen = view.findViewById(R.id.salesmen);
                 btncustadd = view.findViewById(R.id.custadd);
+                ImageView img_close_header=view.findViewById(R.id.img_close_header);
+                img_close_header.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+
 
 
                 if (!use_salesperson) {
@@ -3631,6 +3640,18 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 }
             });
+            ImageView btnBillPlus = v.findViewById(R.id.img_bill_plus);
+            ImageView btnBillMinus = v.findViewById(R.id.img_bill_minus);
+            btnBillPlus.setOnClickListener(v1 -> {
+                billPrintCount += 1;
+                tvBillCount.setText(String.valueOf(billPrintCount));
+            });
+            btnBillMinus.setOnClickListener(v1 -> {
+                if (billPrintCount > 1) {
+                    billPrintCount -= 1;
+                    tvBillCount.setText(String.valueOf(billPrintCount));
+                }
+            });
 
 
 //            rlBillCount.setOnClickListener(new View.OnClickListener() {
@@ -3791,6 +3812,151 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
 
 
+    }
+
+    public static void getSummaryNew() {
+
+        if (txttax.getText().toString().contains(getTax() + "")) {
+            sh.get(0).setTax_per(getTax());
+        }/*else {
+            taxchange=false;
+        }*/
+        totalAmt_tmp = 0.0;
+        qty_tmp = 0.0;
+        vouDis_tmp = 0.0;
+        itemDis_tmp = 0.0;
+        paidAmt_tmp = 0.0;
+        taxamt_tmp = 0.0;
+        calresult_tmp = 0.0;
+        netamt_tmp = 0.0;
+        ItemdisTax_tmp = 0.0;
+        foc_tmp = 0.0;
+        if (sd.size() > 0) {
+            for (int i = 0; i < sale_entryold.sd.size(); i++) {
+                totalAmt_tmp += sale_entryold.sd.get(i).getUnit_qty() * sale_entryold.sd.get(i).getSale_price();
+                qty_tmp += sd.get(i).getUnit_qty();
+                if (sd.get(i).getDis_type() == 1 || sd.get(i).getDis_type() == 2 || sd.get(i).getDis_type()
+                        == 5) {
+                    itemDis_tmp += (sd.get(i).getSale_price() - sd.get(i).getDis_price()) * sale_entryold.sd.get(i).getUnit_qty();
+                    sh.get(0).setIstemdis_amount(itemDis_tmp);
+                } else if (sd.get(i).getDis_type() == 3 || sd.get(i).getDis_type() == 4 || sd.get(i).getDis_type()
+                        == 6 || sd.get(i).getDis_type() == 7) {
+                    foc_tmp += sd.get(i).getSale_price() * sale_entryold.sd.get(i).getUnit_qty();
+                    sh.get(0).setFoc_amount(foc_tmp);
+                }
+//                else{
+//                    itemDis_tmp=0;
+//                }
+
+            }
+            sh.get(0).setInvoice_qty(qty_tmp);
+            sh.get(0).setInvoice_amount(totalAmt_tmp);
+
+            vouDis_tmp = sh.get(0).getDiscount();
+            paidAmt_tmp = sh.get(0).getPaid_amount();
+
+            if (sh.get(0).getDiscount_per() > 0) {
+                vouDis_tmp = sh.get(0).getDiscount_per();
+                if (taxper_tmp > 0) {
+//                    if (itemDis_tmp>0)
+                    vouDis_tmp = (((totalAmt_tmp) * vouDis_tmp) / 100);
+//                    else {
+//                        vouDis_tmp = ((itemDis_tmp ) / 100);
+//                    }
+                } else {
+//                    if (itemDis_tmp>0){
+                    vouDis_tmp = (((totalAmt_tmp - itemDis_tmp) * vouDis_tmp) / 100);
+//                    }
+//                    else{
+//                        vouDis_tmp = ((itemDis_tmp ) / 100);
+//                    }
+
+                }
+                sh.get(0).setDiscount(vouDis_tmp);
+            }
+
+            taxper_tmp = sh.get(0).getTax_per();
+            double calresult = 0.0;
+            for (int i = 0; i < sd.size(); i++) {
+                if (sd.get(i).getCalNoTax() == 0 && sd.get(i).getDis_type() != 3 && sd.get(i).getDis_type() != 4 && sd.get(i).getDis_type() != 6 && sd.get(i).getDis_type() != 7) {
+                    calresult += sd.get(i).getSale_price() * sd.get(i).getUnit_qty();
+                }
+            }
+            taxamt_tmp = calresult;
+
+            if (Use_Tax == 0) {
+                taxamt_tmp = 0;
+            } else {
+                if (Tax_Type == 0) {
+                    if (taxper_tmp > 0) {
+                        //added by EKK on 06-11-2020
+                        if (frmmain.afterdiscount == 0)
+                            taxamt_tmp = ((taxamt_tmp) * taxper_tmp) / caltax;
+                        else
+                            taxamt_tmp = ((taxamt_tmp - vouDis_tmp - itemDis_tmp) * taxper_tmp) / caltax;
+                    } else
+                        taxamt_tmp = 0;
+                } else {
+                    if (taxper_tmp > 0)
+                        taxamt_tmp = ((taxamt_tmp) * taxper_tmp) / caltax;
+                    else
+                        taxamt_tmp = 0;
+                }
+
+            }
+
+
+            //GetAppSetting getAppSetting=new GetAppSetting("Tax_Exclusive");
+            //if(getAppSetting.getSetting_Value().equals("Y"))
+            if (frmmain.isexclusivetax == 1) {
+                if (taxamt_tmp != 0)
+                    netamt_tmp = ((totalAmt_tmp - vouDis_tmp - itemDis_tmp - foc_tmp/* - paidAmt_tmp*/) + taxamt_tmp);
+                else
+                    netamt_tmp = (totalAmt_tmp - vouDis_tmp - itemDis_tmp - foc_tmp/* - paidAmt_tmp*/);
+            } else {
+                netamt_tmp = (totalAmt_tmp - vouDis_tmp - itemDis_tmp - foc_tmp/* - paidAmt_tmp*/);
+                // taxamt_tmp=0;
+            }
+
+            if (sh.get(0).getPaidpercent() > 0) {
+                paidAmt_tmp = netamt_tmp * sh.get(0).getPaidpercent() / 100;
+
+            }
+            netamt_tmp = netamt_tmp - paidAmt_tmp;
+            sh.get(0).setPaid_amount(paidAmt_tmp);
+
+        }
+        tax_amount = taxamt_tmp;
+        // txttaxamT.setText(String.valueOf(tax_amount));
+        txttaxamt.setText(String.valueOf(tax_amount));
+//        txttaxamt.setText(String.format("%,."+String.valueOf(tax_amount)+"f"));
+        sh.get(0).setTax_amount(tax_amount);
+        net_amount = netamt_tmp;
+        if ((net_amount + paidAmt_tmp) < paidAmt_tmp) {
+            AlertDialog.Builder bd = new AlertDialog.Builder(datacontext, R.style.AlertDialogTheme);
+            bd.setTitle("iStock");
+            bd.setMessage("Paid Amount is more than Net Amount");
+            bd.setCancelable(false);
+            bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    paidAmt_tmp = net_amount + paidAmt_tmp;
+                    sh.get(0).setPaid_amount(paidAmt_tmp);
+                    getSummary();
+                    dialog.dismiss();
+                }
+            });
+            bd.create().show();
+        } else {
+            SummaryFormat(txtnet, netamt_tmp);
+            SummaryFormat(txtvoudis, sh.get(0).getDiscount());
+            SummaryFormat(txtpaidamt, paidAmt_tmp);
+            SummaryFormat(txttotal, totalAmt_tmp);
+            SummaryFormat(txtfoc, foc_tmp + itemDis_tmp + sh.get(0).getDiscount());
+            sh.get(0).setTax_amount(taxamt_tmp);
+            SummaryFormat(txttaxamt, tax_amount);
+            SummaryFormat(txttaxamT, tax_amount);
+        }
     }
 
     public static void getSummary() {
@@ -5207,7 +5373,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 btndiscount.setEnabled(true);
             }
 
-            spinDis = view.findViewById(R.id.spinDis);
+           /* spinDis = view.findViewById(R.id.spinDis);
             if (frmlogin.candiscount == 0) {
                 spinDis.setEnabled(false);
             } else {
@@ -5264,7 +5430,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 public void onNothingSelected(AdapterView<?> parent) {
                     // TODO Auto-generated method stub
                 }
-            });
+            });*/
             //endregion not use
 
             //price level
@@ -5455,7 +5621,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             imgsubQty = view.findViewById(R.id.imgSubqty);
 
 
-           /* //Initialize Dis_Type
+            //Initialize Dis_Type
             sqlString = "select * from Dis_Type where itemdiscounttypeid= " + sd.get(itemPosition).getDis_type();
             cursor = DatabaseHelper.rawQuery(sqlString);
             if (cursor != null && cursor.getCount() != 0) {
@@ -5550,7 +5716,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         disDa.dismiss();
                     }
                 }
-            });*/
+            });
 //add detremark in editinfo
             detremark = view.findViewById(R.id.txtDetRemark);
             detremark.setText(sd.get(itemPosition).getDetremark() == "NULL" ? "" : sd.get(itemPosition).getDetremark());
@@ -5727,7 +5893,13 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
 
             Button save = view.findViewById(R.id.imgSave);
-            Button cancel = view.findViewById(R.id.Cancel);
+            Button btncancel = view.findViewById(R.id.Cancel);
+            btncancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -5758,11 +5930,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 
                         } else {
-//                            double dis_percent = sale_entry_tv.dis_percent;
-//                            sd.get(itemPosition).setDis_percent(dis_percent);
-//                            double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
-//                            //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
-//                            sd.get(itemPosition).setDis_price(dis_price);
+                            double dis_percent = sale_entry_tv.dis_percent;
+                            sd.get(itemPosition).setDis_percent(dis_percent);
+                            double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
+                            //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
+                            sd.get(itemPosition).setDis_price(dis_price);
                         }
                     }
 //                    else if(sd.get(itemPosition).getDis_type()==5){
@@ -5788,7 +5960,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private Double getQtyValue(EditText editText) {
+    private Double getQtyValue(TextView editText) {
         String unitQty = editText.getText().toString().trim();
         double returnValue = Double.parseDouble(unitQty.isEmpty() ? "1" : unitQty);
         returnValue = (returnValue < 1) ? 1 : returnValue;
@@ -6053,16 +6225,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     if (keynum.length() > 0) {
                         if (keynum.contains("%")) {
                             keynum = keynum.substring(0, keynum.length() - 1);
-                            sale_entry.dis_percent = Double.parseDouble(keynum);
-                            sale_entry.dis_typepercent = true;
-                            if (sale_entry.dis_percent > 99) {
+                            sale_entryold.dis_percent = Double.parseDouble(keynum);
+                            sale_entryold.dis_typepercent = true;
+                            if (sale_entryold.dis_percent > 99) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
                                 builder.setTitle("iStock");
                                 builder.setMessage("Discount Percent should be 0 to 99!");
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        sale_entry.dis_percent = 0.0;
+                                        sale_entryold.dis_percent = 0.0;
                                         //source.setText(sale_entry.dis_percent + "%");
                                         msg.dismiss();
 
@@ -6071,15 +6243,15 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                 msg = builder.create();
                                 msg.show();
                             } else {
-                                btndiscount.setText(sale_entry.dis_percent + "%");
+                                btndiscount.setText(sale_entryold.dis_percent + "%");
                             }
 
                         } else {
-                            sale_entry.disamt = Double.parseDouble(keynum);
-                            sale_entry.dis_typepercent = true;
-                            sale_entry.dis_percent = 0;
-                            btndiscount.setText(String.valueOf(sale_entry.disamt));
-                            sale_entry.dis_typepercent = false;
+                            sale_entryold.disamt = Double.parseDouble(keynum);
+                            sale_entryold.dis_typepercent = true;
+                            sale_entryold.dis_percent = 0;
+                            btndiscount.setText(String.valueOf(sale_entryold.disamt));
+                            sale_entryold.dis_typepercent = false;
                         }
                     }
 //                    sale_entry.getSummary();
@@ -6399,9 +6571,20 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //            frame.setVisibility(View.GONE);
 //        }, this::showToast);
 
-        RTPrinter rtPrinter = BaseApplication.getInstance().getRtPrinter();
-        BluetoothPrinter bluetoothPrinter = new BluetoothPrinter(sale_entry_tv.this, rtPrinter);
-        bluetoothPrinter.printFromView(rootView);
+
+        for (int i = 0; i < billPrintCount; i++) {
+            if (SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
+                SunmiPrintHelper.getInstance().printView(rootView);
+            } else {
+                RTPrinter rtPrinter = BaseApplication.getInstance().getRtPrinter();
+                BluetoothPrinter bluetoothPrinter = new BluetoothPrinter(sale_entry_tv.this, rtPrinter);
+                bluetoothPrinter.printFromView(rootView);
+            }
+        }
+
+//        RTPrinter rtPrinter = BaseApplication.getInstance().getRtPrinter();
+//        BluetoothPrinter bluetoothPrinter = new BluetoothPrinter(sale_entry_tv.this, rtPrinter);
+//        bluetoothPrinter.printFromView(rootView);
 //        File file = bluetoothPrinter.saveBitmap(bmpVoucher);
 //        if(file.exists()){
 //            Uri uri = Uri.parse(file.getPath());

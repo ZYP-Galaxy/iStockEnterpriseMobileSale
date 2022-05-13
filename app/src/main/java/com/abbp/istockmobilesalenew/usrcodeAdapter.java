@@ -1059,7 +1059,7 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
     }
 
 
-    private static long GetPriceLevel() {
+    public static long GetPriceLevel() {
         long level = 0;
         boolean useUserpricelevel = false;
         boolean useCustpricelevel = false;
