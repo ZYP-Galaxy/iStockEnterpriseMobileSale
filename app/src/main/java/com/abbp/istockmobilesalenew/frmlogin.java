@@ -173,8 +173,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
         globalsetting.username = "ThuraTun";
 
-        GettingIMEINumber.IMEINO = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
         dataBaseHelper = DatabaseHelper.getInstance(this, DB_NAME);
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
@@ -198,7 +196,10 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             dateEditor.putString("datetime", "1990-01-01");
             dateEditor.commit();
         }
+
         System.out.println(updatetime.getString("datetime", "") + globalsetting.datetime);
+
+        GettingIMEINumber.IMEINO = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
         BaseApplication.instance.setCurrentCmdType(BaseEnum.CMD_ESC);
         BaseApplication.instance.setCurrentConnectType(BaseEnum.CON_BLUETOOTH);
@@ -464,7 +465,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             case R.id.btnRegister:
                 final String id = RegisterID.getString("register", "0");
                 if (isRegister()) {
-
 
                     new AlertDialog.Builder(this, R.style.AlertDialogTheme)
                             .setTitle("iStock")
@@ -751,15 +751,12 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                         dateEditor.commit();
                     }
 
-                    /*String ipp = sh_ip.getString("ip", "empty");
-                    String portt = sh_port.getString("port", "empty");
-                    String urll = "";
-                    try {
-                        urll = "http://" + ipp + ":" + portt + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + URLEncoder.encode(currentDateandTime, "UTF-8") + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    Log.i("frmlogin", urll);
+                    ip = sh_ip.getString("ip", "empty");
+                    port = sh_port.getString("port", "empty");
+
+                    //Update Downloaded DateTime to AccessedUser
+                    String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + currentDateandTime + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                    Log.i("frmlogin", url);
                     RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
                     final Response.Listener<String> listenerr = new Response.Listener<String>() {
                         @Override
@@ -774,28 +771,18 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                             Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
                         }
                     };
-                    StringRequest reqq = new StringRequest(Request.Method.GET, urll, listenerr, errorr);
-                    requestt.add(reqq);*/
 
+                    StringRequest reqq = new StringRequest(Request.Method.GET, url, listenerr, errorr);
+                    requestt.add(reqq);
 
-                    ip = sh_ip.getString("ip", "empty");
-                    port = sh_port.getString("port", "empty");
                     //String url = "http://" + ip + ":" + port + "/api/DataSync/GetData?download=true";
-                    String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+                    url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
 
                     Log.i("frmlogin", url);
                     RequestQueue request = Volley.newRequestQueue(context);
-                    String finalCurrentDateandTime = currentDateandTime;
                     final Response.Listener<String> listener = new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-//                            JSONArray jarr = null;
-//                            try {
-//                                jarr = new JSONArray(response);
-//                                jobj = jarr.getJSONObject(0);
-//                            } catch (JSONException e) {
-//                                e.printStackTrace();
-//                            }
 
                             new Thread(new Runnable() {
                                 @Override
@@ -820,26 +807,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
                                             pbDownload.setProgress(progress + 1);
                                         }
-
-                                        //Update Downloaded DateTime to AccessedUser
-                                        String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + URLEncoder.encode(finalCurrentDateandTime, "UTF-8") + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
-                                        Log.i("frmlogin", url);
-                                        RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
-                                        final Response.Listener<String> listenerr = new Response.Listener<String>() {
-                                            @Override
-                                            public void onResponse(String response) {
-                                                System.out.println(response);
-                                            }
-                                        };
-
-                                        final Response.ErrorListener errorr = new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error) {
-                                                Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
-                                            }
-                                        };
-                                        StringRequest reqq = new StringRequest(Request.Method.GET, url, listenerr, errorr);
-                                        requestt.add(reqq);
 
                                         dialog.dismiss();
 

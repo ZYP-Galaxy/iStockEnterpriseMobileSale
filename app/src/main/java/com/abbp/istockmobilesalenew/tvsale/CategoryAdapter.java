@@ -32,6 +32,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
     AlertDialog da;
     public static String categoryid = null;
 
+    public static String itemposition = "1";
+
     public CategoryAdapter(Context context, ArrayList<category> data, RecyclerView rv, Button button, AlertDialog da) {
         this.context = context;
         this.data = data;
@@ -109,44 +111,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                         rv.setLayoutManager(classlinear);
 
                     } else {
-//                            Toast.makeText(sale_entry_tv)
-//                            holder.btn.setBackgroundResource(R.drawable.categoryclick);
 
-/*
-                        if (frmmain.use_pic==1){
-
-                            sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
-                            sale_entry_tv.fitercode="Description";
-                            Cursor cursor=DatabaseHelper.rawQuery("select uc.usr_code,description,path from Usr_Code uc join usr_code_img uic on uic.usr_code=uc.usr_code where uc.category='"+String.valueOf(data.get(position).getCategory())+"'");
-                            if(sale_entry_tv.usr_codes.size()>0) sale_entry_tv.usr_codes.clear();
-                            if(cursor!=null&&cursor.getCount()!=0)
-                            {
-                                if(cursor.moveToFirst())
-                                {
-                                    do {
-                                        String usr_code=cursor.getString(cursor.getColumnIndex("usr_code"));
-                                        String description=cursor.getString(cursor.getColumnIndex("description"));
-                                        String path=cursor.getString(cursor.getColumnIndex("path"));
-                                        sale_entry_tv.usr_codes.add(new usr_code(usr_code,description,path));
-                                    }while (cursor.moveToNext());
-
-                                }
-
-                            }
-                            cursor.close();
-                            usrcodeAdapter ad=new usrcodeAdapter(context,sale_entry_tv.usr_codes,rv,data);
-                            rv.setAdapter(ad);
-                            GridLayoutManager gridLayoutManager = new GridLayoutManager(context.getApplicationContext(),3);
-                            rv.setLayoutManager(gridLayoutManager);
-
-
-                        }else {*/
                         saleorder_entry.imgFilterCode.setVisibility(View.GONE);
                         saleorder_entry.fitercode = "Description";
                         Cursor cursor = DatabaseHelper.rawQuery("select distinct usr_code,description,isinactive from Usr_Code where isdeleted=0 and category=" + data.get(position).getCategory() + " order by code,usr_code");
                         if (saleorder_entry.usr_codes.size() > 0) saleorder_entry.usr_codes.clear();
                         if (frmmain.withoutclass.equals("true")) {
-                            saleorder_entry.usr_codes.add(new usr_code("Back", "Back"));
+                            //saleorder_entry.usr_codes.add(new usr_code("Back", "Back", saleprice));
                         }
                         if (cursor != null && cursor.getCount() != 0) {
                             if (cursor.moveToFirst()) {
@@ -155,7 +126,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                                     String description = cursor.getString(cursor.getColumnIndex("description"));
                                     int isinactive = cursor.getInt(cursor.getColumnIndex("isinactive"));
                                     if (isinactive == 0) {
-                                        saleorder_entry.usr_codes.add(new usr_code(usr_code, description));
+                                        //saleorder_entry.usr_codes.add(new usr_code(usr_code, description, saleprice));
                                     }
 
 
@@ -212,7 +183,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                             sale_entry_tv.usr_codes.clear();
                         }
 
-                        sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
+                        //sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
                         Cursor cursor = DatabaseHelper.DistinctCategorySelectQuery("Usr_Code", new String[]{"class", "classname"}, "classname");
                         if (sale_entry_tv.class_items.size() > 0) sale_entry_tv.class_items.clear();
                         if (cursor != null && cursor.getCount() != 0) {
@@ -235,8 +206,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                     } //Back
                     else {
 
-                        sale_entry_tv.fitercode = "Description";
-                        Cursor cursor = DatabaseHelper.rawQuery("select distinct usr_code,description from Usr_Code where isdeleted=0 and isinactive=0 and category=" + data.get(position).getCategory() + " order by code,usr_code");
+                        //sale_entry_tv.fitercode = "Description";
+                        Cursor cursor = DatabaseHelper.rawQuery("select distinct usr_code,description,sale_price from Usr_Code where unit_type=1 AND isdeleted=0 and isinactive=0 and category=" + data.get(position).getCategory() + " order by " + sale_entry_tv.sortcode);
                         if (sale_entry_tv.usr_codes.size() > 0) sale_entry_tv.usr_codes.clear();
 
                         if (cursor != null && cursor.getCount() != 0) {
@@ -244,6 +215,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                                 do {
                                     String usr_code = cursor.getString(cursor.getColumnIndex("usr_code"));
                                     String description = cursor.getString(cursor.getColumnIndex("description"));
+                                    double saleprice = cursor.getDouble(cursor.getColumnIndex("sale_price"));
                                     sale_entry_tv.usr_codes.add(new usr_code(usr_code, description));
                                 } while (cursor.moveToNext());
 
@@ -255,12 +227,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                         GridLayoutManager gridLayoutManager = new GridLayoutManager(context.getApplicationContext(), 4);
                         rv.setLayoutManager(gridLayoutManager);
                         rv.setAdapter(adapter);
+
+                        //change category name when click
+                        sale_entry_tv.txtItemOf.setText(data.get(position).getName());
+                        itemposition = String.valueOf(data.get(position).getCategory());
                     }
 
                 }
             });
         }
-        
+
         if (position == 0) {
             holder.btn.performClick();
         }

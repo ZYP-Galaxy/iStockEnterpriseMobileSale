@@ -93,7 +93,7 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
                 @Override
                 public void onClick(View v) {
                     if (data.get(position).getUsr_code().equals("Back")) {
-                        sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
+                        //sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
                         sale_entry_tv.fitercode = "Category";
                         if (categories.size() > 0) {
                             categories.clear();
@@ -131,7 +131,8 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
                 }
             });
 
-        } else {
+        } //use_pic
+        else {
 
             holder.txtName.setText(String.format(" %s", data.get(position).getDescription()));
             //String saleprice = String.format("%,." + frmmain.price_places + "f", data.get(position).getSaleprice());
@@ -142,7 +143,7 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
                 public void onClick(View v) {
                     if (data.get(position).getUsr_code().equals("Back")) {
 
-                        sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
+                        //sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
                         sale_entry_tv.fitercode = "Category";
                         if (categories.size() > 0) {
                             categories.clear();

@@ -2,7 +2,6 @@ package com.abbp.istockmobilesalenew;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.provider.ContactsContract;
 //import android.support.v7.app.AlertDialog;
 //import android.support.v7.widget.CardView;
 //import android.support.v7.widget.GridLayoutManager;
@@ -12,10 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
