@@ -9,6 +9,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyViewHolder> {
@@ -44,7 +46,13 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.MyView
                     saleorder_entry.sh.get(0).setLocationid(data.get(position).getLocationid());
                     da.dismiss();
 
-                } else {
+                }
+                else if(LocationAdapter.this.context.toString().contains("sale_entry_tv")) {
+                    btn.setText(/*data.get(position).getLocationid()+":"+*/data.get(position).getName());
+                    sale_entry_tv.sh.get(0).setLocationid(data.get(position).getLocationid());
+                    da.dismiss();
+                }
+                else {
                     btn.setText(/*data.get(position).getLocationid()+":"+*/data.get(position).getName());
                     sale_entry.sh.get(0).setLocationid(data.get(position).getLocationid());
                     da.dismiss();

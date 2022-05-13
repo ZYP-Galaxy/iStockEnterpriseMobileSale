@@ -23,11 +23,11 @@ public class SalesmenAdpater extends RecyclerView.Adapter<SalesmenAdpater.MultiV
         this.data = data;
         if(sale_entry.SaleVouSalesmen.size()>0)
         {
-           for(int i=0;i<sale_entry.SaleVouSalesmen.size();i++)
+           for(int i = 0; i< sale_entry.SaleVouSalesmen.size(); i++)
            {
                for(int j=0;j<data.size();j++)
                {
-                   if(data.get(j).getSalesmen_Id()==sale_entry.SaleVouSalesmen.get(i).getSalesmen_Id())
+                   if(data.get(j).getSalesmen_Id()== sale_entry.SaleVouSalesmen.get(i).getSalesmen_Id())
                    {
                        data.get(j).setChecked(true);
                    }

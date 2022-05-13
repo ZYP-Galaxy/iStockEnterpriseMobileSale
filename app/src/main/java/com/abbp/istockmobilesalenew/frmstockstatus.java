@@ -93,7 +93,7 @@ public class frmstockstatus extends AppCompatActivity {
         btnmenu = findViewById(R.id.btnmenu);
         choosecategory = findViewById(R.id.choosecategory);
         chooselocation = findViewById(R.id.chooselocation);
-        gridclassview = findViewById(R.id.recycler_category);
+        gridclassview = findViewById(R.id.cvv);
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -370,7 +370,7 @@ public class frmstockstatus extends AppCompatActivity {
                         object = stockstatusjarr.getJSONObject(i);
                         usrcode = object.getString("usrcode");
 
-                        description = object.getString("description");
+                        description = object.optString("description",usrcode);
                         saleamount = object.getString("saleamount");
                         balanceqty = object.getString("totalbalance");
 //                        balanceqty = "";
@@ -384,11 +384,12 @@ public class frmstockstatus extends AppCompatActivity {
 //                        }
 //                        Toast.makeText(getApplicationContext(),usrcode+" "+description+" "+saleamount+" "+balanceqty, Toast.LENGTH_LONG).show();
 //                        if(usrcode.toLowerCase().contains(findcode.getText().toString().toLowerCase())) {
+                        String description1 = description.length() == 0 || description.equals("null")? usrcode : description;
                         if (!searchcode.equals("")) {
                             if (usrcode.toLowerCase().contains(searchcode)) {
                                 System.out.println(usrcode + " " + description + " " + saleamount + " " + balanceqty + " " + searchcode);
 
-                                stockStatuses.add(new StockStatus(usrcode, description, saleamount, balanceqty));
+                                stockStatuses.add(new StockStatus(usrcode, description1, saleamount, balanceqty));
                                 searchcode = "";
                                 if (stockStatuses.size() == 0) {
                                     Toast.makeText(getApplicationContext(), "Anything does not match with " + searchcode, Toast.LENGTH_LONG).show();
@@ -396,17 +397,15 @@ public class frmstockstatus extends AppCompatActivity {
                                 break;
                             }
                         } else {
-                            stockStatuses.add(new StockStatus(usrcode, description, saleamount, balanceqty));
+                            stockStatuses.add(new StockStatus(usrcode, description1, saleamount, balanceqty));
                         }
                     }
-//                    stockStatusAdapter=new StockStatusAdapter(frmstockstatus.this,stockStatuses);
-//                    stockStatusAdapter.notifyDataSetChanged();
+
                     rcv.setAdapter(stockStatusAdapter);
                     LinearLayoutManager lm = new LinearLayoutManager(frmstockstatus.this, LinearLayoutManager.VERTICAL, false);
                     rcv.setLayoutManager(lm);
                     stockStatusAdapter.notifyDataSetChanged();
-//                    System.out.println(stockstatusjarr);
-//
+
                     pb.dismiss();
                 } catch (JSONException e) {
                     pb.dismiss();
@@ -421,20 +420,18 @@ public class frmstockstatus extends AppCompatActivity {
         final Response.ErrorListener error = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                pb.dismiss();
+
                 System.out.println("this is error" + error.toString());
                 stockStatuses.clear();
                 pb.dismiss();
                 Toast.makeText(frmstockstatus.this, "You are in Offline. Please check your connection!", Toast.LENGTH_LONG).show();
-//                adp.notifyDataSetChanged();
-//                txtCount.setText(String.valueOf(salelists.size()));
-//                txtTotal.setText("0.0");
+
 
             }
         };
         StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
         requestQueue.add(req);
-//        pb.dismiss();
+
 
     }
 

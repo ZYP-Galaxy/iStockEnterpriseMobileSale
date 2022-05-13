@@ -9,6 +9,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
 public class PaymentTypeAdapter extends RecyclerView.Adapter<PaymentTypeAdapter.MyViewHolder> {
@@ -49,7 +51,21 @@ public class PaymentTypeAdapter extends RecyclerView.Adapter<PaymentTypeAdapter.
                         saleorder_entry.getSummary();
                     }
                     da.dismiss();
-                } else {
+                }
+                else if(PaymentTypeAdapter.this.context.toString().contains("sale_entry_tv")){
+                    btn.setText(/*data.get(position).getPay_type()+":"+*/data.get(position).getName());
+                    sale_entry_tv.sh.get(0).setPay_type(data.get(position).getPay_type());
+                    if (data.get(position).getPay_type() == 1) {
+                        sale_entry_tv.txtpaidamt.setText("0");
+                        sale_entry_tv.sh.get(0).setPaid_amount(0);
+                        sale_entry_tv.getSummary();
+                    }
+//                 else if(data.get(position).getPay_type()==2){
+//                     sale_entry.bindingCreditBalance();
+//                 }
+                    da.dismiss();
+                }
+                else {
                     btn.setText(/*data.get(position).getPay_type()+":"+*/data.get(position).getName());
                     sale_entry.sh.get(0).setPay_type(data.get(position).getPay_type());
                     if (data.get(position).getPay_type() == 1) {

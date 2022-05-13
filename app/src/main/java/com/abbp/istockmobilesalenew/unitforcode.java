@@ -1,5 +1,7 @@
 package com.abbp.istockmobilesalenew;
 
+import androidx.annotation.NonNull;
+
 public class unitforcode {
     int code;
     String usr_code;
@@ -147,5 +149,11 @@ public class unitforcode {
 
     public void setSale_price5(double sale_price5) {
         this.sale_price5 = sale_price5;
+    }
+
+
+    @Override
+    public String toString() {
+        return unitname.toString();
     }
 }

@@ -74,7 +74,13 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         txtUsername = (TextView) findViewById(R.id.txtUsername);
         txtUsername.setText("   " + frmlogin.username);
         cpyname = findViewById(R.id.cpyname);
-
+        if(!frmlogin.isTabletMode){
+            cardsaleorder.setVisibility(View.GONE);
+            cardsaleorderlist.setVisibility(View.GONE);;
+            cardstock.setVisibility(View.GONE);;
+            cardcustoutstand.setVisibility(View.GONE);;
+//            cardsaleorder.setVisibility(View.GONE);;
+        }
         cardsale.setOnClickListener(this);
         cardsalelist.setOnClickListener(this);
         cardsaleorderlist.setOnClickListener(this);
@@ -438,7 +444,12 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.cardsale:
-                intent = new Intent(frmmain.this, sale_entry_tv.class);
+                if(frmlogin.isTabletMode) {
+                    intent = new Intent(frmmain.this, sale_entry.class);
+                }
+                else{
+                    intent = new Intent(frmmain.this, sale_entry_tv.class);
+                }
                 startActivity(intent);
                 finish();
                 break;

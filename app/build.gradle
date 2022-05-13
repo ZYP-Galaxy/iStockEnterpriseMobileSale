@@ -58,5 +58,5 @@ dependencies {
     implementation 'com.microsoft.signalr:signalr:1.0.0'
     implementation 'com.github.anggastudio:Printama:0.9.1'
 
-
+    implementation 'com.sunmi:printerlibrary:1.0.13'
 }

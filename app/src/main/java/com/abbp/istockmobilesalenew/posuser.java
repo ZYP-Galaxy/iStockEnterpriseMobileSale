@@ -23,6 +23,7 @@ public class posuser {
     private int isallowovercreditlimit;
     private String isknockcode;
     private int istabletuser;
+    private int istvuser;
     private int isallowpricelevel;
     private int canselectcustomer;
     private int canselectlocation;
@@ -53,6 +54,43 @@ public class posuser {
         this.isallowpricelevel = isallowpricelevel;
         this.canselectcustomer = canselectcustomer;
         this.canselectlocation = canselectlocation;
+    }
+
+    public posuser(int userid, String name, int branchid, String shortdesc, String password, int canchangesaleprice, int canchangepurprice, int canchangedate, int defaultlocationid, int candiscount, int isusetax, int ishidepurprice, int ishidesaleprice, int ishidepurcostprice, int isviewallsalepricelevel, int isinactive, int defaultbranchid, int defaultcashid, int isallowsysdatechange, int isallowovercreditlimit, String isknockcode, int istabletuser, int istvuser,  int isallowpricelevel, int canselectcustomer, int canselectlocation) {
+        this.userid = userid;
+        this.name = name;
+        this.branchid = branchid;
+        this.shortdesc = shortdesc;
+        this.password = password;
+        this.canchangesaleprice = canchangesaleprice;
+        this.canchangepurprice = canchangepurprice;
+        this.canchangedate = canchangedate;
+        this.defaultlocationid = defaultlocationid;
+        this.candiscount = candiscount;
+        this.isusetax = isusetax;
+        this.ishidepurprice = ishidepurprice;
+        this.ishidesaleprice = ishidesaleprice;
+        this.ishidepurcostprice = ishidepurcostprice;
+        this.isviewallsalepricelevel = isviewallsalepricelevel;
+        this.isinactive = isinactive;
+        this.defaultbranchid = defaultbranchid;
+        this.defaultcashid = defaultcashid;
+        this.isallowsysdatechange = isallowsysdatechange;
+        this.isallowovercreditlimit = isallowovercreditlimit;
+        this.isknockcode = isknockcode;
+        this.istabletuser = istabletuser;
+        this.istvuser = istvuser;
+        this.isallowpricelevel = isallowpricelevel;
+        this.canselectcustomer = canselectcustomer;
+        this.canselectlocation = canselectlocation;
+    }
+
+    public int getIstvuser() {
+        return istvuser;
+    }
+
+    public void setIstvuser(int istvuser) {
+        this.istvuser = istvuser;
     }
 
     public int getCanselectcustomer() {

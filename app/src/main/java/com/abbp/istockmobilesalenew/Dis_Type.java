@@ -1,5 +1,7 @@
 package com.abbp.istockmobilesalenew;
 
+import androidx.annotation.NonNull;
+
 public class Dis_Type {
     long dis_type;
     String name;
@@ -46,5 +48,8 @@ public class Dis_Type {
     }
 
 
-
+    @Override
+    public String toString() {
+        return name.toString();
+    }
 }

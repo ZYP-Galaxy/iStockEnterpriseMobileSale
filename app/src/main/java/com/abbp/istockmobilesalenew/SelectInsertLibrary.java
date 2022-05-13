@@ -1,20 +1,8 @@
 package com.abbp.istockmobilesalenew;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.drawable.ColorDrawable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.PopupWindow;
-import android.widget.TextView;
-
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,11 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 
 public class SelectInsertLibrary {
     String sqlString;
@@ -210,7 +193,7 @@ public class SelectInsertLibrary {
 
                         long code = codeobj.getLong("code");
                         String usrcode = codeobj.getString("usrcode");
-                        String description = codeobj.optString("description", "null");
+                        String description = codeobj.optString("description", usrcode);
                         double saleprice = codeobj.optDouble("saleprice", 0);
                         int salecur = codeobj.optInt("salecur", 1);
                         long classid = codeobj.getLong("class");
@@ -451,6 +434,7 @@ public class SelectInsertLibrary {
                         int isallowovercreditlimit = postobj.optBoolean("isallowovercreditlimit", false) == true ? 1 : 0;
                         String isknockcode = postobj.optString("isknockcode", "null");
                         int istabletuser = postobj.optBoolean("istabletuser", false) == true ? 1 : 0;
+                        int istvuser = postobj.optBoolean("istvuser", false) == true ? 1 : 0;
                         int isallowpricelevel = postobj.optBoolean("isallowpricelevel", false) == true ? 1 : 0;
                         int canselectcustomer = postobj.optBoolean("canselectcustomer", false) == true ? 1 : 0;
                         int canselectlocation = postobj.optBoolean("canselectlocation", false) == true ? 1 : 0;
@@ -484,7 +468,7 @@ public class SelectInsertLibrary {
                         values2.put("isallowovercreditlimit", isallowovercreditlimit);
                         values2.put("isknockcode", isknockcode);
                         values2.put("istabletuser", istabletuser);
-
+                        values2.put("istvuser", istvuser);
                         values2.put("isallowpricelevel", isallowpricelevel);
                         values2.put("canselectcustomer", canselectcustomer);
                         values2.put("canselectlocation", canselectlocation);
@@ -597,7 +581,7 @@ public class SelectInsertLibrary {
 
                         long code = codeobj.getLong("code");
                         String usrcode = codeobj.getString("usrcode");
-                        String description = codeobj.optString("description", "null");
+                        String description = codeobj.optString("description", usrcode);
                         double saleprice = codeobj.optDouble("saleprice", 0);
                         int salecur = codeobj.optInt("salecur", 1);
                         long classid = codeobj.getLong("class");
@@ -620,7 +604,7 @@ public class SelectInsertLibrary {
 
                         usrcodevalue.put("code", code);
                         usrcodevalue.put("usr_code", usrcode);
-                        usrcodevalue.put("description", description);
+                        usrcodevalue.put("description", description.length()==0?usrcode:description);
                         usrcodevalue.put("sale_price", saleprice);
                         usrcodevalue.put("sale_curr", salecur);
                         usrcodevalue.put("class", classid);

@@ -9,9 +9,12 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
-public class CashInAdapter  extends RecyclerView.Adapter<CashInAdapter.MyViewHolder> {
+public class
+CashInAdapter  extends RecyclerView.Adapter<CashInAdapter.MyViewHolder> {
 
     Context context;
     ArrayList<CashIn> data = new ArrayList<>();
@@ -45,7 +48,13 @@ public class CashInAdapter  extends RecyclerView.Adapter<CashInAdapter.MyViewHol
                     saleorder_entry.sh.get(0).setDef_cashid(data.get(position).getAccountid());
                     da.dismiss();
 
-                } else {
+                }
+                else if(CashInAdapter.this.context.toString().contains("sale_entry_tv")) {
+                    btn.setText(/*data.get(position).getLocationid()+":"+*/data.get(position).getName());
+                    sale_entry_tv.sh.get(0).setDef_cashid(data.get(position).getAccountid());
+                    da.dismiss();
+                }
+                else {
                     btn.setText(/*data.get(position).getLocationid()+":"+*/data.get(position).getName());
                     sale_entry.sh.get(0).setDef_cashid(data.get(position).getAccountid());
                     da.dismiss();

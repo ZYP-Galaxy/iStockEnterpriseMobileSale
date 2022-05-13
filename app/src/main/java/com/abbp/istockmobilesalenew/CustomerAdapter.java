@@ -10,6 +10,8 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyViewHolder> {
@@ -91,6 +93,15 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                 }*/
                     da.dismiss();
 
+                }
+
+                else if(CustomerAdapter.this.context.toString().contains("sale_entry_tv"))
+                {
+                    btn.setText(/*data.get(position).getCustomerid()+":"+*/data.get(position).getName());
+                    sale_entry_tv.sh.get(0).setCustomerid(data.get(position).getCustomerid());
+                    sale_entry_tv.isCreditcustomer=selectInsertLibrary.CheckingCreditCustomer(data.get(position).getCustomerid());
+                    sale_entry_tv.btnpaytype.setText("Cash Down");
+                    da.dismiss();
                 }
                 else
                 {
@@ -175,10 +186,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
         String SP=specialPrice==0?"SP":"SP"+specialPrice;
 
 
-        for(int i=0;i<sale_entry.sd.size();i++)
+        for(int i = 0; i< sale_entry.sd.size(); i++)
         {
             String sqlString="select uc.unit_type,code,description,"+sale_price+",smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
-                    " where uc.unit_type="+sale_entry.sd.get(i).getUnt_type()+" and uc.code="+sale_entry.sd.get(i).getCode();
+                    " where uc.unit_type="+ sale_entry.sd.get(i).getUnit_type()+" and uc.code="+ sale_entry.sd.get(i).getCode();
             Cursor cursor=DatabaseHelper.rawQuery(sqlString);
             if(cursor!=null&&cursor.getCount()!=0)
             {
@@ -230,7 +241,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
         cursor.close();
         if(useCustpricelevel)
         {
-            String sSql ="select pricelevel from customer where customerid ="+sale_entry.sh.get(0).getCustomerid();
+            String sSql ="select pricelevel from customer where customerid ="+ sale_entry.sh.get(0).getCustomerid();
             cursor=DatabaseHelper.rawQuery(sSql);
             if(cursor!=null&&cursor.getCount()!=0)
             {

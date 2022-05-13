@@ -30,7 +30,8 @@ public class reportAdpater extends RecyclerView.Adapter<reportAdpater.MyViewHold
         holder.txtqty.setText(String.valueOf(sale_entry.sd.get(position).getUnit_qty()));
         holder.txtunit.setText(String.valueOf(sale_entry.sd.get(position).getUnit_short()));
         holder.txtprice.setText(String.valueOf(sale_entry.sd.get(position).getSale_price()));
-        Double amt=sale_entry.sd.get(position).getSale_price()*sale_entry.sd.get(position).getUnit_qty();
+        Double amt= sale_entry.sd.get(position).getSale_price()* sale_entry.sd.get(position).getUnit_qty();
+        holder.txtamount.setText(String.valueOf(amt));
         holder.txtamount.setText(String.valueOf(amt));
     }
 

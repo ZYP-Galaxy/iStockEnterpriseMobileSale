@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
 public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHolder> {
@@ -288,6 +290,10 @@ public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHo
                                            saleorder_entry.dis_typepercent=false;
                                        }
                                    }
+                                   else {
+                                       saleorder_entry.sd.get(itemposition).setDis_type(0);
+                                       btn.setText(data.get(0).getName());
+                                   }
                                    saleorder_entry.getSummary();
                                    startOpen=false;
                                    pw.dismiss();
@@ -304,6 +310,266 @@ public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHo
                    da.dismiss();
 
                }//end saleorder
+
+               else if(DisTypeAdapter.this.context.toString().contains("sale_entry_tv"))
+               {
+
+                   btn.setText(data.get(position).getName());
+                   sale_entry_tv.sd.get(itemposition).setDis_type(data.get(position).dis_type);
+                   if(data.get(position).getDis_type()==5)
+                   {
+                       startOpen=true;
+                       LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                       View layout = inflater.inflate(R.layout.keypad,null);
+                       float density=context.getResources().getDisplayMetrics().density;
+                       final PopupWindow pw = new PopupWindow(layout, (int)density*310, (int)density*420, true);
+                       pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                       pw.setOutsideTouchable(false);
+                       pw.showAsDropDown(source);
+                       Button btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btn0,btnc,btndec,btndel,btnenter,btnpercent;
+                       btn1=layout.findViewById(R.id.txt1);
+                       btn2=layout.findViewById(R.id.txt2);
+                       btn3=layout.findViewById(R.id.txt3);
+                       btn4=layout.findViewById(R.id.txt4);
+                       btn5=layout.findViewById(R.id.txt5);
+                       btn6=layout.findViewById(R.id.txt6);
+                       btn7=layout.findViewById(R.id.txt7);
+                       btn8=layout.findViewById(R.id.txt8);
+                       btn9=layout.findViewById(R.id.txt9);
+                       btn0=layout.findViewById(R.id.txt0);
+                       btnc=layout.findViewById(R.id.txtc);
+                       btndec=layout.findViewById(R.id.txtdec);
+                       btnenter=layout.findViewById(R.id.txtenter);
+                       btndel=layout.findViewById(R.id.txtdel);
+                       TextView txtNum=layout.findViewById(R.id.txtNum);
+                       btnpercent=layout.findViewById(R.id.btnpercent);
+                       btnpercent.setVisibility(View.VISIBLE);
+                       txtNum.setText(String.valueOf(keynum));
+                       btnpercent.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btnpercent.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn1.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn1.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn2.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn2.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn3.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               txtNum.setText(keynum+btn3.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn4.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn4.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn5.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn5.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn6.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn6.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn7.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn7.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn8.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn8.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn9.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn9.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btn0.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btn0.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btnc.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText("0");
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btndec.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               if(startOpen==true)
+                               {
+                                   keynum="";
+                                   startOpen=false;
+                               }
+                               txtNum.setText(keynum+btndec.getText());
+                               keynum=txtNum.getText().toString();
+                           }
+                       });
+                       btndel.setOnClickListener(new View.OnClickListener() {
+
+                           @Override
+                           public void onClick(View v) {
+                               if(keynum.length()!=0) {
+                                   keynum=keynum.substring(0,keynum.length()-1);
+                                   txtNum.setText(keynum);
+                                   startOpen=false;
+
+                               }
+
+                           }
+                       });
+                       btnenter.setOnClickListener(new View.OnClickListener() {
+                           @Override
+                           public void onClick(View v) {
+                               try {
+                                   if(keynum.length()>0) {
+                                       if (keynum.contains("%")) {
+                                           keynum=keynum.substring(0,keynum.length()-1);
+                                           sale_entry_tv.dis_percent= Double.parseDouble(keynum);
+                                           sale_entry_tv.dis_typepercent=true;
+                                           if(sale_entry_tv.dis_percent>99)
+                                           {
+                                               AlertDialog.Builder builder=new AlertDialog.Builder(context,R.style.AlertDialogTheme);
+                                               builder.setTitle("iStock");
+                                               builder.setMessage("Discount Percent should be 0 to 99");
+                                               builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                   @Override
+                                                   public void onClick(DialogInterface dialog, int which) {
+
+                                                       sale_entry.dis_percent=0.0;
+                                                       btn.setText(String.valueOf(sale_entry_tv.dis_percent) + "%");
+                                                       msg.dismiss();
+
+                                                   }
+                                               });
+                                               msg=builder.create();
+                                               msg.show();
+                                           }
+                                           else {
+                                               btn.setText(String.valueOf(sale_entry_tv.dis_percent) + "%");
+                                           }
+                                       }
+                                       else {
+
+                                           sale_entry_tv.disamt= Double.parseDouble(keynum);
+                                           sale_entry_tv.dis_typepercent=true;
+                                           sale_entry_tv.dis_percent=0;
+                                           btn.setText(String.valueOf(sale_entry_tv.disamt));
+                                           sale_entry_tv.dis_typepercent=false;
+                                       }
+                                   }
+                                   else {
+                                       sale_entry_tv.sd.get(itemposition).setDis_type(0);
+                                       btn.setText(data.get(0).getName());
+                                   }
+                                   sale_entry_tv.getSummary();
+                                   startOpen=false;
+                                   pw.dismiss();
+                               }
+                               catch (Exception e) {
+
+                               }
+
+
+                           }
+                       });
+                   }
+                   startOpen=false;
+                   da.dismiss();
+
+               }
                else
                {
 
@@ -542,6 +808,10 @@ public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHo
                                            btn.setText(String.valueOf(sale_entry.disamt));
                                            sale_entry.dis_typepercent=false;
                                        }
+                                   }
+                                   else {
+                                       sale_entry.sd.get(itemposition).setDis_type(0);
+                                       btn.setText(data.get(0).getName());
                                    }
                                    sale_entry.getSummary();
                                    startOpen=false;

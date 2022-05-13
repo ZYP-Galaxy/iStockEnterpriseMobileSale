@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -123,7 +122,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
             public void onClick(View v) {
                 if (UnitAdapter.this.context.toString().contains("saleorder_entry")) {
                     System.out.println("click me!!!!!!!!!!!!!!");
-                    saleorder_entry.sd.get(itemposition).setUnt_type(data.get(position).getUnit_type());
+                    saleorder_entry.sd.get(itemposition).setUnit_type(data.get(position).getUnit_type());
                     saleorder_entry.sd.get(itemposition).setUnit_short(data.get(position).getShortdes());
 
                     if (frmmain.isusespecialprice == 1)
@@ -187,7 +186,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
 
                 }//end sale order
                 else {
-                    sale_entry.sd.get(itemposition).setUnt_type(data.get(position).getUnit_type());
+                    sale_entry.sd.get(itemposition).setUnit_type(data.get(position).getUnit_type());
                     sale_entry.sd.get(itemposition).setUnit_short(data.get(position).getShortdes());
 
 
@@ -273,7 +272,7 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
     private void GetDiscountCode(int position) {
         long code = sale_entry.sd.get(position).getCode();
         long locationid = sale_entry.sh.get(0).getLocationid();
-        int unit_type = sale_entry.sd.get(position).getUnt_type();
+        int unit_type = sale_entry.sd.get(position).getUnit_type();
         long level = sale_entry.sd.get(position).getPricelevelid();
         double discount = 0;
         double dispercent = 0;
@@ -334,10 +333,10 @@ public class UnitAdapter extends RecyclerView.Adapter<UnitAdapter.MyViewHolder> 
         int unit_type;
         if (isSaleEntry == true) {
             code = sale_entry.sd.get(itemposition).getCode();
-            unit_type = sale_entry.sd.get(itemposition).getUnt_type();
+            unit_type = sale_entry.sd.get(itemposition).getUnit_type();
         } else {
             code = saleorder_entry.sd.get(itemposition).getCode();
-            unit_type = saleorder_entry.sd.get(itemposition).getUnt_type();
+            unit_type = saleorder_entry.sd.get(itemposition).getUnit_type();
         }
 
         String sqlString = "select usr_code,unit_type from Usr_Code where  code=" + code;
