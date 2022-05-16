@@ -302,7 +302,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ClassAdapter classAdapter;
     Spinner spinDis, spinPricelvl, spinUnit;
     public int billPrintCount = 0;
-    public static String sortcode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

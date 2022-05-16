@@ -206,10 +206,10 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             switchCompat.setChecked(false);
         }
         setUI();
-        if(!checkIsTelevision()){
-            Log.i("frmlogin","not tv device");
-            Toast.makeText(getApplicationContext(),"this is not tv device",Toast.LENGTH_LONG).show();
-        }
+//        if(!checkIsTelevision()){
+//            Log.i("frmlogin","not tv device");
+////            Toast.makeText(getApplicationContext(),"this is not tv device",Toast.LENGTH_LONG).show();
+//        }
 
         CheckConnection();
         context = this;
