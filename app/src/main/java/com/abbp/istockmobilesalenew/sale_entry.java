@@ -6357,7 +6357,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     }
                     b.setMessage("Upload Successful");
 
-                    ConfirmedTranid = Long.parseLong(s);
+//                    ConfirmedTranid = Long.parseLong(s);
+                    ConfirmedTranid = Long.valueOf(0);
                 } else if (ConfirmedTranid == -1) {
                     b.setMessage("Confirm Successful.");
                     ConfirmedTranid = Long.parseLong(s);
@@ -6505,6 +6506,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                 PrintVoucher(tranid);
                             }
 
+                        }
+                        else{
+                            intent = new Intent(sale_entry.this, sale_entry.class);
+                            startActivity(intent);
+                            finish();
                         }
 
                     }

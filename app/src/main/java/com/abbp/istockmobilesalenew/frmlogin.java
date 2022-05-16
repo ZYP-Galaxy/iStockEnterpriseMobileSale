@@ -37,6 +37,7 @@ import android.widget.ToggleButton;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -187,6 +188,23 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         sh_printer = getSharedPreferences("printer", MODE_PRIVATE);
         sh_ptype = getSharedPreferences("ptype", MODE_PRIVATE);
         updatetime = getSharedPreferences("datetime", MODE_PRIVATE);
+        SwitchCompat switchCompat=findViewById(R.id.switchBtn);
+
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+               // switchCompat.setTextOn("On");
+                isTabletMode=switchCompat.isChecked();
+
+//                Toast.makeText(getApplicationContext(),"u TOast me",Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+        if(!isTabletMode){
+
+            switchCompat.setChecked(false);
+        }
         setUI();
         if(!checkIsTelevision()){
             Log.i("frmlogin","not tv device");
@@ -236,18 +254,18 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         btnposdown = findViewById(R.id.btnposdown);
         txtSetting = findViewById(R.id.btnSetting);
         toggleButton=findViewById(R.id.toggleButton);
-        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                isTabletMode=toggleButton.isChecked();
-            }
-        });
-//        if(!toggleButton.isChecked()){
-//            isTabletMode=false;
+//        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                isTabletMode=toggleButton.isChecked();
+//            }
+//        });
+////        if(!toggleButton.isChecked()){
+////            isTabletMode=false;
+////        }
+//        if(!isTabletMode){
+//            toggleButton.setChecked(false);
 //        }
-        if(!isTabletMode){
-            toggleButton.setChecked(false);
-        }
         btnlogin.setOnClickListener(this);
         btnexit.setOnClickListener(this);
         useredit.setOnClickListener(this);

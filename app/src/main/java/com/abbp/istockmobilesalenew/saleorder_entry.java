@@ -188,7 +188,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     public static double paid, changeamount;
     public static boolean fromSaleChange, frombillcount = false;
     public TextView tvChange;
-    static Double  paiddispercent = 0.0;
+    static Double paiddispercent = 0.0;
     public static RelativeLayout rlchangePrice;
     public static RelativeLayout taxlo;
     public static ArrayList<Salesmen> SaleVouSalesmen = new ArrayList<>();
@@ -1052,7 +1052,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         }
     }
 
-    private void detailvou(String taxper, String total, String txtvou, String vouper,String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
+    private void detailvou(String taxper, String total, String txtvou, String vouper, String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
         AlertDialog.Builder bd = new AlertDialog.Builder(saleorder_entry.this);
         View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher, null);
         bd.setCancelable(false);
@@ -1536,7 +1536,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 } else {
                     vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
                 }
-                String paidPer="Paid%";
+                String paidPer = "Paid%";
                 if (sh.get(0).getPaidpercent() > 0) {
                     paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
 //                    sh.get(0).setDiscount_per(custDis);
@@ -1549,7 +1549,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 String txtpaidamt = String.valueOf(sh.get(0).getPaid_amount());
                 String txtfoc = String.valueOf(sh.get(0).getFoc_amount());
                 String txtitem = String.valueOf(sh.get(0).getIstemdis_amount());
-                detailvou(taxper, total, txtvou, vouper,paidPer, txtpaidamt, txttax, txtfoc, txtitem);
+                detailvou(taxper, total, txtvou, vouper, paidPer, txtpaidamt, txttax, txtfoc, txtitem);
             }
         });
 
@@ -4132,8 +4132,8 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 break;
 //not change_date in sale entry txtdate modified by ABBP
             case R.id.txtdate:
-
                 if (frmlogin.canchangedate == 0) {
+                    Toast.makeText(getApplicationContext(), "You have no permission to change date!", Toast.LENGTH_SHORT).show();
                     txtdate.setEnabled(false);
                 } else {
                     ChangeVouDate();
@@ -4543,7 +4543,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                     }
                 });
 //                dialog =
-                        b.create().show();
+                b.create().show();
 //                dialog.show();
             } catch (Exception ee) {
                 pb.dismiss();
@@ -4599,7 +4599,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             public void onResponse(String response) {
                 try {
                     JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jobj=new JSONObject();
+                    JSONObject jobj = new JSONObject();
                     jobj = jsonArray.getJSONObject(0);
 
                     SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();

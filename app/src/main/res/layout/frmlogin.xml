@@ -19,6 +19,48 @@
             android:layout_gravity="right"
             android:padding="20dp"
             android:orientation="horizontal">
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                app:showText="true"
+                android:id="@+id/switchBtn"
+                android:text="Tablet Mode"
+                android:textColor="@color/white"
+                android:textOn="ON"
+                android:textOff="Off"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:checked="true"
+
+                app:thumbTint="@color/white"
+                app:trackTint="@color/colorBlue"
+
+
+
+                android:layout_gravity="center_vertical"
+                android:textSize="15dp"
+
+                />
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="Tablet Mode"
+                android:checked="true"
+                android:trackTint="@color/colorBlue"
+                android:thumbTint="@color/white"
+                android:buttonTint="@color/white"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textOff="TV Mode"
+                android:textOn="Tablet Mode"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textAlignment="center"
+                android:layout_gravity="center"
+                android:textSize="15dp"
+                android:visibility="gone"/>
 
             <ToggleButton
                 android:id="@+id/toggleButton"
@@ -36,7 +78,7 @@
                 android:paddingRight="10dp"
                 android:textAlignment="center"
                 android:layout_gravity="center"
-
+                android:visibility="gone"
                 android:textSize="15dp"/>
 
             <TextView
@@ -158,7 +200,7 @@
                             android:drawableLeft="@drawable/passwordicon"
                             android:ems="10"
                             android:hint="  Password"
-                            android:imeOptions="actionDone|flagNoExtractUi"
+                            android:imeOptions="actionDone"
                             android:inputType="textPassword"
                             android:textColor="@color/white"
                             android:textColorHint="@color/white" />
