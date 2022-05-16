@@ -114,7 +114,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
                         saleorder_entry.imgFilterCode.setVisibility(View.GONE);
                         saleorder_entry.fitercode = "Description";
-                        Cursor cursor = DatabaseHelper.rawQuery("select distinct usr_code,description,isinactive from Usr_Code where isdeleted=0 and category=" + data.get(position).getCategory() + " order by code,usr_code");
+                        Cursor cursor = DatabaseHelper.rawQuery("select distinct usr_code,description,isinactive from Usr_Code where unit_type=1 and isdeleted=0  and category=" + data.get(position).getCategory() + " order by code,usr_code");
                         if (saleorder_entry.usr_codes.size() > 0) saleorder_entry.usr_codes.clear();
                         if (frmmain.withoutclass.equals("true")) {
                             //saleorder_entry.usr_codes.add(new usr_code("Back", "Back", saleprice));

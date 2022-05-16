@@ -133,15 +133,13 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
         else {
 
             holder.txtName.setText(String.format(" %s", data.get(position).getDescription()));
-            //String saleprice = String.format("%,." + frmmain.price_places + "f", data.get(position).getSaleprice());
-            holder.txtPrice.setText("");
+            String saleprice = String.format("%,." + frmmain.price_places + "f", data.get(position).getSalePrice());
+            holder.txtPrice.setText(saleprice);
             holder.layoutItem.setBackgroundResource(R.drawable.usercodegradiant);
             holder.layoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (data.get(position).getUsr_code().equals("Back")) {
-
-                        //sale_entry_tv.imgFilterCode.setVisibility(View.GONE);
                         sale_entry_tv.fitercode = "Category";
                         if (categories.size() > 0) {
                             categories.clear();

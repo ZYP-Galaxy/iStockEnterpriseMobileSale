@@ -1,22 +1,29 @@
 package com.abbp.istockmobilesalenew;
 
-public class usr_code  {
+public class usr_code {
     private int code;
     private String usr_code;
     private String description;
     private String classname;
     private String path;
     private double sale_price;
+
     public usr_code(String usr_code, String description) {
         this.usr_code = usr_code;
         this.description = description;
 
     }
 
-    public usr_code(String usr_code,String description,String path){
-        this.usr_code=usr_code;
-        this.description=description;
-        this.path=path;
+    public usr_code(String usr_code, String description, double sale_price) {
+        this.usr_code = usr_code;
+        this.description = description;
+        this.sale_price = sale_price;
+    }
+
+    public usr_code(String usr_code, String description, String path) {
+        this.usr_code = usr_code;
+        this.description = description;
+        this.path = path;
     }
 
     public usr_code(int code, String usr_code, String description, double sale_price) {
@@ -46,11 +53,11 @@ public class usr_code  {
         return path;
     }
 
-    public double getSale_price() {
+    public double getSalePrice() {
         return sale_price;
     }
 
-    public void setSale_price(double sale_price) {
+    public void setSalePrice(double sale_price) {
         this.sale_price = sale_price;
     }
 }

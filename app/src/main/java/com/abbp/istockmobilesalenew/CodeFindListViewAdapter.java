@@ -48,7 +48,7 @@ public class CodeFindListViewAdapter extends ArrayAdapter<usr_code> {
 
         holder.code.setText(item.getUsr_code());
         holder.description.setText(item.getDescription());
-        SummaryFormat(holder.price,item.getSale_price());
+        SummaryFormat(holder.price,item.getSalePrice());
         return convertView;
     }
     private static void SummaryFormat(TextView source,double value) {
