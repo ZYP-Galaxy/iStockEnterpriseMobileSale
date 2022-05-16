@@ -297,6 +297,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ClassAdapter classAdapter;
     Spinner spinDis, spinPricelvl, spinUnit;
     public int billPrintCount = 0;
+    public static String sortcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -632,20 +633,36 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     txttax = "0";
                 }
 
+//                String vouper = "Vou Discount";
+//                if (custDis > 0) {
+//                    vouper = "Vou Discount( " + custDis + "% )";
+//                    sh.get(0).setDiscount_per(custDis);
+//                    getSummary();
+//                } else {
+//                    vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
+//                }
                 String vouper = "Vou Discount";
-                if (custDis > 0) {
+                if (sh.get(0).getDiscount_per() > 0) {
                     vouper = "Vou Discount( " + custDis + "% )";
                     sh.get(0).setDiscount_per(custDis);
                     getSummary();
                 } else {
                     vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
                 }
+                String paidPer="Paid%";
+                if (sh.get(0).getPaidpercent() > 0) {
+                    paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
+//                    sh.get(0).setDiscount_per(custDis);
+                    getSummary();
+                } else {
+                    paidPer = "Paid" + (sh.get(0).getPaidpercent() > 0 ? "( " + sh.get(0).getPaidpercent() + "% )" : "");
+                }
                 String total = txttotal.getText().toString();
                 String txtvou = String.valueOf(sh.get(0).getDiscount());
                 String txtpaidamt = String.valueOf(sh.get(0).getPaid_amount());
                 String txtfoc = String.valueOf(sh.get(0).getFoc_amount());
                 String txtitem = String.valueOf(sh.get(0).getIstemdis_amount());
-                detailvou(taxper, total, txtvou, vouper, txtpaidamt, txttax, txtfoc, txtitem);
+                detailvou(taxper, total, txtvou, vouper,paidPer, txtpaidamt, txttax, txtfoc, txtitem);
             }
         });
 
@@ -788,7 +805,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 
     // Add detail btn in sale entry on 18/6/2019
-    private void detailvou(String taxper, String total, String txtvou, String vouper, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
+    private void detailvou(String taxper, String total, String txtvou, String vouper,String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
         AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this);
         View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher_tv, null);
         bd.setCancelable(false);
@@ -803,7 +820,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         txtvoudis = view.findViewById(R.id.txtvoudisamt);
         sale_entry_tv.txtpaidamt = view.findViewById(R.id.txtPaidAmt);
         sale_entry_tv.txtpaid = view.findViewById(R.id.txtPaidlabel);
-        sale_entry_tv.txtpaid.setText("Paid%");
+        sale_entry_tv.txtpaid.setText(paidPer);
         //txtpaid=view.findViewById(R.id.txtPaid);
         taxlo = view.findViewById(R.id.taxlo);
         txtitemDisAmt.setText(txtitem);

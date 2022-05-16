@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -117,7 +118,14 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.add) {
-            Intent intent = new Intent(frmsalelist.this, sale_entry.class);
+            Intent intent;
+            if(frmlogin.isTabletMode){
+                intent = new Intent(frmsalelist.this, sale_entry.class);
+            }
+            else{
+                intent = new Intent(frmsalelist.this, sale_entry_tv.class);
+            }
+
             startActivity(intent);
             finish();
             return true;
@@ -182,7 +190,13 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onClick(View v) {
                 if(getActionName.equals("Sale History")){
-                    Intent intent = new Intent(frmsalelist.this, sale_entry.class);
+                    Intent intent;
+                    if(frmlogin.isTabletMode){
+                        intent = new Intent(frmsalelist.this, sale_entry.class);
+                    }
+                    else{
+                        intent = new Intent(frmsalelist.this, sale_entry_tv.class);
+                    }
                     startActivity(intent);
                     finish();
                 }else if(getActionName.equals("Sale Order History")){

@@ -714,7 +714,8 @@
                             android:layout_weight="1"
                             android:background="@drawable/bg_button"
                             android:backgroundTint="#1E88E5"
-                            android:padding="5dp">
+                            android:padding="5dp"
+                            android:visibility="gone">
 
                             <ImageButton
                                 android:id="@+id/savetoCloud"
@@ -810,7 +811,8 @@
                         android:hint="@string/barcode_scan"
                         android:inputType="textMultiLine"
                         android:padding="5dp"
-                        android:textSize="14sp" />
+                        android:textSize="14sp"
+                        android:imeOptions="actionDone"/>
 
                     <EditText
                         android:id="@+id/edtSearch"
