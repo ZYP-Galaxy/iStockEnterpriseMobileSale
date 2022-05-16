@@ -196,7 +196,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                // switchCompat.setTextOn("On");
                 isTabletMode=switchCompat.isChecked();
 
-                Toast.makeText(getApplicationContext(),"u TOast me",Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"u TOast me",Toast.LENGTH_LONG).show();
 
 
             }
