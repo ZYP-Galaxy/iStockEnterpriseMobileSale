@@ -29,7 +29,7 @@ public class Sale_head_main {
     private  double tax_amount;
     private  double tax_per;
     private long townshipid;
-    private int salesmenid;
+    private String salesmenids;
 
 
     public Sale_head_main(long customerid, int def_cashid, int currency) {
@@ -255,12 +255,12 @@ public class Sale_head_main {
         this.tax_per = tax_per;
     }
 
-    public int getSalesmenid() {
-        return salesmenid;
+    public String getSalesmenids() {
+        return salesmenids;
     }
 
-    public void setSalesmenid(int salesmenid) {
-        this.salesmenid = salesmenid;
+    public void setSalesmenids(String salesmenids) {
+        this.salesmenids = salesmenids;
     }
 
     public double getPaidpercent() {

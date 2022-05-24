@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 
 import java.util.ArrayList;
 
@@ -21,20 +24,39 @@ public class SalesmenAdpater extends RecyclerView.Adapter<SalesmenAdpater.MultiV
     public SalesmenAdpater(Context context, ArrayList<Salesmen> data) {
         this.context = context;
         this.data = data;
-        if(sale_entry.SaleVouSalesmen.size()>0)
-        {
-           for(int i = 0; i< sale_entry.SaleVouSalesmen.size(); i++)
-           {
-               for(int j=0;j<data.size();j++)
-               {
-                   if(data.get(j).getSalesmen_Id()== sale_entry.SaleVouSalesmen.get(i).getSalesmen_Id())
-                   {
-                       data.get(j).setChecked(true);
-                   }
-               }
-           }
-           setSalesmen(data);
+       if(SalesmenAdpater.this.context.toString().contains("sale_entry_tv")){
+            if(sale_entry_tv.SaleVouSalesmen.size()>0)
+            {
+                for(int i = 0; i< sale_entry_tv.SaleVouSalesmen.size(); i++)
+                {
+                    for(int j=0;j<data.size();j++)
+                    {
+                        if(data.get(j).getSalesmen_Id()== sale_entry_tv.SaleVouSalesmen.get(i).getSalesmen_Id())
+                        {
+                            data.get(j).setChecked(true);
+                        }
+                    }
+                }
+                setSalesmen(data);
+            }
         }
+        else{
+            if(sale_entry.SaleVouSalesmen.size()>0)
+                {
+                    for(int i = 0; i< sale_entry.SaleVouSalesmen.size(); i++)
+                    {
+                        for(int j=0;j<data.size();j++)
+                        {
+                            if(data.get(j).getSalesmen_Id()== sale_entry.SaleVouSalesmen.get(i).getSalesmen_Id())
+                            {
+                                data.get(j).setChecked(true);
+                            }
+                        }
+                    }
+                    setSalesmen(data);
+                }
+        }
+
     }
 
     public void setSalesmen(ArrayList<Salesmen> data) {
@@ -107,16 +129,27 @@ public class SalesmenAdpater extends RecyclerView.Adapter<SalesmenAdpater.MultiV
     }
 
     public void getSelected() {
-      if(sale_entry.SaleVouSalesmen.size()>0)
-          sale_entry.SaleVouSalesmen.clear();
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).isChecked()) {
-                sale_entry.SaleVouSalesmen.add(data.get(i));
-                sale_entry.sh.get(0).setSalesmenid((int)data.get(i).getSalesmen_Id());
+      if(SalesmenAdpater.this.context.toString().contains("sale_entry_tv")){
+           if(sale_entry_tv.SaleVouSalesmen.size()>0)
+                sale_entry_tv.SaleVouSalesmen.clear();
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).isChecked()) {
+                    sale_entry_tv.SaleVouSalesmen.add(data.get(i));
+                }
             }
-//            else{
-//                sale_entry.sh.get(0).setSalesmenid(null);
-//            }
         }
+        else {
+                if(sale_entry.SaleVouSalesmen.size()>0)
+                    sale_entry.SaleVouSalesmen.clear();
+                for (int i = 0; i < data.size(); i++) {
+                    if (data.get(i).isChecked()) {
+                        sale_entry.SaleVouSalesmen.add(data.get(i));
+
+                    }
+
+                }
+
+        }
+
     }
 }

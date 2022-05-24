@@ -119,11 +119,11 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
 
         if (item.getItemId() == R.id.add) {
             Intent intent;
-            if(frmlogin.isTabletMode){
-                intent = new Intent(frmsalelist.this, sale_entry.class);
+            if(frmlogin.isTVMode){
+                intent = new Intent(frmsalelist.this, sale_entry_tv.class);
             }
             else{
-                intent = new Intent(frmsalelist.this, sale_entry_tv.class);
+                intent = new Intent(frmsalelist.this, sale_entry.class);
             }
 
             startActivity(intent);
@@ -191,11 +191,11 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             public void onClick(View v) {
                 if(getActionName.equals("Sale History")){
                     Intent intent;
-                    if(frmlogin.isTabletMode){
-                        intent = new Intent(frmsalelist.this, sale_entry.class);
+                    if(frmlogin.isTVMode){
+                        intent = new Intent(frmsalelist.this, sale_entry_tv.class);
                     }
                     else{
-                        intent = new Intent(frmsalelist.this, sale_entry_tv.class);
+                        intent = new Intent(frmsalelist.this, sale_entry.class);
                     }
                     startActivity(intent);
                     finish();

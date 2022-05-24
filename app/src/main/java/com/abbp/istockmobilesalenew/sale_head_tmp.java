@@ -108,7 +108,7 @@ public class sale_head_tmp {
     private boolean iscashreceive;
     private int tranid;
     private boolean isdeliver;
-    private int salesmenid;
+    private String salesmenids;
 
 
     public boolean isIscashreceive() {
@@ -119,7 +119,7 @@ public class sale_head_tmp {
         this.iscashreceive = iscashreceive;
     }
 
-    public sale_head_tmp(String offlinetranid, int userid, String docid, String date, String invoiceno, int locationid, int customerid, int cashid, int townshipid, int paytypeid, int dueindays, int salecurr, double discountamount, double paidamount, double invoiceamount, double invoiceqty, double focamount, double netamount, String voucherremark, double taxamount, double taxpercent, double discountpercent, double exgrate, boolean iscashreceive, int tranid, boolean isdeliver, int salesmenid, double paidpercent) {
+    public sale_head_tmp(String offlinetranid, int userid, String docid, String date, String invoiceno, int locationid, int customerid, int cashid, int townshipid, int paytypeid, int dueindays, int salecurr, double discountamount, double paidamount, double invoiceamount, double invoiceqty, double focamount, double netamount, String voucherremark, double taxamount, double taxpercent, double discountpercent, double exgrate, boolean iscashreceive, int tranid, boolean isdeliver, String salesmenids, double paidpercent) {
         this.offlinetranid = offlinetranid;
         this.tranid = tranid;
         this.userid = userid;
@@ -146,11 +146,11 @@ public class sale_head_tmp {
         this.exgrate = exgrate;
         this.iscashreceive = iscashreceive;
         this.isdeliver = isdeliver;
-        this.salesmenid = salesmenid;
+        this.salesmenids = salesmenids;
         this.paidpercent = paidpercent;
     }
 
-    public sale_head_tmp(int tranid, int userid, String docid, String date, String invoiceno, int locationid, int customerid, int cashid, int townshipid, int paytypeid, int dueindays, int salecurr, double discountamount, double paidamount, double invoiceamount, double invoiceqty, double focamount, double netamount, String voucherremark, double taxamount, double taxpercent, double discountpercent, double exgrate, boolean iscashreceive, boolean isdeliver, int salesmenid, double advpayamount, double paidpercent) {
+    public sale_head_tmp(int tranid, int userid, String docid, String date, String invoiceno, int locationid, int customerid, int cashid, int townshipid, int paytypeid, int dueindays, int salecurr, double discountamount, double paidamount, double invoiceamount, double invoiceqty, double focamount, double netamount, String voucherremark, double taxamount, double taxpercent, double discountpercent, double exgrate, boolean iscashreceive, boolean isdeliver, String salesmenids, double advpayamount, double paidpercent) {
         this.tranid = tranid;
         this.userid = userid;
         this.docid = docid;
@@ -176,7 +176,7 @@ public class sale_head_tmp {
         this.exgrate = exgrate;
         this.iscashreceive = iscashreceive;
         this.isdeliver = isdeliver;
-        this.salesmenid = salesmenid;
+        this.salesmenids = salesmenids;
         this.paidpercent = paidpercent;
 
     }

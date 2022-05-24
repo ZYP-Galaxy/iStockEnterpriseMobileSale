@@ -2408,7 +2408,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
 //        Cursor cursor = DatabaseHelper.DistinctSelectQuerySelectionWithCondition("Usr_Code", new String[]{"category", "categoryname", "class"}, "class=?", new String[]{String.valueOf(data.get(position).getClassid())}, "sortcode,categoryname");
 
-        Cursor cursor = DatabaseHelper.DistinctSelectQuerySelectionWithCondition("sale_head_main", new String[]{"tranid", "docid", "date", "invoiceno", "locationid", "customerid", "cashid", "townshipid", "paytypeid", "dueindays", "salecurr", "discountamount", "paidamount", "invoiceamount", "invoiceqty", "focamount", "netamount", "voucherremark", "taxamount", "taxpercent", "discountpercent", "exgrate", "userid", "isdeliver", "salesmenid", "paidpercent"}, "uploaded=?", new String[]{"0"}, "");
+        Cursor cursor = DatabaseHelper.DistinctSelectQuerySelectionWithCondition("sale_head_main", new String[]{"tranid", "docid", "date", "invoiceno", "locationid", "customerid", "cashid", "townshipid", "paytypeid", "dueindays", "salecurr", "discountamount", "paidamount", "invoiceamount", "invoiceqty", "focamount", "netamount", "voucherremark", "taxamount", "taxpercent", "discountpercent", "exgrate", "userid", "isdeliver", "salesmenids", "paidpercent"}, "uploaded=?", new String[]{"0"}, "");
         if (cursor != null && cursor.getCount() != 0) {
             System.out.println(cursor.getCount());
             if (cursor.moveToFirst()) {
@@ -2443,7 +2443,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                             , cursor.getDouble(cursor.getColumnIndex("exgrate"))
                             , false, tranidi = cursor.getInt(cursor.getColumnIndex("tranid"))
                             , cursor.getInt(cursor.getColumnIndex("isdeliver")) == 1
-                            , cursor.getInt(cursor.getColumnIndex("salesmenid"))/*==0?(Integer)null:cursor.getInt(cursor.getColumnIndex("salesmenid"))*/
+                            , cursor.getString(cursor.getColumnIndex("salesmenids"))/*==0?(Integer)null:cursor.getInt(cursor.getColumnIndex("salesmenid"))*/
                             , cursor.getDouble(cursor.getColumnIndex("paidpercent"))
                     ));
 
@@ -2906,7 +2906,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 contentValues.put("uploaded", 0);
                 contentValues.put("isdeliver", isdeliver);
 
-                contentValues.put("salesmenid", sh.get(0).getSalesmenid());
+                contentValues.put("salesmenids", GetSalesmenids());
 
 
                 DatabaseHelper.insertWithOnConflict("sale_head_main", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -3253,7 +3253,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         String ip = sh_ip.getString("ip", "Localhost");
         String port = sh_port.getString("port", "80");
         String Device = frmlogin.Device_Name.replace(" ", "%20");
-        String Url = "http://" + ip + ":" + port + "/api/DataSync/GetData?userid=" + frmlogin.LoginUserid + "&hostname=" + Device + "&locked=" + false;
+        String Url = "http://" + ip + ":" + port + "/api/mobile/LockUser?userid=" + frmlogin.LoginUserid + "&hostname=" + Device + "&locked=" + false;
+//        String Url = "http://" + ip + ":" + port + "/api/DataSync/GetData?userid=" + frmlogin.LoginUserid + "&hostname=" + Device + "&locked=" + false;
 
         requestQueue = Volley.newRequestQueue(this);
 
@@ -5191,6 +5192,14 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //            System.out.println(b);
 //Toast.makeText(getApplicationContext(),"this is invoice no "+invoice_no+sh.get(0).getTownshipid(),Toast.LENGTH_LONG).show();
                 SetDefaultLocation();
+                String salesmenids="";
+                if(SaleVouSalesmen.size()>0){
+                    for(int i=0;i<SaleVouSalesmen.size()-1;i++){
+                        salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+                    }
+                    salesmenids+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Id()+"";
+                }
+
                 sale_head_tmpsfordirect.add(new sale_head_tmp((int) sh.get(0).getTranid(),
                         frmlogin.LoginUserid,
                         sh.get(0).getDocid(),
@@ -5216,7 +5225,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         1,
                         false,
                         isdeliver,
-                        sh.get(0).getSalesmenid()/*==0?(Integer)null:sh.get(0).getSalesmenid()*/, 0,
+                        salesmenids/*==0?(Integer)null:sh.get(0).getSalesmenid()*/, 0,
                         sh.get(0).getPaidpercent()
                 ));
 
@@ -5468,6 +5477,17 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         }
         cursor.close();
         return sqty * unit_qty;
+    }
+
+    private String GetSalesmenids(){
+        String salesmenids="";
+        if(SaleVouSalesmen.size()>0){
+            for(int i=0;i<SaleVouSalesmen.size()-1;i++){
+                salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+            }
+            salesmenids+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Id()+"";
+        }
+        return salesmenids;
     }
 
     private double getSPrice(long code) {

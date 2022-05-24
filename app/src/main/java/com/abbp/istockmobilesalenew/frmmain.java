@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,7 +72,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         txtUsername = (TextView) findViewById(R.id.txtUsername);
         txtUsername.setText("   " + frmlogin.username);
         cpyname = findViewById(R.id.cpyname);
-        if(!frmlogin.isTabletMode){
+        if(frmlogin.isTVMode){
             cardsaleorder.setVisibility(View.GONE);
             cardsaleorderlist.setVisibility(View.GONE);;
             cardstock.setVisibility(View.GONE);;
@@ -444,11 +442,11 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.cardsale:
-                if(frmlogin.isTabletMode) {
-                    intent = new Intent(frmmain.this, sale_entry.class);
+                if(frmlogin.isTVMode) {
+                    intent = new Intent(frmmain.this, sale_entry_tv.class);
                 }
                 else{
-                    intent = new Intent(frmmain.this, sale_entry_tv.class);
+                    intent = new Intent(frmmain.this, sale_entry.class);
                 }
                 startActivity(intent);
                 finish();
@@ -499,7 +497,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         String ip = sh_ip.getString("ip", "Localhost");
         String port = sh_port.getString("port", "80");
         String Device = frmlogin.Device_Name.replace(" ", "%20");
-        String Url = "http://" + ip + ":" + port + "/DataSyncAPI/api/mobile/LockUser?userid=" + frmlogin.LoginUserid + "&hostname=" + Device + "&locked=" + false;
+        String Url = "http://" + ip + ":" + port + "/api/mobile/LockUser?userid=" + frmlogin.LoginUserid + "&hostname=" + Device + "&locked=" + false;
 
         requestQueue = Volley.newRequestQueue(this);
 

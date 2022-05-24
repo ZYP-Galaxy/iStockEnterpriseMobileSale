@@ -45,6 +45,7 @@ public class ItemAdapter extends BaseAdapter {
     boolean startOpen;
     public ItemAdapter itemAd;
     public static double disamt;
+    double changeSalePrice;
 
 
     public ItemAdapter(Context context) {
@@ -356,9 +357,10 @@ public class ItemAdapter extends BaseAdapter {
 //        LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //        convertView = lf.inflate(R.layout.dataitem, null, false);
 
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.dataitem, parent, false);
-        }
+//        if (convertView == null) {
+            LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = lf.inflate(R.layout.dataitem, null, false);
+//        }
         TextView tv = (TextView) convertView.findViewById(R.id.sr);
         TextView tv1 = (TextView) convertView.findViewById(R.id.desc);
         TextView tv2 = (TextView) convertView.findViewById(R.id.qty);
@@ -425,7 +427,8 @@ public class ItemAdapter extends BaseAdapter {
                         for (int i = 0; i < sale_entry_tv.sd.size(); i++) {
                             sale_entry_tv.sd.get(i).setSr(i + 1);
                         }
-                        sale_entry_tv.getData();
+//                        sale_entry_tv.getData();
+                        notifyDataSetChanged();
                         sale_entry_tv.getSummary();
                         if (sale_entry_tv.sd.size() == 0) {
                             String tax = "Tax" + (sale_entry_tv.getTax() > 0 ? "( " + sale_entry_tv.getTax() + "% )" : "");
@@ -439,6 +442,7 @@ public class ItemAdapter extends BaseAdapter {
                             sale_entry_tv.txtpaidamt.setText("0");
                             sale_entry_tv.getSummary();
                         }
+
                         dialog.dismiss();
                     }
                 });
@@ -626,7 +630,7 @@ public class ItemAdapter extends BaseAdapter {
 
         startOpen = true;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.keypad, null);
+        View layout = inflater.inflate(R.layout.keypad, null,false);
         float density = context.getResources().getDisplayMetrics().density;
         final PopupWindow pw = new PopupWindow(layout, (int) density * 310, (int) density * 500, true);
         pw.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -883,18 +887,20 @@ public class ItemAdapter extends BaseAdapter {
                             check = check > 0 ? check : 1;
                             sale_entry_tv.sd.get(itemposition).setUnit_qty(check);
                             source.setText(String.valueOf(check));
-                            sale_entry_tv.entrygrid.setAdapter(itemAd);
+                            //sale_entry_tv.entrygrid.setAdapter(itemAd);
                             sale_entry_tv.entrygrid.setSelection(itemposition);
 
                             if (frmmain.isusespecialprice == 1) //added by EKK on 13-11-2020
                                 getSpecialPrice(itemposition, true);
 
+                            notifyDataSetChanged();
                             sale_entry_tv.getSummary();
 
 
                         } else if (isSalePrice) {
                             check = check > 0 ? check : 0;
-                            sale_entry_tv.sd.get(itemposition).setSale_price(check);
+                            changeSalePrice=check;
+//                            sale_entry_tv.sd.get(itemposition).setSale_price(check);
                             source.setText(String.format("%,." + frmmain.price_places + "f", check));
                             Double amt = Double.parseDouble(source.getText().toString()) * sale_entry_tv.sd.get(itemposition).getUnit_qty();
                             String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
@@ -902,6 +908,8 @@ public class ItemAdapter extends BaseAdapter {
                             //sale_entry_tv.getSummary();
 
                         }
+
+
 
                         isqty = false;
                         startOpen = false;

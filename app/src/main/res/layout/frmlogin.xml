@@ -9,97 +9,100 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/IEbluecolor">
+        android:background="@color/IEbluecolor"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:padding="20dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+
+            <!--            <Switch-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:id="@+id/switchBtn"-->
+<!--                style="@style/SwitchStyle"-->
+<!--                android:layout_marginRight="20dp"-->
+<!--                android:buttonTint="@color/white"-->
+<!--                android:checked="true"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                android:paddingRight="10dp"-->
+<!--                android:text="Tablet Mode"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textOff="TV Mode"-->
+<!--                android:textOn="Tablet Mode"-->
+<!--                android:textSize="15dp"-->
+
+<!--                />-->
+
+
             <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginRight="20dp"
-                app:showText="true"
-                android:id="@+id/switchBtn"
-                android:text="Tablet Mode"
-                android:textColor="@color/white"
-                android:textOn="ON"
-                android:textOff="Off"
+
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
-                android:checked="true"
-
-                app:thumbTint="@color/white"
-                app:trackTint="@color/colorBlue"
-
-
-
-                android:layout_gravity="center_vertical"
+                android:text="TV Mode"
+                android:textColor="@color/white"
+                android:textOff="Off"
+                android:textOn="ON"
                 android:textSize="15dp"
+
+
+                android:theme="@style/Theme.MyTheme"
+                app:showText="false"
 
                 />
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:text="Tablet Mode"
-                android:checked="true"
-                android:trackTint="@color/colorBlue"
-                android:thumbTint="@color/white"
-                android:buttonTint="@color/white"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textOff="TV Mode"
-                android:textOn="Tablet Mode"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:textSize="15dp"
-                android:visibility="gone"/>
 
             <ToggleButton
                 android:id="@+id/toggleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/btnround4"
                 android:checked="true"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textAlignment="center"
+
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textOff="TV Mode"
                 android:textOn="Tablet Mode"
-
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:textAlignment="center"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:textSize="15dp"/>
+                android:textSize="15dp"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btnSetting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_gravity="center"
                 android:layout_marginRight="20dp"
                 android:background="@null"
                 android:drawableTop="@drawable/ic_print_black_24dp"
                 android:text="Printer"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btnconnect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_gravity="center"
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@+id/btnposdown"
                 android:background="@null"
@@ -107,14 +110,14 @@
                 android:text="Connect"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btnposdown"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
+                android:layout_gravity="center"
                 android:layout_marginRight="20dp"
                 android:layout_toLeftOf="@+id/btnRegister"
                 android:background="@null"
@@ -122,8 +125,7 @@
                 android:text="Download"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:textStyle="bold" />
 
 
             <TextView
@@ -132,13 +134,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
 
+                android:layout_gravity="center"
                 android:background="@null"
                 android:drawableTop="@drawable/register"
                 android:text="Register"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -169,11 +171,11 @@
                             android:layout_width="300dp"
                             android:layout_height="wrap_content"
                             android:drawableLeft="@drawable/usericon"
+                            android:focusable="false"
                             android:hint="User"
                             android:imeOptions="actionDone|flagNoExtractUi"
                             android:inputType="none"
                             android:textColor="@color/white"
-                            android:focusable="false"
                             android:textColorHint="@color/white"
                             android:textIsSelectable="true" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -182,8 +184,8 @@
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -206,13 +208,14 @@
                             android:textColorHint="@color/white" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_gravity="center"
                     android:layout_marginTop="0dp"
                     android:layout_marginBottom="10dp"
+                    android:orientation="horizontal"
                     android:padding="10dp">
 
 
@@ -221,25 +224,25 @@
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="0dp"
                         android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
                         android:background="@drawable/btnround2"
 
                         android:text="Exit"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
-                        android:textStyle="bold"
-                        />
+                        android:textStyle="bold" />
+
                     <Button
                         android:id="@+id/login"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
 
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
                         android:background="@drawable/btnround1"
                         android:text="Login"
                         android:textAllCaps="false"
-                        android:layout_marginTop="0dp"
-                        android:layout_marginLeft="5dp"
                         android:textColor="@color/white"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -247,7 +250,7 @@
 
 
         </RelativeLayout>
-        
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

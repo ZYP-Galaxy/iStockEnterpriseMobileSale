@@ -893,7 +893,7 @@ public class itemAdapter extends BaseAdapter {
 
                         } else if (isSalePrice) {
                             check = check > 0 ? check : 0;
-                            sale_entry.sd.get(itemposition).setSale_price(check);
+//                            sale_entry.sd.get(itemposition).setSale_price(check);
                             source.setText(String.format("%,." + frmmain.price_places + "f", check));
                             Double amt = Double.parseDouble(source.getText().toString()) * sale_entry.sd.get(itemposition).getUnit_qty();
                             String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);

@@ -216,7 +216,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
                                     String usr_code = cursor.getString(cursor.getColumnIndex("usr_code"));
                                     String description = cursor.getString(cursor.getColumnIndex("description"));
                                     double saleprice = cursor.getDouble(cursor.getColumnIndex("sale_price"));
-                                    sale_entry_tv.usr_codes.add(new usr_code(usr_code, description));
+                                    sale_entry_tv.usr_codes.add(new usr_code(usr_code, description, saleprice));
                                 } while (cursor.moveToNext());
 
                             }

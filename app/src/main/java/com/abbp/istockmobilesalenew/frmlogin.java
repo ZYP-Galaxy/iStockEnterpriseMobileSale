@@ -169,11 +169,12 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private PrinterFactory printerFactory;
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private PrinterInterface curPrinterInterface = null;
-    public static boolean isTabletMode=true;
+    public static boolean isTVMode =false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.frmlogin);
 
         globalsetting.username = "ThuraTun";
@@ -194,16 +195,16 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                // switchCompat.setTextOn("On");
-                isTabletMode=switchCompat.isChecked();
+                isTVMode =switchCompat.isChecked();
 
 //                Toast.makeText(getApplicationContext(),"u TOast me",Toast.LENGTH_LONG).show();
 
 
             }
         });
-        if(!isTabletMode){
+        if(isTVMode){
 
-            switchCompat.setChecked(false);
+            switchCompat.setChecked(true);
         }
         setUI();
 //        if(!checkIsTelevision()){

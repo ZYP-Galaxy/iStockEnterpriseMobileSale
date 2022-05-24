@@ -22,9 +22,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,14 +92,11 @@ import com.abbp.istockmobilesalenew.priceLevelAdapter;
 import com.abbp.istockmobilesalenew.reportviewer;
 import com.abbp.istockmobilesalenew.sale_det;
 import com.abbp.istockmobilesalenew.sale_det_tmp;
-import com.abbp.istockmobilesalenew.sale_entry;
-import com.abbp.istockmobilesalenew.sale_entryold;
 import com.abbp.istockmobilesalenew.sale_head_tmp;
 import com.abbp.istockmobilesalenew.salechange;
 import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
 import com.abbp.istockmobilesalenew.unitforcode;
 import com.abbp.istockmobilesalenew.usr_code;
-import com.abbp.istockmobilesalenew.usrcodeAdapter;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -301,12 +298,13 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static String sortcode;
     ClassAdapter classAdapter;
     Spinner spinDis, spinPricelvl, spinUnit;
-    public int billPrintCount = 0;
+//    public int billPrintCount = 1;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.sale_entry_tv);
 
         defloc = frmlogin.det_locationid;
@@ -321,7 +319,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+        billprintcount=1;
         FillDataWithSignalr();
 
         pb = new ProgressDialog(sale_entry_tv.this, R.style.AlertDialogTheme);
@@ -511,7 +509,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {
                 PopupMenu popupMenu = new PopupMenu(sale_entry_tv.this, v);
-                popupMenu.getMenuInflater().inflate(R.menu.filtermenu, popupMenu.getMenu());
+                popupMenu.getMenuInflater().inflate(R.menu.filtermenutv, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -551,7 +549,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         imgSortCode = findViewById(R.id.img_sort_code);
         imgSortCode.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(sale_entry_tv.this, v);
-            popupMenu.getMenuInflater().inflate(R.menu.filtermenu, popupMenu.getMenu());
+            popupMenu.getMenuInflater().inflate(R.menu.filtermenutv, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(item -> {
                 int itemId = item.getItemId();
                 if (itemId == R.id.code) {
@@ -693,7 +691,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 } else {
                     vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
                 }
-                String paidPer="Paid%";
+                String paidPer = "Paid%";
                 if (sh.get(0).getPaidpercent() > 0) {
                     paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
 //                    sh.get(0).setDiscount_per(custDis);
@@ -706,7 +704,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 String txtpaidamt = String.valueOf(sh.get(0).getPaid_amount());
                 String txtfoc = String.valueOf(sh.get(0).getFoc_amount());
                 String txtitem = String.valueOf(sh.get(0).getIstemdis_amount());
-                detailvou(taxper, total, txtvou, vouper,paidPer, txtpaidamt, txttax, txtfoc, txtitem);
+                detailvou(taxper, total, txtvou, vouper, paidPer, txtpaidamt, txttax, txtfoc, txtitem);
             }
         });
 
@@ -849,7 +847,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 
     // Add detail btn in sale entry on 18/6/2019
-    private void detailvou(String taxper, String total, String txtvou, String vouper,String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
+    private void detailvou(String taxper, String total, String txtvou, String vouper, String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
         AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this);
         View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher_tv, null);
         bd.setCancelable(false);
@@ -1069,7 +1067,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     }
                 }
 
-                usrcodeAdapter usrcodead = new usrcodeAdapter(sale_entry_tv.this, filteredCode, rrvv, categories);
+                UsrcodeAdapter usrcodead = new UsrcodeAdapter(sale_entry_tv.this, filteredCode, rrvv, categories);
                 rrvv.setAdapter(usrcodead);
                 GridLayoutManager gridLayoutManager1 = new GridLayoutManager(getApplicationContext(), 4);
                 rrvv.setLayoutManager(gridLayoutManager1);
@@ -1107,7 +1105,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     }
                 }
 
-                usrcodeAdapter descad = new usrcodeAdapter(sale_entry_tv.this, filtereddesc, rrvv, categories);
+                UsrcodeAdapter descad = new UsrcodeAdapter(sale_entry_tv.this, filtereddesc, rrvv, categories);
                 rrvv.setAdapter(descad);
                 GridLayoutManager gridLayoutManager2 = new GridLayoutManager(getApplicationContext(), 4);
                 rrvv.setLayoutManager(gridLayoutManager2);
@@ -1330,7 +1328,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
         }
         cursor.close();
-        usrcodeAdapter ad=new usrcodeAdapter(sale_entry.this,sale_entry.usr_codes,gridcodeview);
+        UsrcodeAdapter ad=new UsrcodeAdapter(sale_entry.this,sale_entry.usr_codes,gridcodeview);
         gridcodeview.setAdapter(ad);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(sale_entry.this,4);
         gridcodeview.setLayoutManager(gridLayoutManager);
@@ -1453,8 +1451,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sd.clear();
-                            itemAdapter = new ItemAdapter(sale_entry_tv.this);
-                            entrygrid.setAdapter(itemAdapter);
+//                            itemAdapter = new ItemAdapter(sale_entry_tv.this);
+//                            entrygrid.setAdapter(itemAdapter);
+                            itemAdapter.notifyDataSetChanged();
                             String tax = "Tax" + (getTax() > 0 ? "( " + getTax() + "% )" : "");
                             txttax.setText(tax);
                             txtfoc.setText("0.00");
@@ -2061,7 +2060,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 //        Cursor cursor = DatabaseHelper.DistinctSelectQuerySelectionWithCondition("Usr_Code", new String[]{"category", "categoryname", "class"}, "class=?", new String[]{String.valueOf(data.get(position).getClassid())}, "sortcode,categoryname");
 
-        Cursor cursor = DatabaseHelper.DistinctSelectQuerySelectionWithCondition("sale_head_main", new String[]{"tranid", "docid", "date", "invoiceno", "locationid", "customerid", "cashid", "townshipid", "paytypeid", "dueindays", "salecurr", "discountamount", "paidamount", "invoiceamount", "invoiceqty", "focamount", "netamount", "voucherremark", "taxamount", "taxpercent", "discountpercent", "exgrate", "userid", "isdeliver", "salesmenid", "paidpercent"}, "uploaded=?", new String[]{"0"}, "");
+        Cursor cursor = DatabaseHelper.DistinctSelectQuerySelectionWithCondition("sale_head_main", new String[]{"tranid", "docid", "date", "invoiceno", "locationid", "customerid", "cashid", "townshipid", "paytypeid", "dueindays", "salecurr", "discountamount", "paidamount", "invoiceamount", "invoiceqty", "focamount", "netamount", "voucherremark", "taxamount", "taxpercent", "discountpercent", "exgrate", "userid", "isdeliver", "salesmenids", "paidpercent"}, "uploaded=?", new String[]{"0"}, "");
         if (cursor != null && cursor.getCount() != 0) {
             System.out.println(cursor.getCount());
             if (cursor.moveToFirst()) {
@@ -2096,7 +2095,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             , cursor.getDouble(cursor.getColumnIndex("exgrate"))
                             , false, tranidi = cursor.getInt(cursor.getColumnIndex("tranid"))
                             , cursor.getInt(cursor.getColumnIndex("isdeliver")) == 1
-                            , cursor.getInt(cursor.getColumnIndex("salesmenid"))/*==0?(Integer)null:cursor.getInt(cursor.getColumnIndex("salesmenid"))*/
+                            ,cursor.getString(cursor.getColumnIndex("salesmenids"))/*==0?(Integer)null:cursor.getInt(cursor.getColumnIndex("salesmenid"))*/
                             , cursor.getDouble(cursor.getColumnIndex("paidpercent"))
                     ));
 
@@ -2559,7 +2558,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 contentValues.put("uploaded", 0);
                 contentValues.put("isdeliver", isdeliver);
 
-                contentValues.put("salesmenid", sh.get(0).getSalesmenid());
+                contentValues.put("salesmenids", sh.get(0).getSalesmenids());
 
 
                 DatabaseHelper.insertWithOnConflict("sale_head_main", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
@@ -3690,13 +3689,13 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             ImageView btnBillPlus = v.findViewById(R.id.img_bill_plus);
             ImageView btnBillMinus = v.findViewById(R.id.img_bill_minus);
             btnBillPlus.setOnClickListener(v1 -> {
-                billPrintCount += 1;
-                tvBillCount.setText(String.valueOf(billPrintCount));
+                billprintcount += 1;
+                tvBillCount.setText(String.valueOf(billprintcount));
             });
             btnBillMinus.setOnClickListener(v1 -> {
-                if (billPrintCount > 1) {
-                    billPrintCount -= 1;
-                    tvBillCount.setText(String.valueOf(billPrintCount));
+                if (billprintcount > 1) {
+                    billprintcount -= 1;
+                    tvBillCount.setText(String.valueOf(billprintcount));
                 }
             });
 
@@ -3879,16 +3878,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         ItemdisTax_tmp = 0.0;
         foc_tmp = 0.0;
         if (sd.size() > 0) {
-            for (int i = 0; i < sale_entryold.sd.size(); i++) {
-                totalAmt_tmp += sale_entryold.sd.get(i).getUnit_qty() * sale_entryold.sd.get(i).getSale_price();
+            for (int i = 0; i < sale_entry_tv.sd.size(); i++) {
+                totalAmt_tmp += sale_entry_tv.sd.get(i).getUnit_qty() * sale_entry_tv.sd.get(i).getSale_price();
                 qty_tmp += sd.get(i).getUnit_qty();
                 if (sd.get(i).getDis_type() == 1 || sd.get(i).getDis_type() == 2 || sd.get(i).getDis_type()
                         == 5) {
-                    itemDis_tmp += (sd.get(i).getSale_price() - sd.get(i).getDis_price()) * sale_entryold.sd.get(i).getUnit_qty();
+                    itemDis_tmp += (sd.get(i).getSale_price() - sd.get(i).getDis_price()) * sale_entry_tv.sd.get(i).getUnit_qty();
                     sh.get(0).setIstemdis_amount(itemDis_tmp);
                 } else if (sd.get(i).getDis_type() == 3 || sd.get(i).getDis_type() == 4 || sd.get(i).getDis_type()
                         == 6 || sd.get(i).getDis_type() == 7) {
-                    foc_tmp += sd.get(i).getSale_price() * sale_entryold.sd.get(i).getUnit_qty();
+                    foc_tmp += sd.get(i).getSale_price() * sale_entry_tv.sd.get(i).getUnit_qty();
                     sh.get(0).setFoc_amount(foc_tmp);
                 }
 //                else{
@@ -5083,7 +5082,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         1,
                         false,
                         isdeliver,
-                        sh.get(0).getSalesmenid()/*==0?(Integer)null:sh.get(0).getSalesmenid()*/, 0,
+                        GetSalesmenids()/*==0?(Integer)null:sh.get(0).getSalesmenid()*/, 0,
                         sh.get(0).getPaidpercent()
                 ));
 
@@ -6272,16 +6271,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     if (keynum.length() > 0) {
                         if (keynum.contains("%")) {
                             keynum = keynum.substring(0, keynum.length() - 1);
-                            sale_entryold.dis_percent = Double.parseDouble(keynum);
-                            sale_entryold.dis_typepercent = true;
-                            if (sale_entryold.dis_percent > 99) {
+                            sale_entry_tv.dis_percent = Double.parseDouble(keynum);
+                            sale_entry_tv.dis_typepercent = true;
+                            if (sale_entry_tv.dis_percent > 99) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
                                 builder.setTitle("iStock");
                                 builder.setMessage("Discount Percent should be 0 to 99!");
                                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        sale_entryold.dis_percent = 0.0;
+                                        sale_entry_tv.dis_percent = 0.0;
                                         //source.setText(sale_entry.dis_percent + "%");
                                         msg.dismiss();
 
@@ -6290,15 +6289,15 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                 msg = builder.create();
                                 msg.show();
                             } else {
-                                btndiscount.setText(sale_entryold.dis_percent + "%");
+                                btndiscount.setText(sale_entry_tv.dis_percent + "%");
                             }
 
                         } else {
-                            sale_entryold.disamt = Double.parseDouble(keynum);
-                            sale_entryold.dis_typepercent = true;
-                            sale_entryold.dis_percent = 0;
-                            btndiscount.setText(String.valueOf(sale_entryold.disamt));
-                            sale_entryold.dis_typepercent = false;
+                            sale_entry_tv.disamt = Double.parseDouble(keynum);
+                            sale_entry_tv.dis_typepercent = true;
+                            sale_entry_tv.dis_percent = 0;
+                            btndiscount.setText(String.valueOf(sale_entry_tv.disamt));
+                            sale_entry_tv.dis_typepercent = false;
                         }
                     }
 //                    sale_entry.getSummary();
@@ -6449,24 +6448,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         FrameLayout frame = findViewById(R.id.frame);
         LinearLayout rootView = findViewById(R.id.root_view);
         frame.setVisibility(View.VISIBLE);
-//       LinearLayout listLayout=findViewById(R.id.list_layout);
-        //  rootView.setVisibility(View.VISIBLE);
-//      listLayout.setVisibility(View.GONE);
-/*
-       LinearLayout liner=new LinearLayout(this);
 
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-        AlertDialog.Builder change = new AlertDialog.Builder(sale_entry.this);
-        change.setCancelable(false);
-        View bluttoothvoucher = getLayoutInflater().inflate(R.layout.bluttoothvoucherprint,null);
-        liner.setMinimumWidth(250);
-        liner.addView(bluttoothvoucher,params);
-        change.setView(liner);
-        salechange = change.create();
-        salechange.show();
-
- */
         View voucher = getLayoutInflater().inflate(R.layout.bluetoothvoucherprint, null);
 
         TextView custname = voucher.findViewById(R.id.txtcustomer);
@@ -6593,33 +6575,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         tvtotalnetamount.setText(NetAmount);
         tvtaxamount.setText(CurrencyFormat(sh.get(0).getTax_amount()));
 
-        //LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        tv.setText("Descrption");
-//       rootView.addView(tv,params);
-        //TextView tv=voucher.findViewById(R.id.txtdisplay);
-        // tv.setText("မုန့်စိန်လား ရွှေဘ ငွေဘ အမွေရ");
-//       LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        for(int i=0;i<20;i++){
-//            TextView txt=new TextView(this);
-//            txt.setWidth(200);
-//            txt.setTextSize(20);
-//            txt.setHeight(80);
-//            txt.setText("မုန့်စိန်လား ရွှေဘ ငွေဘ အမွေရ" +i);
-//            rootView.addView(txt,params);
-//        }TotalAmount
+
 
         rootView.addView(voucher);
         //liner.addView(voucher);
 
         View v = getWindow().getDecorView().getRootView();
-//        Printama.with(this).connect(printama -> {
-//            printama.printFromView(voucher);
-//            // new Handler().postDelayed(printama::close, 2000); // comment by T2A 08-12-2020
-//            frame.setVisibility(View.GONE);
-//        }, this::showToast);
 
 
-        for (int i = 0; i < billPrintCount; i++) {
+
+        for (int i = 0; i < billprintcount; i++) {
             if (SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
                 SunmiPrintHelper.getInstance().printView(rootView);
             } else {
@@ -6629,16 +6594,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
         }
 
-//        RTPrinter rtPrinter = BaseApplication.getInstance().getRtPrinter();
-//        BluetoothPrinter bluetoothPrinter = new BluetoothPrinter(sale_entry_tv.this, rtPrinter);
-//        bluetoothPrinter.printFromView(rootView);
-//        File file = bluetoothPrinter.saveBitmap(bmpVoucher);
-//        if(file.exists()){
-//            Uri uri = Uri.parse(file.getPath());
-//            bluetoothPrinter.printImageFromFile(uri, bmpVoucher);
-//        }
-        //BluetoothPrinter.escImagePrint(btPrinter, bmpVoucher, BluetoothPrinter.PRINT_80MM);
-        //BindingCategory();
+
     }
 
     public String CurrencyFormat(Double amt) {
@@ -6880,6 +6836,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                             } else {
                                 PrintVoucher(tranid);
+                                billprintcount=1;
+                                tvBillCount.setText("1");
                             }
 
                         }
@@ -7330,6 +7288,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
         return 0.0;
+    }
+    private String GetSalesmenids(){
+        String salesmenids="";
+        if(SaleVouSalesmen.size()>0){
+            for(int i=0;i<SaleVouSalesmen.size()-1;i++){
+                salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+            }
+            salesmenids+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Id()+"";
+        }
+        return salesmenids;
     }
 
     private void SetDefaultLocation() {
