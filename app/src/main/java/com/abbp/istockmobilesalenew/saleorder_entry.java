@@ -3485,7 +3485,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                     txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
                     sh.get(0).setDate(dateFormat.format(voudate));
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't change earlier than Today date", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
                     txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
                 }
 
