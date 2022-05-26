@@ -279,6 +279,7 @@ public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHo
                                            }
                                            else {
                                                btn.setText(String.valueOf(saleorder_entry.dis_percent) + "%");
+
                                            }
                                        }
                                        else {
@@ -539,6 +540,7 @@ public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHo
                                            }
                                            else {
                                                btn.setText(String.valueOf(sale_entry_tv.dis_percent) + "%");
+                                               sale_entry_tv.sd.get(itemposition).setDis_percent(sale_entry_tv.dis_percent);
                                            }
                                        }
                                        else {
@@ -798,15 +800,17 @@ public class DisTypeAdapter extends RecyclerView.Adapter<DisTypeAdapter.MyViewHo
                                            }
                                            else {
                                                btn.setText(String.valueOf(sale_entry.dis_percent) + "%");
+                                               sale_entry.sd.get(itemposition).setDis_percent(sale_entry.dis_percent);
                                            }
                                        }
                                        else {
 
                                            sale_entry.disamt= Double.parseDouble(keynum);
-                                           sale_entry.dis_typepercent=true;
+                                           //sale_entry.dis_typepercent=true;
                                            sale_entry.dis_percent=0;
                                            btn.setText(String.valueOf(sale_entry.disamt));
                                            sale_entry.dis_typepercent=false;
+
                                        }
                                    }
                                    else {

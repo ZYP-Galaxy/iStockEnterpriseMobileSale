@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
-                    def appName = "iStockEnterprise_804"
+                    def appName = "iStockEnterprise_805"
                     outputFileName = appName + ".apk"
                 }
             }

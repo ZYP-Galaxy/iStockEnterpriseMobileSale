@@ -4853,6 +4853,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
                     sh.get(0).setDate(dateFormat.format(voudate));
                 } else {
+                    Toast.makeText(getApplicationContext(), "You can't change earlier than Today date", Toast.LENGTH_LONG).show();
                     txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
                 }
 
@@ -5968,7 +5969,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         double dis_price = sd.get(itemPosition).getSale_price() - (sd.get(itemPosition).getSale_price() * (dispercent));
                         sd.get(itemPosition).setDis_price(dis_price);
                     } else if (sd.get(itemPosition).getDis_type() == 5) {
-                        if (dis_typepercent || sd.get(itemPosition).getDis_percent() > 0) {
+                        if (dis_typepercent && sd.get(itemPosition).getDis_percent() > 0) {
                             double dis_percent = sale_entry_tv.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - (sd.get(itemPosition).getSale_price() * (dis_percent / 100));
@@ -6460,6 +6461,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         TextView tvtaxamount = voucher.findViewById(R.id.txt_tax_amount);
         TextView txttaxpercent = voucher.findViewById(R.id.txt_tax_percent);
         TextView tvtotalnetamount = voucher.findViewById(R.id.txtnetamount);
+        TextView tvpaidamount=voucher.findViewById(R.id.txtpaidamount);
+        TextView tvchangeamount=voucher.findViewById(R.id.txtchangeamount);
 
         TextView tvcompanyname = voucher.findViewById(R.id.txtcompanyname);
         TextView tvheader1 = voucher.findViewById(R.id.txtheadertitle1);
@@ -6540,17 +6543,17 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         LinearLayout detailLayout = voucher.findViewById(R.id.detail);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < sale_entry_tv.sd.size(); i++) {
-            View voucheritem = getLayoutInflater().inflate(R.layout.layount_voucher_item, null);
+            View voucheritem = getLayoutInflater().inflate(R.layout.layout_voucher_item, null);
             TextView tvdescription = voucheritem.findViewById(R.id.txtdescription);
             TextView tvamount = voucheritem.findViewById(R.id.txtAmount);
             TextView tvqtyamount = voucheritem.findViewById(R.id.txtQtyPrice);
 
             item = sale_entry_tv.sd.get(i).getDesc();
             amt = sale_entry_tv.sd.get(i).getUnit_qty() * sale_entry_tv.sd.get(i).getSale_price();
-            int len = item.length();
-            if (len > 20) {
-                item = item.substring(0, 20);
-            }
+//            int len = item.length();
+//            if (len > 20) {
+//                item = item.substring(0, 20);
+//            }
             stamount = CurrencyFormat(amt);
             qtyprice = "(" + CurrencyFormat(sale_entry_tv.sd.get(i).getUnit_qty()) + "  " + sale_entry_tv.sd.get(i).getUnit_short() + "x"
                     + CurrencyFormat(sale_entry_tv.sd.get(i).getSale_price()) + ")";
@@ -6568,12 +6571,17 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         String DisAmount = CurrencyFormat(sh.get(0).getDiscount() + sh.get(0).getIstemdis_amount());
         String FocAmount = CurrencyFormat(sh.get(0).getFoc_amount());
         String NetAmount = CurrencyFormat(net_amount);
+        String  PaidAmount=CurrencyFormat(paid);
+        String ChangeAmount=CurrencyFormat(changeamount);
+
 
         tvtotalamount.setText(TotalAmount);
         tvtotaldiscount.setText(DisAmount);
         tvtotalfocamount.setText(FocAmount);
         tvtotalnetamount.setText(NetAmount);
         tvtaxamount.setText(CurrencyFormat(sh.get(0).getTax_amount()));
+        tvpaidamount.setText(PaidAmount);
+        tvchangeamount.setText(ChangeAmount);
 
 
 
@@ -6887,7 +6895,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             } catch (Exception ee) {
 //                pb.dismiss();
 //                dialog.dismiss();
-                Toast.makeText(sale_entry_tv.this, ee.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(sale_entry_tv.this, "No internet connection! Please check your internet connection!"/*ee.getMessage()*/, Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -45,6 +45,7 @@ import androidx.core.content.ContextCompat;
 import com.abbp.istockmobilesalenew.bluetoothprinter.BaseEnum;
 import com.abbp.istockmobilesalenew.bluetoothprinter.BluetoothDeviceChooseDialog;
 import com.abbp.istockmobilesalenew.bluetoothprinter.BluetoothPrinter;
+import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -194,24 +195,18 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-               // switchCompat.setTextOn("On");
-                isTVMode =switchCompat.isChecked();
-
-//                Toast.makeText(getApplicationContext(),"u TOast me",Toast.LENGTH_LONG).show();
-
-
+              isTVMode =switchCompat.isChecked();
             }
         });
         if(isTVMode){
-
             switchCompat.setChecked(true);
         }
+        //added by KLM  for auto Detect if Device is TV or Tablet 25052022
+        if(checkIsTelevision() || SunmiPrintHelper.getInstance().checkSunmiPrinter()){
+            switchCompat.setVisibility(View.GONE);
+            isTVMode=true;
+        }
         setUI();
-//        if(!checkIsTelevision()){
-//            Log.i("frmlogin","not tv device");
-////            Toast.makeText(getApplicationContext(),"this is not tv device",Toast.LENGTH_LONG).show();
-//        }
-
         CheckConnection();
         context = this;
         isRegister();
