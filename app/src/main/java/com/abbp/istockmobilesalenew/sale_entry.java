@@ -5938,12 +5938,15 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                             sd.get(itemPosition).setDis_price(dis_price);
 
 
-                        } else {
+                        } else if(!btndiscount.getText().toString().equals("Discount")){
                             double dis_percent = sale_entry.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(ClearFormat(btndiscount.getText().toString()));
                             //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             sd.get(itemPosition).setDis_price(dis_price);
+                        }
+                        else{
+                            sd.get(itemPosition).setDis_type(0);
                         }
                     }
 //                    else if(sd.get(itemPosition).getDis_type()==5){

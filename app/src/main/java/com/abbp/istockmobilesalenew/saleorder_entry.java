@@ -67,6 +67,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.abbp.istockmobilesalenew.sale_entry.StringTODouble;
+
 
 public class saleorder_entry extends AppCompatActivity implements AdapterView.OnItemLongClickListener, View.OnClickListener {
 
@@ -748,7 +750,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
                         if (changeheader) {
 
-                            Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * sale_entry.StringTODouble(txtChangePrice.getText().toString());
+                            Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * StringTODouble(txtChangePrice.getText().toString());
                             String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                             //EKK
                             if (frmlogin.ishidesaleprice != 0)
@@ -756,6 +758,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                             else
                                 txtamt.setText(numberAsString);
                             sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
+                            sd.get(itemPosition).setSale_price(StringTODouble(txtChangePrice.getText().toString()));
                             changeheader = false;
                         } else {
 
@@ -1851,7 +1854,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 public void onClick(View view) {
                     txtChangeQty.setText(String.valueOf(Double.parseDouble(txtChangeQty.getText().toString()) + 1));
                     sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
-                    Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * sale_entry.StringTODouble(txtChangePrice.getText().toString());
+                    Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * StringTODouble(txtChangePrice.getText().toString());
                     String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                     //18-11-2020
                     if (frmlogin.ishidesaleprice != 0)
@@ -1873,7 +1876,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                     if (Double.parseDouble(txtChangeQty.getText().toString()) >= 2) {
                         txtChangeQty.setText(String.valueOf(Double.parseDouble(txtChangeQty.getText().toString()) - 1));
                         sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
-                        Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * sale_entry.StringTODouble(txtChangePrice.getText().toString());
+                        Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * StringTODouble(txtChangePrice.getText().toString());
                         String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                         //18-11-2020
                         if (frmlogin.ishidesaleprice != 0)
@@ -1918,6 +1921,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 txtChangePrice.setText("****");
                 txtChangePrice.setEnabled(false);
             } else {
+
                 SummaryFormat(txtChangePrice, sd.get(itemPosition).getSale_price());
                 txtChangePrice.setEnabled(true);
             }
@@ -1930,7 +1934,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                         imgChangePrice.setEnabled(false);
 
                         changeheader = true;
-                        keynum = String.format("%,." + frmmain.price_places + "f", sale_entry.StringTODouble(txtChangePrice.getText().toString()));
+                        keynum = String.format("%,." + frmmain.price_places + "f", StringTODouble(txtChangePrice.getText().toString()));
                         showKeyPad(txtChangeQty, txtChangePrice);
                     }
                 }
@@ -1947,10 +1951,10 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
                     if (frmlogin.canchangesaleprice == 1 || op == 1) {
                         changeheader = true;
-                        keynum = String.format("%,." + frmmain.price_places + "f", sale_entry.StringTODouble(txtChangePrice.getText().toString()));
+                        keynum = String.format("%,." + frmmain.price_places + "f", StringTODouble(txtChangePrice.getText().toString()));
                         showKeyPad(txtChangeQty, txtChangePrice);
                     }
-                    Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * sale_entry.StringTODouble(txtChangePrice.getText().toString());
+                    Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * StringTODouble(txtChangePrice.getText().toString());
                     String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
                     txtamt.setText(numberAsString);
 
@@ -1959,7 +1963,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             });
 
 
-            Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * sale_entry.StringTODouble(txtChangePrice.getText().toString());
+            Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * StringTODouble(txtChangePrice.getText().toString());
             String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
             //modified by EKK on 18-11-2020
             if (frmlogin.ishidesaleprice != 0) {
@@ -1975,7 +1979,8 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 public void onClick(View v) {
                     sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
                     //sd.get(itemPosition).setSale_price(sale_entry.StringTODouble(txtChangePrice.getText().toString()));
-                    sd.get(itemPosition).setSale_price(tmpSalePrice);
+//                    tmpSalePrice=saleorder_entry.
+                    //sd.get(itemPosition).setSale_price(tmpSalePrice);
                     sd.get(itemPosition).setDis_price(0/*sale_entry.StringTODouble(txtChangePrice.getText().toString())*/);
                     sd.get(itemPosition).setQty(Double.parseDouble(txtsqty.getText().toString()) * sd.get(itemPosition).getUnit_qty());
                     if (sd.get(itemPosition).getDis_type() == 3
@@ -1999,11 +2004,14 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                             sd.get(itemPosition).setDis_price(dis_price);
 
 
-                        } else {
+                        } else  if(!btndiscount.getText().toString().equals("Discount")){
                             double dis_percent = saleorder_entry.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             sd.get(itemPosition).setDis_price(dis_price);
+                        }
+                        else{
+                            sd.get(itemPosition).setDis_type(0);
                         }
                     }
 

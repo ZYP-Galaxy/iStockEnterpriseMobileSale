@@ -360,12 +360,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         getHeaderWithUUID();
         getData();
         getSystemSetting();
-        //cmt by ZYP [26-05-2022] not use in tvsale
-//        if (!Use_Delivery) {
-//            chkDeliver.setVisibility(View.GONE);
-//        } else {
-//            chkDeliver.setVisibility(View.VISIBLE);
-//        }
+        if (!Use_Delivery) {
+            chkDeliver.setVisibility(View.GONE);
+        } else {
+            chkDeliver.setVisibility(View.VISIBLE);
+        }
         Tax_Type = getTaxType();
         caltax = caltaxsetting();
         fitercode = "Code";
@@ -1692,8 +1691,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 builder.setView(view);
                 RelativeLayout rlCustGroup = view.findViewById(R.id.rlCustGroup);
                 RelativeLayout rlTownship = view.findViewById(R.id.rlTownship);
-                RelativeLayout rlLocatin = view.findViewById(R.id.rl_printer);
-                RelativeLayout rlsalesmen = view.findViewById(R.id.rl_printertype);
+                RelativeLayout rlLocatin = view.findViewById(R.id.rlLocation);
+                RelativeLayout rlsalesmen = view.findViewById(R.id.rlsalesmen);
                 RelativeLayout rlCashIn = view.findViewById(R.id.rlCashIn); //added by EKK on 16-11-2020
 
                 btncustgroup = view.findViewById(R.id.btnCustGroup);
@@ -5911,6 +5910,36 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             });
 //not change_price in sale entry modified by ABBP
             //open_price add by ABBP
+
+            txtChangePrice.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    txtChangePrice.setText(ClearFormat(txtChangePrice.getText().toString()));
+                }
+            });
+
+
+            txtChangePrice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        String salePrice = ClearFormat(txtChangePrice.getText().toString().trim().isEmpty() ? "0" : txtChangePrice.getText().toString());
+                        int op = sd.get(itemPosition).getOpen_price();
+                        if (frmlogin.canchangesaleprice == 1 || op == 1) {
+                            changeheader = true;
+                            Double sale = Double.parseDouble(salePrice);
+                            String numberAsString = String.format("%,." + frmmain.price_places + "f", sale);
+                            txtChangePrice.setText(numberAsString);
+                        }
+                        Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * Double.parseDouble(salePrice);
+                        String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
+                        txtamt.setText(numberAsString);
+                    }
+                    return false;
+                }
+            });
+
+            /*txtChangePrice.setText("9999");
             txtChangePrice.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -5929,7 +5958,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 }
 
-            });
+            });*/
 
             // Double amt=Double.parseDouble(txtChangeQty.getText().toString())* StringTODouble(txtChangePrice.getText().toString());
             Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * tmpSalePrice;
@@ -5954,7 +5983,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
-                    // sd.get(itemPosition).setSale_price(StringTODouble(txtChangePrice.getText().toString()));
+                     sd.get(itemPosition).setSale_price(StringTODouble(txtChangePrice.getText().toString()));
 //                    sd.get(itemPosition).setSale_price(tmpSalePrice); //18-11-2020
                     sd.get(itemPosition).setDis_price(0/*StringTODouble(txtChangePrice.getText().toString())*/);
                     sd.get(itemPosition).setQty(Double.parseDouble(txtsqty.getText().toString()) * sd.get(itemPosition).getUnit_qty());
@@ -5979,12 +6008,15 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             sd.get(itemPosition).setDis_price(dis_price);
 
 
-                        } else {
+                        } else if(!btndiscount.getText().toString().equals("Discount")) {
                             double dis_percent = sale_entry_tv.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             sd.get(itemPosition).setDis_price(dis_price);
+                        }
+                        else{
+                            sd.get(itemPosition).setDis_type(0);
                         }
                     }
 //                    else if(sd.get(itemPosition).getDis_type()==5){
@@ -7298,12 +7330,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
         return 0.0;
     }
-
-    private String GetSalesmenids() {
-        String salesmenids = "";
-        if (SaleVouSalesmen.size() > 0) {
-            for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
-                salesmenids += SaleVouSalesmen.get(i).getSalesmen_Id() + ",";
+    private String GetSalesmenids(){
+        String salesmenids="";
+        if(SaleVouSalesmen.size()>0){
+            for(int i=0;i<SaleVouSalesmen.size()-1;i++){
+                salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
             }
             salesmenids += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Id() + "";
         }
