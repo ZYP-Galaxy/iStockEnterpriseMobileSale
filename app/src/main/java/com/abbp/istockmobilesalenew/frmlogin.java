@@ -28,8 +28,10 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -337,6 +339,50 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                         }
                     });
 
+                    //region SunmiPrinter
+                    LinearLayout layoutBTprinter = view.findViewById(R.id.layout_btprinter);
+                    LinearLayout layoutSunmiprinter = view.findViewById(R.id.layout_sunmi_printer);
+                    LinearLayout layoutLocalprinter = view.findViewById(R.id.layout_localprinter);
+                    RelativeLayout layoutPrinter = view.findViewById(R.id.rl_printer);
+                    RelativeLayout layoutPrintertype = view.findViewById(R.id.rl_printertype);
+                    if (SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
+                        layoutSunmiprinter.setVisibility(View.VISIBLE);
+                        layoutBTprinter.setVisibility(View.GONE);
+                        layoutLocalprinter.setVisibility(View.GONE);
+                        layoutPrinter.setVisibility(View.GONE);
+                        layoutPrintertype.setVisibility(View.GONE);
+                    } else {
+                        layoutSunmiprinter.setVisibility(View.GONE);
+                        layoutBTprinter.setVisibility(View.VISIBLE);
+                    }
+
+                    TextView sunmi_printerstatus = view.findViewById(R.id.txt_sunmi_printerstatus);
+                    sunmi_printerstatus.setText(String.format("Sunmi POS Printer (%s)", SunmiPrintHelper.getInstance().showPrinterStatus(frmlogin.this)));
+
+                    CardView btnSunmiPrintStatus = view.findViewById(R.id.btn_sunmi_printerstatus);
+                    btnSunmiPrintStatus.setOnClickListener(v1 -> {
+                        sunmi_printerstatus.setText(String.format("Sunmi POS Printer (%s)", SunmiPrintHelper.getInstance().showPrinterStatus(frmlogin.this)));
+                    });
+
+                    CardView btnSunmiPrintTest = view.findViewById(R.id.btn_sunmi_printertest);
+                    btnSunmiPrintTest.setOnClickListener(v1 -> {
+//                        SunmiPrintHelper.getInstance().printText("Galaxy Software\niStock Mobile TV Sale\n\n\nSunmi Printer Testing!",
+//                                36, false, false, null);
+                        SunmiPrintHelper.getInstance().printTest(context);
+                    });
+
+                    CardView btnSunmiPrintFeed = view.findViewById(R.id.btn_sunmi_printerfeed);
+                    btnSunmiPrintFeed.setOnClickListener(v1 -> {
+                        SunmiPrintHelper.getInstance().feedPaper();
+                    });
+
+                    CardView btnSunmiPrintCut = view.findViewById(R.id.btn_sunmi_printercut);
+                    btnSunmiPrintCut.setOnClickListener(v1 -> {
+                        SunmiPrintHelper.getInstance().cutpaper();
+                    });
+
+                    //endregion
+
                     CardView btPrinterSetting = view.findViewById(R.id.btn_btprinter_settings);
                     CardView btnBTprintertest = view.findViewById(R.id.btn_btprinter_test);
                     tv_device_selected = view.findViewById(R.id.tv_device_selected);
@@ -367,9 +413,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     bluetoothprintersetting.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
                             showPrinterList(connectedTo, btnprintertest);
-
                         }
                     });
                     getSavedPrinter(connectedTo);

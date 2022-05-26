@@ -49,6 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -319,7 +320,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        billprintcount=1;
+        billprintcount = 1;
         FillDataWithSignalr();
 
         pb = new ProgressDialog(sale_entry_tv.this, R.style.AlertDialogTheme);
@@ -359,11 +360,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         getHeaderWithUUID();
         getData();
         getSystemSetting();
-        if (!Use_Delivery) {
-            chkDeliver.setVisibility(View.GONE);
-        } else {
-            chkDeliver.setVisibility(View.VISIBLE);
-        }
+        //cmt by ZYP [26-05-2022] not use in tvsale
+//        if (!Use_Delivery) {
+//            chkDeliver.setVisibility(View.GONE);
+//        } else {
+//            chkDeliver.setVisibility(View.VISIBLE);
+//        }
         Tax_Type = getTaxType();
         caltax = caltaxsetting();
         fitercode = "Code";
@@ -1676,7 +1678,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.imgPrintSelection:
-                ShowPrintSelection();
+//                ShowPrintSelection();
+                showPrinterSetting();
                 break;
             case R.id.imgHeader:
 //                Toast.makeText(sale_entry.this,"this is customer ",Toast.LENGTH_LONG).show();
@@ -1689,8 +1692,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 builder.setView(view);
                 RelativeLayout rlCustGroup = view.findViewById(R.id.rlCustGroup);
                 RelativeLayout rlTownship = view.findViewById(R.id.rlTownship);
-                RelativeLayout rlLocatin = view.findViewById(R.id.rlLocation);
-                RelativeLayout rlsalesmen = view.findViewById(R.id.rlsalesmen);
+                RelativeLayout rlLocatin = view.findViewById(R.id.rl_printer);
+                RelativeLayout rlsalesmen = view.findViewById(R.id.rl_printertype);
                 RelativeLayout rlCashIn = view.findViewById(R.id.rlCashIn); //added by EKK on 16-11-2020
 
                 btncustgroup = view.findViewById(R.id.btnCustGroup);
@@ -2095,7 +2098,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             , cursor.getDouble(cursor.getColumnIndex("exgrate"))
                             , false, tranidi = cursor.getInt(cursor.getColumnIndex("tranid"))
                             , cursor.getInt(cursor.getColumnIndex("isdeliver")) == 1
-                            ,cursor.getString(cursor.getColumnIndex("salesmenids"))/*==0?(Integer)null:cursor.getInt(cursor.getColumnIndex("salesmenid"))*/
+                            , cursor.getString(cursor.getColumnIndex("salesmenids"))/*==0?(Integer)null:cursor.getInt(cursor.getColumnIndex("salesmenid"))*/
                             , cursor.getDouble(cursor.getColumnIndex("paidpercent"))
                     ));
 
@@ -6461,8 +6464,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         TextView tvtaxamount = voucher.findViewById(R.id.txt_tax_amount);
         TextView txttaxpercent = voucher.findViewById(R.id.txt_tax_percent);
         TextView tvtotalnetamount = voucher.findViewById(R.id.txtnetamount);
-        TextView tvpaidamount=voucher.findViewById(R.id.txtpaidamount);
-        TextView tvchangeamount=voucher.findViewById(R.id.txtchangeamount);
+        TextView tvpaidamount = voucher.findViewById(R.id.txtpaidamount);
+        TextView tvchangeamount = voucher.findViewById(R.id.txtchangeamount);
 
         TextView tvcompanyname = voucher.findViewById(R.id.txtcompanyname);
         TextView tvheader1 = voucher.findViewById(R.id.txtheadertitle1);
@@ -6571,8 +6574,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         String DisAmount = CurrencyFormat(sh.get(0).getDiscount() + sh.get(0).getIstemdis_amount());
         String FocAmount = CurrencyFormat(sh.get(0).getFoc_amount());
         String NetAmount = CurrencyFormat(net_amount);
-        String  PaidAmount=CurrencyFormat(paid);
-        String ChangeAmount=CurrencyFormat(changeamount);
+        String PaidAmount = CurrencyFormat(paid);
+        String ChangeAmount = CurrencyFormat(changeamount);
 
 
         tvtotalamount.setText(TotalAmount);
@@ -6584,12 +6587,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         tvchangeamount.setText(ChangeAmount);
 
 
-
         rootView.addView(voucher);
         //liner.addView(voucher);
 
         View v = getWindow().getDecorView().getRootView();
-
 
 
         for (int i = 0; i < billprintcount; i++) {
@@ -6844,7 +6845,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                             } else {
                                 PrintVoucher(tranid);
-                                billprintcount=1;
+                                billprintcount = 1;
                                 tvBillCount.setText("1");
                             }
 
@@ -7297,13 +7298,14 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
         return 0.0;
     }
-    private String GetSalesmenids(){
-        String salesmenids="";
-        if(SaleVouSalesmen.size()>0){
-            for(int i=0;i<SaleVouSalesmen.size()-1;i++){
-                salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+
+    private String GetSalesmenids() {
+        String salesmenids = "";
+        if (SaleVouSalesmen.size() > 0) {
+            for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
+                salesmenids += SaleVouSalesmen.get(i).getSalesmen_Id() + ",";
             }
-            salesmenids+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Id()+"";
+            salesmenids += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Id() + "";
         }
         return salesmenids;
     }
@@ -7406,59 +7408,66 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
     }
 
-//    private void showPrinterSetting() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        View dialogView = getLayoutInflater().inflate(R.layout.devicesetting, null);
-//        builder.setView(dialogView);
-//
-//        //region SunmiPrinter
+    private void showPrinterSetting() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View dialogView = getLayoutInflater().inflate(R.layout.devicesetting, null);
+        builder.setView(dialogView);
+
+        //region SunmiPrinter
 //        TextView txtTitleBTprinter = dialogView.findViewById(R.id.txt_title_btprinter);
-//        LinearLayout layoutBTprinter = dialogView.findViewById(R.id.layout_btprinter);
-//        LinearLayout layoutSunmiprinter = dialogView.findViewById(R.id.layout_sunmi_printer);
-//        if (SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
-//            layoutSunmiprinter.setVisibility(View.VISIBLE);
+        LinearLayout layoutBTprinter = dialogView.findViewById(R.id.layout_btprinter);
+        LinearLayout layoutSunmiprinter = dialogView.findViewById(R.id.layout_sunmi_printer);
+
+        LinearLayout layoutLocalprinter = dialogView.findViewById(R.id.layout_localprinter);
+        RelativeLayout layoutPrinter = dialogView.findViewById(R.id.rl_printer);
+        RelativeLayout layoutPrintertype = dialogView.findViewById(R.id.rl_printertype);
+        if (SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
+            layoutSunmiprinter.setVisibility(View.VISIBLE);
 //            txtTitleBTprinter.setVisibility(View.GONE);
-//            layoutBTprinter.setVisibility(View.GONE);
-//        } else {
-//            layoutSunmiprinter.setVisibility(View.GONE);
+            layoutBTprinter.setVisibility(View.GONE);
+            layoutLocalprinter.setVisibility(View.GONE);
+            layoutPrinter.setVisibility(View.GONE);
+            layoutPrintertype.setVisibility(View.GONE);
+        } else {
+            layoutSunmiprinter.setVisibility(View.GONE);
 //            txtTitleBTprinter.setVisibility(View.VISIBLE);
-//            layoutBTprinter.setVisibility(View.VISIBLE);
-//        }
-//
-//        TextView sunmi_printerstatus = dialogView.findViewById(R.id.txt_sunmi_printerstatus);
-//        sunmi_printerstatus.setText(String.format("Status : %s", SunmiPrintHelper.getInstance().showPrinterStatus(context)));
-//
-//        CardView btnSunmiPrintStatus = dialogView.findViewById(R.id.btn_sunmi_printerstatus);
-//        btnSunmiPrintStatus.setOnClickListener(v1 -> {
-//            sunmi_printerstatus.setText(String.format("Status : %s", SunmiPrintHelper.getInstance().showPrinterStatus(context)));
-//        });
-//
-//        CardView btnSunmiPrintTest = dialogView.findViewById(R.id.btn_sunmi_printertest);
-//        btnSunmiPrintTest.setOnClickListener(v1 -> {
-////                        SunmiPrintHelper.getInstance().printText("Galaxy Software\niStock Mobile TV Sale\n\n\nSunmi Printer Testing!",
-////                                36, false, false, null);
-//            SunmiPrintHelper.getInstance().printTest(context);
-//        });
-//
-//        CardView btnSunmiPrintFeed = dialogView.findViewById(R.id.btn_sunmi_printerfeed);
-//        btnSunmiPrintFeed.setOnClickListener(v1 -> {
-//            SunmiPrintHelper.getInstance().feedPaper();
-//        });
-//
-//        CardView btnSunmiPrintCut = dialogView.findViewById(R.id.btn_sunmi_printercut);
-//        btnSunmiPrintCut.setOnClickListener(v1 -> {
-//            SunmiPrintHelper.getInstance().cutpaper();
-//        });
-//
-//        //endregion
-//
-//        ImageView imgClose = dialogView.findViewById(R.id.btn_printersetup_close);
-//        imgClose.setOnClickListener(v1 -> {
-//            dialog.dismiss();
-//        });
-//        dialog = builder.create();
-//        dialog.show();
-//
-//    }
+            layoutBTprinter.setVisibility(View.VISIBLE);
+        }
+
+        TextView sunmi_printerstatus = dialogView.findViewById(R.id.txt_sunmi_printerstatus);
+        sunmi_printerstatus.setText(String.format("Status : %s", SunmiPrintHelper.getInstance().showPrinterStatus(datacontext)));
+
+        CardView btnSunmiPrintStatus = dialogView.findViewById(R.id.btn_sunmi_printerstatus);
+        btnSunmiPrintStatus.setOnClickListener(v1 -> {
+            sunmi_printerstatus.setText(String.format("Status : %s", SunmiPrintHelper.getInstance().showPrinterStatus(datacontext)));
+        });
+
+        CardView btnSunmiPrintTest = dialogView.findViewById(R.id.btn_sunmi_printertest);
+        btnSunmiPrintTest.setOnClickListener(v1 -> {
+//            SunmiPrintHelper.getInstance().printText("Galaxy Software\niStock Mobile TV Sale\n\n\nSunmi Printer Testing!",
+//                    36, false, false, null);
+            SunmiPrintHelper.getInstance().printTest(datacontext);
+        });
+
+        CardView btnSunmiPrintFeed = dialogView.findViewById(R.id.btn_sunmi_printerfeed);
+        btnSunmiPrintFeed.setOnClickListener(v1 -> {
+            SunmiPrintHelper.getInstance().feedPaper();
+        });
+
+        CardView btnSunmiPrintCut = dialogView.findViewById(R.id.btn_sunmi_printercut);
+        btnSunmiPrintCut.setOnClickListener(v1 -> {
+            SunmiPrintHelper.getInstance().cutpaper();
+        });
+
+        //endregion
+
+        ImageButton imgClose = dialogView.findViewById(R.id.imgSave);
+        imgClose.setOnClickListener(v1 -> {
+            dialog.dismiss();
+        });
+        dialog = builder.create();
+        dialog.show();
+
+    }
 
 }

@@ -3861,8 +3861,8 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 builder.setView(view);
                 RelativeLayout rlCustGroup = view.findViewById(R.id.rlCustGroup);
                 RelativeLayout rlTownship = view.findViewById(R.id.rlTownship);
-                RelativeLayout rlLocatin = view.findViewById(R.id.rlLocation);
-                RelativeLayout rlsalesmen = view.findViewById(R.id.rlsalesmen);
+                RelativeLayout rlLocatin = view.findViewById(R.id.rl_printer);
+                RelativeLayout rlsalesmen = view.findViewById(R.id.rl_printertype);
                 RelativeLayout rlCashIn = view.findViewById(R.id.rlCashIn); //added by EKK on 16-11-2020
 
                 btncustgroup = view.findViewById(R.id.btnCustGroup);

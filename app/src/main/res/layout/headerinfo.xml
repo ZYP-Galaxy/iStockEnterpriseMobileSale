@@ -261,7 +261,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rlLocation"
+                    android:id="@+id/rl_printer"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
@@ -292,7 +292,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/rlsalesmen"
+                    android:id="@+id/rl_printertype"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
