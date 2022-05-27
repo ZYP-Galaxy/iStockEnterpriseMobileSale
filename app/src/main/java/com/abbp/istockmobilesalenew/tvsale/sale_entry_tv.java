@@ -360,11 +360,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         getHeaderWithUUID();
         getData();
         getSystemSetting();
-        if (!Use_Delivery) {
-            chkDeliver.setVisibility(View.GONE);
-        } else {
-            chkDeliver.setVisibility(View.VISIBLE);
-        }
+//        if (!Use_Delivery) {
+//            chkDeliver.setVisibility(View.GONE);
+//        } else {
+//            chkDeliver.setVisibility(View.VISIBLE);
+//        }
         Tax_Type = getTaxType();
         caltax = caltaxsetting();
         fitercode = "Code";
@@ -383,10 +383,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         TextView tvUnit = findViewById(R.id.unit);
         chkDeliver = findViewById(R.id.chkToDeliver);
         chkOffline = findViewById(R.id.chkOffline);
-        boolean b = selectInsertLibrary.OfflineCheck;
-        if (selectInsertLibrary.OfflineCheck) {
-            chkOffline.setChecked(true);
-        }
+//        boolean b = selectInsertLibrary.OfflineCheck;
+//        if (selectInsertLibrary.OfflineCheck) {
+//            chkOffline.setChecked(true);
+//        }
         txtCloud = findViewById(R.id.txtCloud);
         boolean use_unit = false;
         Cursor cursorplvl = DatabaseHelper.rawQuery("select isuseunit from SystemSetting");
@@ -1583,16 +1583,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     comfirm = true;
 //                    voucherConfirmtoLite();
                     SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-                    if (chkOffline.isChecked()) {
-
-                        selectInsertLibrary.OfflineCheck = true;
-//                            voucherConfirmtoLiteDB();
+//                    if (chkOffline.isChecked()) {
+//
+//                        selectInsertLibrary.OfflineCheck = true;
+////                            voucherConfirmtoLiteDB();
+//                        voucherConfirm();
+//
+//                    } else {
+//                        selectInsertLibrary.OfflineCheck = false;
                         voucherConfirm();
-
-                    } else {
-                        selectInsertLibrary.OfflineCheck = false;
-                        voucherConfirm();
-                    }
+//                    }
                 } else {
                     AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
                     bd.setTitle("iStock");
@@ -3788,11 +3788,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     } else {
                         changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
                     }
-                    if (selectInsertLibrary.OfflineCheck) {
-                        insertdatatoLiteDb();
-                    } else {
+//                    if (selectInsertLibrary.OfflineCheck) {
+//                        insertdatatoLiteDb();
+//                    } else {
                         updateVoucher();
-                    }
+//                    }
 
                     ConfirmedTranid = Long.parseLong("0");
                 }
@@ -3849,11 +3849,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     bd.create().show();
                 }
             } else {
-                if (selectInsertLibrary.OfflineCheck) {
-                    insertdatatoLiteDb();
-                } else {
+//                if (selectInsertLibrary.OfflineCheck) {
+//                    insertdatatoLiteDb();
+//                } else {
                     updateVoucher();
-                }
+//                }
 
                 ConfirmedTranid = Long.parseLong("0");
             }
@@ -6782,7 +6782,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         b.setCustomTitle(title);
 //                        b.setc
                         b.setMessage("Connection Fail! Do you want to save Offline?");
-                        selectInsertLibrary.OfflineCheck = true;
+//                        selectInsertLibrary.OfflineCheck = true;
                         b.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -6827,9 +6827,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         chkOffline.setChecked(true);
-                        if (selectInsertLibrary.OfflineCheck == true && modify.equals("record")) {
-                            insertdatatoLiteDb();
-                        }
+//                        if (selectInsertLibrary.OfflineCheck == true && modify.equals("record")) {
+//                            insertdatatoLiteDb();
+//                        }
                         pb.dismiss();
                         dialog.dismiss();
 

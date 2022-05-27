@@ -508,68 +508,69 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     }
 
     private void SetUI() {
+        try {
 
-        SaleVouSalesmen.clear();
-        TextView tvUnit = findViewById(R.id.unit);
-        chkDeliver = findViewById(R.id.chkToDeliver);
-        chkOffline = findViewById(R.id.chkOffline);
-        boolean b = selectInsertLibrary.OfflineCheck;
-        if (selectInsertLibrary.OfflineCheck) {
-            chkOffline.setChecked(true);
-        }
-        txtCloud = findViewById(R.id.txtCloud);
-        boolean use_unit = false;
-        Cursor cursorplvl = DatabaseHelper.rawQuery("select isuseunit from SystemSetting");
-        if (cursorplvl != null && cursorplvl.getCount() != 0) {
-            if (cursorplvl.moveToFirst()) {
-                do {
-                    use_unit = cursorplvl.getInt(cursorplvl.getColumnIndex("isuseunit")) == 1 ? true : false;
-                } while (cursorplvl.moveToNext());
+            SaleVouSalesmen.clear();
+            TextView tvUnit = findViewById(R.id.unit);
+            chkDeliver = findViewById(R.id.chkToDeliver);
+            chkOffline = findViewById(R.id.chkOffline);
+            boolean b = selectInsertLibrary.OfflineCheck;
+            if (selectInsertLibrary.OfflineCheck) {
+                chkOffline.setChecked(true);
             }
-        }
-        if (cursorplvl != null)
-            cursorplvl.close();
-
-        Cursor cursorCloud = DatabaseHelper.rawQuery("select * from sale_head_main where uploaded='0'");
-        int count = 0;
-        if (cursorCloud != null && cursorCloud.getCount() > 0) {
-            count = cursorCloud.getCount();
-        }
-        if (count > 0)
-            txtCloud.setText(String.valueOf(cursorCloud.getCount()));
-        if (cursorCloud != null)
-            cursorCloud.close();
-
-        tvUnit.setVisibility(use_unit == true ? View.VISIBLE : View.GONE);
-        imgFilterClear = findViewById(R.id.imgClearFilter);
-        imgFilterClear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isCategory = true;
-                switch (imgFilterCode.getVisibility()) {
-                    case View.GONE:
-                        if (frmmain.withoutclass.equals("true")) {
-                            BindingCategory();
-                            break;
-                        } else if (frmmain.withoutclass.equals("false")) {
-                            filteredCode.clear();
-                            filtereddesc.clear();
-                            filteredList.clear();
-                            usr_codes.clear();
-                            gridcodeview.clearFocus();
-                            BindingClass();
-                            break;
-                        }
-
-                    case View.VISIBLE:
-                        usrcodeAdapter usrcodead = new usrcodeAdapter(sale_entry.this, usr_codes, gridview, categories);
-                        gridview.setAdapter(usrcodead);
-                        GridLayoutManager gridLayoutManager1 = new GridLayoutManager(getApplicationContext(), 4);
-                        gridview.setLayoutManager(gridLayoutManager1);
-                        break;
+            txtCloud = findViewById(R.id.txtCloud);
+            boolean use_unit = false;
+            Cursor cursorplvl = DatabaseHelper.rawQuery("select isuseunit from SystemSetting");
+            if (cursorplvl != null && cursorplvl.getCount() != 0) {
+                if (cursorplvl.moveToFirst()) {
+                    do {
+                        use_unit = cursorplvl.getInt(cursorplvl.getColumnIndex("isuseunit")) == 1 ? true : false;
+                    } while (cursorplvl.moveToNext());
                 }
             }
-        });
+            if (cursorplvl != null)
+                cursorplvl.close();
+
+            Cursor cursorCloud = DatabaseHelper.rawQuery("select * from sale_head_main where uploaded='0'");
+            int count = 0;
+            if (cursorCloud != null && cursorCloud.getCount() > 0) {
+                count = cursorCloud.getCount();
+            }
+            if (count > 0)
+                txtCloud.setText(String.valueOf(cursorCloud.getCount()));
+            if (cursorCloud != null)
+                cursorCloud.close();
+
+            tvUnit.setVisibility(use_unit == true ? View.VISIBLE : View.GONE);
+            imgFilterClear = findViewById(R.id.imgClearFilter);
+            imgFilterClear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isCategory = true;
+                    switch (imgFilterCode.getVisibility()) {
+                        case View.GONE:
+                            if (frmmain.withoutclass.equals("true")) {
+                                BindingCategory();
+                                break;
+                            } else if (frmmain.withoutclass.equals("false")) {
+                                filteredCode.clear();
+                                filtereddesc.clear();
+                                filteredList.clear();
+                                usr_codes.clear();
+                                gridcodeview.clearFocus();
+                                BindingClass();
+                                break;
+                            }
+
+                        case View.VISIBLE:
+                            usrcodeAdapter usrcodead = new usrcodeAdapter(sale_entry.this, usr_codes, gridview, categories);
+                            gridview.setAdapter(usrcodead);
+                            GridLayoutManager gridLayoutManager1 = new GridLayoutManager(getApplicationContext(), 4);
+                            gridview.setLayoutManager(gridLayoutManager1);
+                            break;
+                    }
+                }
+            });
 
 //        imgSearchCode = findViewById(R.id.imgSearchCode);
 //        imgSearchCode.setOnClickListener(new View.OnClickListener() {
@@ -644,175 +645,175 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //
 //            }
 //        });
-        imgFilterCode = findViewById(R.id.imgFilterCode);
-        imgFilterCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
-                View view = getLayoutInflater().inflate(R.layout.showposuser, null);
-                // builder.setCancelable(false);
-                builder.setView(view);
-                ListView lv = (ListView) view.findViewById(R.id.lsvposuer);
-                ArrayList<String> s = new ArrayList<>();
-                s.add("Code");
-                s.add("Description");
-                ArrayAdapter<String> item = new ArrayAdapter<>(sale_entry.this, android.R.layout.simple_list_item_1, s);
-                lv.setAdapter(item);
-                lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        fitercode = s.get(position);
-                        dialog.dismiss();
+            imgFilterCode = findViewById(R.id.imgFilterCode);
+            imgFilterCode.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
+                    View view = getLayoutInflater().inflate(R.layout.showposuser, null);
+                    // builder.setCancelable(false);
+                    builder.setView(view);
+                    ListView lv = (ListView) view.findViewById(R.id.lsvposuer);
+                    ArrayList<String> s = new ArrayList<>();
+                    s.add("Code");
+                    s.add("Description");
+                    ArrayAdapter<String> item = new ArrayAdapter<>(sale_entry.this, android.R.layout.simple_list_item_1, s);
+                    lv.setAdapter(item);
+                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            fitercode = s.get(position);
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog = builder.create();
+                    dialog.show();
+                }
+            });
+
+
+            txtDel = findViewById(R.id.txtDelete);
+            txtDelAll = findViewById(R.id.txtDelAll);
+            txtEdit = findViewById(R.id.txtedit);
+            txtComfirm = findViewById(R.id.txtConfirm);
+            txtBack = findViewById(R.id.txtBack);
+            viewConfirm = findViewById(R.id.viewConfirm);
+
+            //to save in sqlite database
+            viewSave = findViewById(R.id.viewSave);
+            viewSave.setOnClickListener(this);
+            savebtntolite = findViewById(R.id.savebtntolite);
+            savebtntolite.setOnClickListener(this);
+            viewcloud = findViewById(R.id.viewCloud);
+            viewcloud.setOnClickListener(this);
+            savetocloud = findViewById(R.id.savetoCloud);
+            savetocloud.setOnClickListener(this);
+            //to save in sqlite database
+
+            viewEdit = findViewById(R.id.viewEdit);
+            viewDel = findViewById(R.id.viewDelete);
+            viewDelAll = findViewById(R.id.viewDelAll);
+            viewBack = findViewById(R.id.viewBack);
+            txtDel.setOnClickListener(this);
+            txtDelAll.setOnClickListener(this);
+            txtEdit.setOnClickListener(this);
+            txtComfirm.setOnClickListener(this);
+            txtBack.setOnClickListener(this);
+            viewBack.setOnClickListener(this);
+            viewDelAll.setOnClickListener(this);
+            viewDel.setOnClickListener(this);
+            viewEdit.setOnClickListener(this);
+            viewConfirm.setOnClickListener(this);
+            gridview = findViewById(R.id.gv);
+            gridclassview = findViewById(R.id.recycler_category);
+            gridcodeview = findViewById(R.id.recycler_code);
+            imgDelete = findViewById(R.id.delete);
+            imgEdit = findViewById(R.id.edit);
+            imgDeleteAll = findViewById(R.id.delall);
+            // imgSummary = findViewById(R.id.summary);
+            // imgSummary.setOnClickListener(this);
+            imgEdit.setOnClickListener(this);
+            imgDeleteAll.setOnClickListener(this);
+            imgDelete.setOnClickListener(this);
+            txttotal = findViewById(R.id.txtTotalAmt);
+            imgConfrim = findViewById(R.id.imgconfirm);
+            imgConfrim.setOnClickListener(this);
+            imgPrint = findViewById(R.id.imgHeader);
+            imgPrint.setOnClickListener(this);
+
+            imgPrinter = findViewById(R.id.imgPrintSelection);
+            imgPrinter.setOnClickListener(this);
+
+            txtdocid = findViewById(R.id.txtdocid);
+            taxlo = findViewById(R.id.taxlo);
+            txtdate = findViewById(R.id.txtdate);
+            txtdate.setOnClickListener(this);
+            imgHeader = findViewById(R.id.imgHeader);
+            imgHeader.setOnClickListener(this);
+            imgSearchCode = findViewById(R.id.imgSearchCode);
+            imgSearchCode.setOnClickListener(this);
+            imgLogout = findViewById(R.id.imgLogout);
+            imgLogout.setOnClickListener(this);
+            txtfoc = findViewById(R.id.txtFocAmt);
+            txtitemdiscount = findViewById(R.id.txtitemDisAmt);
+            txtvoudis = findViewById(R.id.txtvoudisamt);
+            txtpaidamt = findViewById(R.id.txtPaidAmt);
+            txtpaid = findViewById(R.id.txtPaid);
+            // txtpaid.setText("aid amount is %");
+            txtnet = findViewById(R.id.txtNetAmt);
+            imgBack = findViewById(R.id.back);
+            imgBack.setOnClickListener(this);
+            txttaxamt = findViewById(R.id.txttaxamt);
+            txttax = findViewById(R.id.txttax);
+            btndetail = findViewById(R.id.btndetail);
+
+            String tax = "Tax" + (getTax() > 0 ? "( " + getTax() + "% )" : "");
+            txttax.setText(tax);
+            txtoutstand = findViewById(R.id.txtPreviousAmt);
+            txttaxamt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    keynum = txttaxamt.getText().toString();
+                    if (frmlogin.isusetax == 1) {
+                        showKeyPad(txttaxamt, txttax);
                     }
-                });
-                dialog = builder.create();
-                dialog.show();
-            }
-        });
-
-
-        txtDel = findViewById(R.id.txtDelete);
-        txtDelAll = findViewById(R.id.txtDelAll);
-        txtEdit = findViewById(R.id.txtedit);
-        txtComfirm = findViewById(R.id.txtConfirm);
-        txtBack = findViewById(R.id.txtBack);
-        viewConfirm = findViewById(R.id.viewConfirm);
-
-        //to save in sqlite database
-        viewSave = findViewById(R.id.viewSave);
-        viewSave.setOnClickListener(this);
-        savebtntolite = findViewById(R.id.savebtntolite);
-        savebtntolite.setOnClickListener(this);
-        viewcloud = findViewById(R.id.viewCloud);
-        viewcloud.setOnClickListener(this);
-        savetocloud = findViewById(R.id.savetoCloud);
-        savetocloud.setOnClickListener(this);
-        //to save in sqlite database
-
-        viewEdit = findViewById(R.id.viewEdit);
-        viewDel = findViewById(R.id.viewDelete);
-        viewDelAll = findViewById(R.id.viewDelAll);
-        viewBack = findViewById(R.id.viewBack);
-        txtDel.setOnClickListener(this);
-        txtDelAll.setOnClickListener(this);
-        txtEdit.setOnClickListener(this);
-        txtComfirm.setOnClickListener(this);
-        txtBack.setOnClickListener(this);
-        viewBack.setOnClickListener(this);
-        viewDelAll.setOnClickListener(this);
-        viewDel.setOnClickListener(this);
-        viewEdit.setOnClickListener(this);
-        viewConfirm.setOnClickListener(this);
-        gridview = findViewById(R.id.gv);
-        gridclassview = findViewById(R.id.recycler_category);
-        gridcodeview = findViewById(R.id.recycler_code);
-        imgDelete = findViewById(R.id.delete);
-        imgEdit = findViewById(R.id.edit);
-        imgDeleteAll = findViewById(R.id.delall);
-        // imgSummary = findViewById(R.id.summary);
-        // imgSummary.setOnClickListener(this);
-        imgEdit.setOnClickListener(this);
-        imgDeleteAll.setOnClickListener(this);
-        imgDelete.setOnClickListener(this);
-        txttotal = findViewById(R.id.txtTotalAmt);
-        imgConfrim = findViewById(R.id.imgconfirm);
-        imgConfrim.setOnClickListener(this);
-        imgPrint = findViewById(R.id.imgHeader);
-        imgPrint.setOnClickListener(this);
-
-        imgPrinter = findViewById(R.id.imgPrintSelection);
-        imgPrinter.setOnClickListener(this);
-
-        txtdocid = findViewById(R.id.txtdocid);
-        taxlo = findViewById(R.id.taxlo);
-        txtdate = findViewById(R.id.txtdate);
-        txtdate.setOnClickListener(this);
-        imgHeader = findViewById(R.id.imgHeader);
-        imgHeader.setOnClickListener(this);
-        imgSearchCode = findViewById(R.id.imgSearchCode);
-        imgSearchCode.setOnClickListener(this);
-        imgLogout = findViewById(R.id.imgLogout);
-        imgLogout.setOnClickListener(this);
-        txtfoc = findViewById(R.id.txtFocAmt);
-        txtitemdiscount = findViewById(R.id.txtitemDisAmt);
-        txtvoudis = findViewById(R.id.txtvoudisamt);
-        txtpaidamt = findViewById(R.id.txtPaidAmt);
-        txtpaid = findViewById(R.id.txtPaid);
-        // txtpaid.setText("aid amount is %");
-        txtnet = findViewById(R.id.txtNetAmt);
-        imgBack = findViewById(R.id.back);
-        imgBack.setOnClickListener(this);
-        txttaxamt = findViewById(R.id.txttaxamt);
-        txttax = findViewById(R.id.txttax);
-        btndetail = findViewById(R.id.btndetail);
-
-        String tax = "Tax" + (getTax() > 0 ? "( " + getTax() + "% )" : "");
-        txttax.setText(tax);
-        txtoutstand = findViewById(R.id.txtPreviousAmt);
-        txttaxamt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                keynum = txttaxamt.getText().toString();
-                if (frmlogin.isusetax == 1) {
-                    showKeyPad(txttaxamt, txttax);
                 }
-            }
-        });
+            });
 
 
-        btndetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String taxper;
-                String txttax;
-                if (sd.size() > 0) {
-                    taxper = "Tax" + (sh.get(0).getTax_per() > 0 ? "( " + sh.get(0).getTax_per() + "% )" : "");
-                    txttax = String.valueOf(sh.get(0).getTax_amount());
-                } else {
-                    taxper = "Tax" + (getTax() > 0 ? "( " + getTax() + "% )" : "");
-                    txttax = "0";
-                }
+            btndetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String taxper;
+                    String txttax;
+                    if (sd.size() > 0) {
+                        taxper = "Tax" + (sh.get(0).getTax_per() > 0 ? "( " + sh.get(0).getTax_per() + "% )" : "");
+                        txttax = String.valueOf(sh.get(0).getTax_amount());
+                    } else {
+                        taxper = "Tax" + (getTax() > 0 ? "( " + getTax() + "% )" : "");
+                        txttax = "0";
+                    }
 
-                String vouper = "Vou Discount";
-                if (sh.get(0).getDiscount_per() > 0) {
-                    vouper = "Vou Discount( " + custDis + "% )";
-                    sh.get(0).setDiscount_per(custDis);
-                    getSummary();
-                } else {
-                    vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
-                }
-                String paidPer="Paid%";
-                if (sh.get(0).getPaidpercent() > 0) {
-                    paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
+                    String vouper = "Vou Discount";
+                    if (sh.get(0).getDiscount_per() > 0) {
+                        vouper = "Vou Discount( " + custDis + "% )";
+                        sh.get(0).setDiscount_per(custDis);
+                        getSummary();
+                    } else {
+                        vouper = "Vou Discount" + (sh.get(0).getDiscount_per() > 0 ? "( " + sh.get(0).getDiscount_per() + "% )" : "");
+                    }
+                    String paidPer = "Paid%";
+                    if (sh.get(0).getPaidpercent() > 0) {
+                        paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
 //                    sh.get(0).setDiscount_per(custDis);
-                    getSummary();
-                } else {
-                    paidPer = "Paid" + (sh.get(0).getPaidpercent() > 0 ? "( " + sh.get(0).getPaidpercent() + "% )" : "");
+                        getSummary();
+                    } else {
+                        paidPer = "Paid" + (sh.get(0).getPaidpercent() > 0 ? "( " + sh.get(0).getPaidpercent() + "% )" : "");
+                    }
+                    String total = txttotal.getText().toString();
+                    String txtvou = String.valueOf(sh.get(0).getDiscount());
+                    String txtpaidamt = String.valueOf(sh.get(0).getPaid_amount());
+                    String txtfoc = String.valueOf(sh.get(0).getFoc_amount());
+                    String txtitem = String.valueOf(sh.get(0).getIstemdis_amount());
+                    detailvou(taxper, total, txtvou, vouper, paidPer, txtpaidamt, txttax, txtfoc, txtitem);
                 }
-                String total = txttotal.getText().toString();
-                String txtvou = String.valueOf(sh.get(0).getDiscount());
-                String txtpaidamt = String.valueOf(sh.get(0).getPaid_amount());
-                String txtfoc = String.valueOf(sh.get(0).getFoc_amount());
-                String txtitem = String.valueOf(sh.get(0).getIstemdis_amount());
-                detailvou(taxper, total, txtvou, vouper,paidPer, txtpaidamt, txttax, txtfoc, txtitem);
-            }
-        });
+            });
 
 
 //Added By abbp barcode scanner on 19/6/2019
 
-        imgScanner = findViewById(R.id.imgscanner);
-        imgScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(sale_entry.this, frmscancode.class);
-                startActivity(i);
-            }
-        });
+            imgScanner = findViewById(R.id.imgscanner);
+            imgScanner.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(sale_entry.this, frmscancode.class);
+                    startActivity(i);
+                }
+            });
 
 
 //def customer outstand
-        //GetCustomerOutstand(1);
+            //GetCustomerOutstand(1);
 
 //**************************************************************************************************
 
@@ -862,6 +863,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //        if(isCreditcustomer&& sh.get(0).getPay_type()==2) {
 //            bindingCreditBalance();
 //        }
+        }catch (Exception ex){
+            System.out.println(ex);
+        }
     }
 
 

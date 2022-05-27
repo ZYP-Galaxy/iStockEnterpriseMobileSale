@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -466,6 +467,10 @@ public class frmCustOutstand extends AppCompatActivity {
             }
         };
         StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+        req.setRetryPolicy(new DefaultRetryPolicy(
+                60000,
+                1,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(req);
 
 
