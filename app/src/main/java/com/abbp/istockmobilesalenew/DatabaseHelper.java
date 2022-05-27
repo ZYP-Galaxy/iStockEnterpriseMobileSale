@@ -268,7 +268,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 System.out.println(rd + "this is rd");
             }
 
-            System.out.println(table + upd + "This is result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println(table + upd + "This is result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         } catch (Exception e) {
             System.out.println("Db Error" + e.getMessage());

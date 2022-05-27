@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/head"
-            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
             android:layout_marginTop="1dp"
             android:orientation="horizontal">
 
@@ -94,7 +94,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:layout_weight=".3">
 
                 <ImageButton
@@ -104,6 +104,7 @@
                     android:background="@drawable/cyclebutton2"
                     android:src="@drawable/stockmenu"
                     android:visibility="visible" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -117,10 +118,6 @@
                     android:id="@+id/imgSearchCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:layout_centerVertical="true"
-
-
                     android:background="@null"
                     android:src="@drawable/searchicon" />
 
@@ -129,8 +126,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-
+                android:layout_weight="1.7"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -139,27 +135,26 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:maxWidth="2dp"
                     android:scaleX=".8"
                     android:scaleY=".8"
                     android:text="sale/pur ord"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:textStyle="bold">
 
                 </CheckBox>
 
                 <CheckBox
                     android:id="@+id/chkrecndel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="-20dp"
+                    android:layout_marginStart="-15dp"
                     android:layout_weight="1"
                     android:scaleX=".8"
                     android:scaleY=".8"
                     android:text="rec &amp; del"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:textStyle="bold">
 
                 </CheckBox>
@@ -168,60 +163,43 @@
                     android:id="@+id/chkinactive"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="-80dp"
+                    android:layout_marginStart="-15dp"
                     android:layout_weight="1"
                     android:scaleX=".8"
                     android:scaleY=".8"
                     android:text="inactive"
                     android:textColor="#ffffff"
-                    android:textSize="12dp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="2dp"
-                android:layout_weight=".5"
-                android:orientation="horizontal"
+                android:layout_weight="0.6"
+                android:orientation="horizontal">
 
-                >
+                <ImageButton
+                    android:id="@+id/btnrefresh"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/cyclebutton2"
+                    android:src="@drawable/refresh"
+                    android:visibility="visible" />
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <ImageButton
+                    android:id="@+id/btnclear"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/btnrefresh"
+                    android:background="@drawable/cyclebutton2"
+                    android:src="@drawable/clearsalelist" />
 
-                    >
-
-                    <ImageButton
-                        android:id="@+id/btnrefresh"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_centerVertical="true"
-
-                        android:background="@drawable/cyclebutton2"
-                        android:src="@drawable/refresh"
-
-
-                        android:visibility="visible" />
-
-                    <ImageButton
-                        android:id="@+id/btnclear"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_centerVertical="true"
-
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@+id/btnrefresh"
-                        android:background="@drawable/cyclebutton2"
-
-                        android:src="@drawable/clearsalelist"
-
-                        />
-                </RelativeLayout>
                 <!--<LinearLayout-->
                 <!--    android:layout_width="0dp"-->
                 <!--    android:layout_height="wrap_content"-->
@@ -275,7 +253,6 @@
             android:id="@+id/middle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/footer"
             android:layout_below="@+id/header"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="0dp"

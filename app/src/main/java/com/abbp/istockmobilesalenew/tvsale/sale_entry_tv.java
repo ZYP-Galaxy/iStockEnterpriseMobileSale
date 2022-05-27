@@ -5983,7 +5983,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onClick(View v) {
                     sd.get(itemPosition).setUnit_qty(Double.parseDouble(txtChangeQty.getText().toString()));
-                     sd.get(itemPosition).setSale_price(StringTODouble(txtChangePrice.getText().toString()));
+                    sd.get(itemPosition).setSale_price(StringTODouble(txtChangePrice.getText().toString()));
 //                    sd.get(itemPosition).setSale_price(tmpSalePrice); //18-11-2020
                     sd.get(itemPosition).setDis_price(0/*StringTODouble(txtChangePrice.getText().toString())*/);
                     sd.get(itemPosition).setQty(Double.parseDouble(txtsqty.getText().toString()) * sd.get(itemPosition).getUnit_qty());
@@ -6008,14 +6008,13 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             sd.get(itemPosition).setDis_price(dis_price);
 
 
-                        } else if(!btndiscount.getText().toString().equals("Discount")) {
+                        } else if (!btndiscount.getText().toString().equals("Discount")) {
                             double dis_percent = sale_entry_tv.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             sd.get(itemPosition).setDis_price(dis_price);
-                        }
-                        else{
+                        } else {
                             sd.get(itemPosition).setDis_type(0);
                         }
                     }
@@ -6975,6 +6974,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         String ip = sh_ip.getString("ip", "empty");
         String port = sh_port.getString("port", "empty");
         String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+        Log.i("tvsale", url);
         RequestQueue request = Volley.newRequestQueue(getApplicationContext());
         final Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
@@ -7330,11 +7330,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
         return 0.0;
     }
-    private String GetSalesmenids(){
-        String salesmenids="";
-        if(SaleVouSalesmen.size()>0){
-            for(int i=0;i<SaleVouSalesmen.size()-1;i++){
-                salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+
+    private String GetSalesmenids() {
+        String salesmenids = "";
+        if (SaleVouSalesmen.size() > 0) {
+            for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
+                salesmenids += SaleVouSalesmen.get(i).getSalesmen_Id() + ",";
             }
             salesmenids += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Id() + "";
         }
