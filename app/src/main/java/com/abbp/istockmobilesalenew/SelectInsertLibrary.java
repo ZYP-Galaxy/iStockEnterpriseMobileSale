@@ -319,10 +319,12 @@ public class SelectInsertLibrary {
                     break;
                 case "Salesmen":
                     JSONArray salesmen = null;
+
                     salesmen = jobj.getJSONArray("salesmen");
                     for (int salesmencount = 0; salesmencount < salesmen.length(); salesmencount++) {
                         JSONObject salesmenobj = salesmen.getJSONObject(salesmencount);
                         int id = salesmenobj.getInt("salesmenid");
+
                         String name = salesmenobj.optString("salesmenname", "null");
                         String shortdes = salesmenobj.optString("shortdesc", "null");
                         sqlString = "insert into Salesmen(salesmenid,salesmenname,shortdesc)values(" + id + ",'" + name + "','" + shortdes + "')";
@@ -604,7 +606,7 @@ public class SelectInsertLibrary {
 
                         usrcodevalue.put("code", code);
                         usrcodevalue.put("usr_code", usrcode);
-                        usrcodevalue.put("description", description.length()==0?usrcode:description);
+                        usrcodevalue.put("description", description.length() == 0 ? usrcode : description);
                         usrcodevalue.put("sale_price", saleprice);
                         usrcodevalue.put("sale_curr", salecur);
                         usrcodevalue.put("class", classid);
@@ -735,10 +737,14 @@ public class SelectInsertLibrary {
                     for (int salesmencount = 0; salesmencount < salesmen.length(); salesmencount++) {
                         JSONObject salesmenobj = salesmen.getJSONObject(salesmencount);
                         int id = salesmenobj.getInt("salesmenid");
+                        if (salesmenobj.getBoolean("isinactive")) {
+                            sqlString = "delete from Salesmen where salesmenid=" + id;
+                            DatabaseHelper.execute(sqlString);
+                            continue;
+                        }
                         String name = salesmenobj.optString("salesmenname", "null");
                         String shortdes = salesmenobj.optString("shortdesc", "null");
-//                        sqlString ="insert into Salesmen(salesmenid,salesmenname,shortdesc)values("+id+",'"+name+"','"+shortdes+"')";
-//                        DatabaseHelper.execute(sqlString);
+//
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("salesmenid", id);
                         contentValues.put("salesmenname", name);
