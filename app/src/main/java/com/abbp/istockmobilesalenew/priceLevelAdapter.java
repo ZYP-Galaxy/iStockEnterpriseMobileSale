@@ -228,7 +228,7 @@ public class priceLevelAdapter extends RecyclerView.Adapter<priceLevelAdapter.My
 
         } else {
             sqlString = "select uc.unit_type,code,description," + level + ",smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
-                    " where code=" + sale_entry.sd.get(itemposistion).getCode() + " and unit_type=" + sale_entry.sd.get(itemposistion).getUnit_type();
+                    " where code=" + saleorder_entry.sd.get(itemposistion).getCode() + " and unit_type=" + saleorder_entry.sd.get(itemposistion).getUnit_type();
 
         }
         Cursor cursor = DatabaseHelper.rawQuery(sqlString);
