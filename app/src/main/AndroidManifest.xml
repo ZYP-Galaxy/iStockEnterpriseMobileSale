@@ -65,8 +65,7 @@
             android:theme="@style/Theme2" />
         <activity
             android:name=".frmlogin"
-            android:screenOrientation="landscape"
-            >
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

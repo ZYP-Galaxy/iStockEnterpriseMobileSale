@@ -412,6 +412,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="10dp"
                             android:layout_weight="1"
+                            android:textColorHint="@color/black"
                             app:boxStrokeColor="@color/colorPrimary">
 
                             <EditText
