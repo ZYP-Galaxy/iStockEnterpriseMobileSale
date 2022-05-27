@@ -40,32 +40,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (instance == null) {
 
             if (!checkDatabase(context, databaseName)) {
-
-
                 try {
-
-//                    frmlogin.updatetime.getString("datetime","1990-01-01");
-//                    SharedPreferences.Editor editor=frmlogin.updatetime.edit();
-//                    editor.remove("datetime");
-//                    editor.commit();
-//
-//                    editor=frmlogin.updatetime.edit();
-//                    editor.putString("datetime","1990-01-01");
-//                    editor.commit();
                     globalsetting.datetime = "1990-01-01";
                     copyDataBase(context, databaseName);
                 } catch (IOException e) {
-
-                    System.out.println(databaseName
-                            + " does not exists ");
+                    System.out.println(databaseName + " does not exist.");
                 }
             }
 
-            instance = new DatabaseHelper(context, databaseName, null,
-                    DATABASE_VERSION);
+            instance = new DatabaseHelper(context, databaseName, null, DATABASE_VERSION);
             sqliteDb = instance.getWritableDatabase();
 
-            System.out.println("instance of  " + databaseName + " created ");
+            System.out.println("Instance of " + databaseName + " created.");
         }
     }
 
@@ -96,8 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String outFileName = getDatabasePath(aContext, databaseName);
 
-        File f = new File("/data/data/" + aContext.getPackageName()
-                + "/databases/");
+        File f = new File("/data/data/" + aContext.getPackageName() + "/databases/");
         if (!f.exists())
             f.mkdir();
 
@@ -113,7 +98,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         myOutput.close();
         myInput.close();
 
-        System.out.println(databaseName + " copied");
+        System.out.println(databaseName + " copied.");
+
     }
 
     public static boolean checkDatabase(Context aContext, String databaseName) {
@@ -127,28 +113,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             checkDB.close();
         } catch (SQLiteException e) {
-            // Toast.makeText(frmlogin.class,"this is fail",Toast.LENGTH_LONG).show();
-
-            System.out.println(databaseName + " does not exists");
+            System.out.println(databaseName + " does not exist.");
         }
 
         return checkDB != null ? true : false;
     }
 
     private static String getDatabasePath(Context aContext, String databaseName) {
-        return "/data/data/" + aContext.getPackageName() + "/databases/"
-                + databaseName;
+        return "/data/data/" + aContext.getPackageName() + "/databases/" + databaseName;
     }
 
     //select
     public static Cursor rawQuery(String query) {
+        cursor = null;
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
 
-            cursor = null;
             cursor = sqliteDb.rawQuery(query, null);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
@@ -158,13 +140,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static Cursor DistinctCategorySelectQuery(String TableName, String[] columns, String order) {
+        cursor = null;
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
 
-            cursor = null;
             cursor = sqliteDb.query(true, TableName, columns, null, null, null, null, order, null);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
@@ -174,13 +159,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static Cursor DistinctSelectQuery(String TableName, String[] columns) {
+        cursor = null;
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
 
-            cursor = null;
             cursor = sqliteDb.query(true, TableName, columns, null, null, null, null, null, null);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
@@ -190,13 +178,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static Cursor DistinctSelectQuerySelection(String TableName, String[] columns, String selection, String[] selectionArgs) {
+        cursor = null;
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
 
-            cursor = null;
             cursor = sqliteDb.query(true, TableName, columns, selection, selectionArgs, null, null, null, null);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
@@ -206,13 +197,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public static Cursor DistinctSelectQuerySelectionWithCondition(String TableName, String[] columns, String selection, String[] selectionArgs, String order) {
-        try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
-            }
-            sqliteDb = instance.getWritableDatabase();
 
-            cursor = null;
+        cursor = null;
+        try {
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
+            }
+
             cursor = sqliteDb.query(true, TableName, columns, selection, selectionArgs, null, null, order, null);
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
@@ -224,12 +219,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     //insert,update,delete into assets database
     public static void execute(String query) {
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
-            sqliteDb.execSQL(query);
 
+            sqliteDb.execSQL(query);
         } catch (Exception e) {
             System.out.println("DB ERROR  " + e.getMessage());
             e.printStackTrace();
@@ -238,12 +236,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static void insertWithOnConflict(String table, String nullColumnHack, ContentValues initialValues, int conflictAlgorithm) {
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
+
             long rd = sqliteDb.insertWithOnConflict(table, null, initialValues, conflictAlgorithm);
-//            if(table.equals("Dis_Type"))
             System.out.println(table + rd + "This is result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         } catch (Exception e) {
@@ -255,12 +256,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static void upsertWithOnConflit(String table, String nullColumnHack, ContentValues initialValues, int conflictAlgorithm, String wherestr, String[] priKey) {
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
 
-//                sqliteDb.updateWithOnConflict(table,null,initialValues,conflictAlgorithm);
             int upd = sqliteDb.update(table, initialValues, wherestr, priKey);
 
             if (upd == 0) {
@@ -280,10 +283,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static void deleteWithOnConflit(String table, String nullColumnHack, ContentValues initialValues, int conflictAlgorithm, String wherestr, String priKey) {
         try {
-            if (sqliteDb.isOpen()) {
-                sqliteDb.close();
+//            if (sqliteDb.isOpen()) {
+//                sqliteDb.close();
+//            }
+//            sqliteDb = instance.getWritableDatabase();
+            if (!sqliteDb.isOpen()) {
+                sqliteDb = instance.getWritableDatabase();
             }
-            sqliteDb = instance.getWritableDatabase();
 
 //                sqliteDb.updateWithOnConflict(table,null,initialValues,conflictAlgorithm);
             int upd = sqliteDb.delete(table, wherestr, new String[]{priKey});

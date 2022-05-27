@@ -400,15 +400,16 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         if (cursorplvl != null)
             cursorplvl.close();
 
-        Cursor cursorCloud = DatabaseHelper.rawQuery("select * from sale_head_main where uploaded='0'");
-        int count = 0;
-        if (cursorCloud != null && cursorCloud.getCount() > 0) {
-            count = cursorCloud.getCount();
-        }
-        if (count > 0)
-            txtCloud.setText(String.valueOf(cursorCloud.getCount()));
-        if (cursorCloud != null)
-            cursorCloud.close();
+        //cmt by ZYP [2022-05-27] for not use offline in TVSale
+//        Cursor cursorCloud = DatabaseHelper.rawQuery("select * from sale_head_main where uploaded='0'");
+//        int count = 0;
+//        if (cursorCloud != null && cursorCloud.getCount() > 0) {
+//            count = cursorCloud.getCount();
+//        }
+//        if (count > 0)
+//            txtCloud.setText(String.valueOf(cursorCloud.getCount()));
+//        if (cursorCloud != null)
+//            cursorCloud.close();
 
         tvUnit.setVisibility(use_unit ? View.VISIBLE : View.GONE);
 

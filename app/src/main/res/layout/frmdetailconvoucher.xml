@@ -1,11 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:focusable="false"
     android:background="@color/colorGray"
+    android:focusable="false"
+    android:orientation="vertical"
     android:padding="10dp">
 
     <androidx.cardview.widget.CardView
@@ -13,301 +13,293 @@
         android:layout_height="match_parent"
         android:elevation="500dp"
         app:cardBackgroundColor="@color/colorGray">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
 
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@drawable/columnheader">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-
-                <ImageButton
-                    android:id="@+id/imgSavedet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:background="@null"
-                    android:src="@drawable/editsave" />
-
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:id="@+id/txtTotal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Amount"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtTotalAmt"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/txtPrevious"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Previous Amount"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtPreviousAmt"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/txtitemDis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Item Dis"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtitemDisAmt"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:id="@+id/txtFoc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="FOC"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtFocAmt"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/taxlo"
-                android:layout_marginTop="5dp">
-
-                <TextView
-                    android:id="@+id/txttax"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Tax"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txttaxamt"
-                    android:layout_width="100dp"
-                    android:background="@drawable/txtbg"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/txtvoudis"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Vou Discount"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtvoudisamt"
-                    android:layout_width="100dp"
-                    android:background="@drawable/txtbg"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/txtPaidlabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Paid"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtPaidAmt"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:background="@drawable/txtbg"
-                    android:gravity="center"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/txtNet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Net Amt"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/txtNetAmt"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_toRightOf="@+id/txtNet"
-                    android:gravity="end"
-                    android:text="0"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </LinearLayout>
+                    android:layout_height="70dp"
+                    android:background="@drawable/columnheader">
+
+                    <ImageButton
+                        android:id="@+id/imgSavedet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@null"
+                        android:src="@drawable/editsave" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/txtTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="Amount"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtTotalAmt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="40dp"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/txtPrevious"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="10dp"
+                        android:text="Previous Amount"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/txtPreviousAmt"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/txtitemDis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="Item Dis"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtitemDisAmt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="40dp"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/txtFoc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="FOC"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/txtFocAmt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="40dp"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/taxlo"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp">
+
+                    <TextView
+                        android:id="@+id/txttax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="Tax"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txttaxamt"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="35dp"
+                        android:background="@drawable/txtbg"
+                        android:gravity="center|end"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/txtvoudis"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="Vou Discount"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtvoudisamt"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="35dp"
+                        android:background="@drawable/txtbg"
+                        android:gravity="center|end"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/txtPaidlabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="20dp"
+                        android:text="Paid"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtPaidAmt"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="35dp"
+                        android:background="@drawable/txtbg"
+                        android:gravity="center|end"
+                        android:padding="5dp"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/txtNet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Net Amt"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/txtNetAmt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toRightOf="@+id/txtNet"
+                        android:gravity="end"
+                        android:text="0"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </LinearLayout>
+
         </ScrollView>
     </androidx.cardview.widget.CardView>
 

@@ -16,31 +16,31 @@
             android:id="@+id/header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:orientation="horizontal"
             android:padding="20dp">
 
 
             <!--            <Switch-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:id="@+id/switchBtn"-->
-<!--                style="@style/SwitchStyle"-->
-<!--                android:layout_marginRight="20dp"-->
-<!--                android:buttonTint="@color/white"-->
-<!--                android:checked="true"-->
-<!--                android:paddingLeft="10dp"-->
-<!--                android:paddingRight="10dp"-->
-<!--                android:text="Tablet Mode"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textAllCaps="false"-->
-<!--                android:textColor="@color/white"-->
-<!--                android:textOff="TV Mode"-->
-<!--                android:textOn="Tablet Mode"-->
-<!--                android:textSize="15dp"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="center"-->
+            <!--                android:id="@+id/switchBtn"-->
+            <!--                style="@style/SwitchStyle"-->
+            <!--                android:layout_marginRight="20dp"-->
+            <!--                android:buttonTint="@color/white"-->
+            <!--                android:checked="true"-->
+            <!--                android:paddingLeft="10dp"-->
+            <!--                android:paddingRight="10dp"-->
+            <!--                android:text="Tablet Mode"-->
+            <!--                android:textAlignment="center"-->
+            <!--                android:textAllCaps="false"-->
+            <!--                android:textColor="@color/white"-->
+            <!--                android:textOff="TV Mode"-->
+            <!--                android:textOn="Tablet Mode"-->
+            <!--                android:textSize="15dp"-->
 
-<!--                />-->
+            <!--                />-->
 
 
             <androidx.appcompat.widget.SwitchCompat
@@ -48,68 +48,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="20dp"
-
+                android:layout_marginEnd="20dp"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:text="TV Mode"
                 android:textColor="@color/white"
                 android:textOff="Off"
                 android:textOn="ON"
-                android:textSize="15dp"
-
-
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:theme="@style/Theme.MyTheme"
-                app:showText="false"
-
-                />
+                app:showText="false" />
 
             <ToggleButton
                 android:id="@+id/toggleButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/btnround4"
                 android:checked="true"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp"
                 android:textAlignment="center"
-
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textOff="TV Mode"
                 android:textOn="Tablet Mode"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:visibility="gone" />
 
             <TextView
                 android:id="@+id/btnSetting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:drawableTop="@drawable/ic_print_black_24dp"
                 android:text="Printer"
                 android:textColor="#ffffff"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/btnconnect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/btnposdown"
+                android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:drawableTop="@drawable/wifidis"
                 android:text="Connect"
                 android:textColor="#ffffff"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -118,13 +110,12 @@
                 android:layout_height="wrap_content"
 
                 android:layout_gravity="center"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/btnRegister"
+                android:layout_marginEnd="20dp"
                 android:background="@null"
                 android:drawableTop="@drawable/posuserdown"
                 android:text="Download"
                 android:textColor="#ffffff"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
 
@@ -132,14 +123,12 @@
                 android:id="@+id/btnRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-
                 android:layout_gravity="center"
                 android:background="@null"
                 android:drawableTop="@drawable/register"
                 android:text="Register"
                 android:textColor="#ffffff"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
@@ -248,6 +237,20 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="serif"
+                android:text="@string/app_version"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
