@@ -1,291 +1,296 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:focusable="false"
-    android:scrollbars="vertical"
-    android:scrollbarAlwaysDrawVerticalTrack="true"
     android:background="#d9d4d4"
-    android:padding="10dp">
+    android:focusable="false"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbars="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="500dp"
-        app:cardBackgroundColor="#d9d4d4">
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:elevation="500dp"
+            app:cardBackgroundColor="#d9d4d4">
 
-
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/columnheader">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Customer"
-                    android:textColor="#ffffff"
-                    android:textStyle="bold"
-                    android:textSize="20dp"/>
-
-            </RelativeLayout>
-
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:id="@+id/rlCustGroup"
-                android:layout_marginTop="10dp"
-                android:layout_height="40dp">
-
-                <TextView
-                    android:id="@+id/txtAmounttext"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="72dp"
-                    android:text="Name"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
 
                 <RelativeLayout
-                    android:layout_width="185dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_height="50dp"
-                    android:background="@drawable/txtinvoice">
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@drawable/columnheader">
 
-                    <EditText
-                        android:id="@+id/txtName"
-                        android:layout_width="185dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="62dp"
-                        android:background="@drawable/txtinvoice"
-                        android:hint="Enter customer name"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
-                        android:textSize="15dp"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="Customer"
+                        android:textColor="#ffffff"
+                        android:textSize="20dp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
 
-
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="40dp"
-                android:visibility="visible">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Short"
-                    android:textColor="@color/barcolor"
-                    android:textStyle="bold"
-                    android:textSize="20dp"/>
-
                 <RelativeLayout
-                    android:layout_width="185dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_height="50dp"
-                    android:id="@+id/rlPaid"
-                    android:background="@drawable/txtinvoice">
-                    <EditText
-                        android:id="@+id/txtCode"
-                        android:layout_width="185dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:textColorHint="@color/white"
-                        android:hint="Enter short"
-                        android:background="@drawable/txtinvoice"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="15dp"/>
-
-                </RelativeLayout>
-
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Customer Group"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btnCustGroup"
-                    android:layout_width="185dp"
+                    android:id="@+id/rlCustGroup"
+                    android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/entrybtn"
-                    android:text="Choose"
-                    android:textAllCaps="false"
-                    android:textColor="@color/barcolor"
-                    android:textSize="15dp" />
+                    android:layout_marginTop="10dp">
 
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Township"
-                    android:textColor="@color/barcolor"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btnTownship"
-                    android:layout_width="185dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/entrybtn"
-                    android:text="Choose"
-                    android:textAllCaps="false"
-                    android:textColor="@color/barcolor"
-                    android:textSize="15dp" />
-
-
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="40dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Credit"
-                    android:id="@+id/credittv"
-                    android:textColor="@color/barcolor"
-                    android:textStyle="bold"
-                    android:textSize="20dp"/>
-
-                <RelativeLayout
-                    android:layout_width="185dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_height="50dp"
-                    >
-                    <CheckBox
-                        android:id="@+id/chkCredit"
+                    <TextView
+                        android:id="@+id/txtAmounttext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_toRightOf="@+id/credittv"
-                        tools:ignore="NotSibling" />
-                </RelativeLayout>
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="72dp"
+                        android:text="Name"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_marginTop="10dp"
-                android:layout_height="40dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="Credit Limit"
-                    android:textColor="@color/barcolor"
-                    android:textStyle="bold"
-                    android:textSize="20dp"/>
-
-                <RelativeLayout
-                    android:layout_width="185dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_height="50dp"
-                    android:background="@drawable/txtinvoice">
-                    <EditText
-                        android:id="@+id/txtCredit"
+                    <RelativeLayout
                         android:layout_width="185dp"
-                        android:layout_height="35dp"
+                        android:layout_height="50dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/white"
-                        android:background="@drawable/txtinvoice"
-                        android:hint="Enter credit limit"
-                        android:textColorHint="@color/white"
-                        android:textStyle="bold"
-                        android:textSize="15dp"/>
+                        android:background="@drawable/txtinvoice">
+
+                        <EditText
+                            android:id="@+id/txtName"
+                            android:layout_width="185dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="62dp"
+                            android:background="@drawable/txtinvoice"
+                            android:hint="Enter customer name"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
 
                 </RelativeLayout>
 
-            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="5dp"
+                    android:visibility="visible">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="10dp"
-                android:gravity="center_horizontal"
-                android:background="@drawable/columnheader"
-                >
-                <Button
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="6dp"
-                    android:text="OK"
-                    android:background="@drawable/entrybtn"
-                    android:textColor="@color/barcolor"
-                    android:id="@+id/btnok"
-                    android:layout_marginRight="28dp"/>
-                <Button
-                    android:layout_marginVertical="6dp"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/entrybtn"
-                    android:textColor="@color/barcolor"
-                    android:text="Close"
-                    android:layout_marginLeft="28dp"
-                    android:id="@+id/btnclose"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="Short"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
+                    <RelativeLayout
+                        android:id="@+id/rlPaid"
+                        android:layout_width="185dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/txtinvoice">
+
+                        <EditText
+                            android:id="@+id/txtCode"
+                            android:layout_width="185dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/txtinvoice"
+                            android:hint="Enter short"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="Customer Group"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnCustGroup"
+                        android:layout_width="185dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/entrybtn"
+                        android:text="Choose"
+                        android:textAllCaps="false"
+                        android:textColor="@color/barcolor"
+                        android:textSize="15dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="Township"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btnTownship"
+                        android:layout_width="185dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/entrybtn"
+                        android:text="Choose"
+                        android:textAllCaps="false"
+                        android:textColor="@color/barcolor"
+                        android:textSize="15dp" />
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/credittv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="Credit"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:layout_width="185dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <CheckBox
+                            android:id="@+id/chkCredit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/credittv"
+                            tools:ignore="NotSibling" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="10dp"
+                        android:text="Credit Limit"
+                        android:textColor="@color/barcolor"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <RelativeLayout
+                        android:layout_width="185dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/txtinvoice">
+
+                        <EditText
+                            android:id="@+id/txtCredit"
+                            android:layout_width="185dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/txtinvoice"
+                            android:hint="Enter credit limit"
+                            android:inputType="numberDecimal"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+                            android:textSize="15dp"
+                            android:textStyle="bold" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/columnheader"
+                    android:gravity="center_horizontal">
+
+                    <Button
+                        android:id="@+id/btnok"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="6dp"
+                        android:layout_marginRight="28dp"
+                        android:background="@drawable/entrybtn"
+                        android:text="OK"
+                        android:textColor="@color/barcolor" />
+
+                    <Button
+                        android:id="@+id/btnclose"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="6dp"
+                        android:layout_marginLeft="28dp"
+                        android:background="@drawable/entrybtn"
+                        android:text="Close"
+                        android:textColor="@color/barcolor" />
+
+
+                </LinearLayout>
 
             </LinearLayout>
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </ScrollView>
 </LinearLayout>
