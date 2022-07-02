@@ -97,7 +97,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     ArrayList<sale_det_tmp> sale_det_tmpsfordirect = new ArrayList<>();
     ArrayList<salechange> salechanges = new ArrayList<>();
 
-
     sale_head_tmp sale_head_tmp;
     Gson gson = new Gson();
 
@@ -876,14 +875,14 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //        if(isCreditcustomer&& sh.get(0).getPay_type()==2) {
 //            bindingCreditBalance();
 //        }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             System.out.println(ex);
         }
     }
 
 
     // Add detail btn in sale entry on 18/6/2019
-    private void detailvou(String taxper, String total, String txtvou, String vouper, String paidPer,String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
+    private void detailvou(String taxper, String total, String txtvou, String vouper, String paidPer, String txtpaidamt, String txttaxam, String txtfocamt, String txtitem) {
         AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this);
         View view = getLayoutInflater().inflate(R.layout.frmdetailconvoucher, null);
         bd.setCancelable(false);
@@ -2435,7 +2434,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                    int tranidi = 0;
                     boolean isdeliver = false;
                     isdeliver = cursor.getInt(cursor.getColumnIndex("isdeliver")) == 1 ? true : false;
-                    String offlineTranid=UUID.randomUUID().toString();
+                    String offlineTranid = UUID.randomUUID().toString();
                     sale_head_tmps.add(new sale_head_tmp(offlineTranid, //tranidi = cursor.getInt(cursor.getColumnIndex("tranid")),
                             cursor.getInt(cursor.getColumnIndex("userid"))
                             , cursor.getString(cursor.getColumnIndex("docid"))
@@ -5211,12 +5210,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //            System.out.println(b);
 //Toast.makeText(getApplicationContext(),"this is invoice no "+invoice_no+sh.get(0).getTownshipid(),Toast.LENGTH_LONG).show();
                 SetDefaultLocation();
-                String salesmenids="";
-                if(SaleVouSalesmen.size()>0){
-                    for(int i=0;i<SaleVouSalesmen.size()-1;i++){
-                        salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+                String salesmenids = "";
+                if (SaleVouSalesmen.size() > 0) {
+                    for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
+                        salesmenids += SaleVouSalesmen.get(i).getSalesmen_Id() + ",";
                     }
-                    salesmenids+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Id()+"";
+                    salesmenids += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Id() + "";
                 }
 
                 sale_head_tmpsfordirect.add(new sale_head_tmp((int) sh.get(0).getTranid(),
@@ -5498,13 +5497,13 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         return sqty * unit_qty;
     }
 
-    private String GetSalesmenids(){
-        String salesmenids="";
-        if(SaleVouSalesmen.size()>0){
-            for(int i=0;i<SaleVouSalesmen.size()-1;i++){
-                salesmenids+=SaleVouSalesmen.get(i).getSalesmen_Id()+",";
+    private String GetSalesmenids() {
+        String salesmenids = "";
+        if (SaleVouSalesmen.size() > 0) {
+            for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
+                salesmenids += SaleVouSalesmen.get(i).getSalesmen_Id() + ",";
             }
-            salesmenids+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Id()+"";
+            salesmenids += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Id() + "";
         }
         return salesmenids;
     }
@@ -5727,7 +5726,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 }
 
             } else {
-               // disDa.dismiss();
+                // disDa.dismiss();
             }
 
             cursor.close();
@@ -5956,14 +5955,13 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                             sd.get(itemPosition).setDis_price(dis_price);
 
 
-                        } else if(!btndiscount.getText().toString().equals("Discount")){
+                        } else if (!btndiscount.getText().toString().equals("Discount")) {
                             double dis_percent = sale_entry.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(ClearFormat(btndiscount.getText().toString()));
                             //  double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             sd.get(itemPosition).setDis_price(dis_price);
-                        }
-                        else{
+                        } else {
                             sd.get(itemPosition).setDis_type(0);
                         }
                     }
@@ -6109,7 +6107,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     }
                 });
 //                dialog =
-                        b.create().show();
+                b.create().show();
 //                dialog.show();
             } catch (Exception ee) {
                 pb.dismiss();
@@ -6155,8 +6153,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         TextView tvtaxamount = voucher.findViewById(R.id.txt_tax_amount);
         TextView txttaxpercent = voucher.findViewById(R.id.txt_tax_percent);
         TextView tvtotalnetamount = voucher.findViewById(R.id.txtnetamount);
-        TextView tvpaidamount=voucher.findViewById(R.id.txtpaidamount);
-        TextView tvchangeamount=voucher.findViewById(R.id.txtchangeamount);
+        TextView tvpaidamount = voucher.findViewById(R.id.txtpaidamount);
+        TextView tvchangeamount = voucher.findViewById(R.id.txtchangeamount);
 
         TextView tvcompanyname = voucher.findViewById(R.id.txtcompanyname);
         TextView tvheader1 = voucher.findViewById(R.id.txtheadertitle1);
@@ -6282,8 +6280,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         String DisAmount = CurrencyFormat(sh.get(0).getDiscount() + sh.get(0).getIstemdis_amount());
         String FocAmount = CurrencyFormat(sh.get(0).getFoc_amount());
         String NetAmount = CurrencyFormat(net_amount);
-        String PaidAmount=CurrencyFormat(paid);
-        String ChangeAmount=CurrencyFormat(changeamount);
+        String PaidAmount = CurrencyFormat(paid);
+        String ChangeAmount = CurrencyFormat(changeamount);
 
         tvtotalamount.setText(TotalAmount);
         tvtotaldiscount.setText(DisAmount);
@@ -6573,8 +6571,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                 PrintVoucher(tranid);
                             }
 
-                        }
-                        else{
+                        } else {
                             intent = new Intent(sale_entry.this, sale_entry.class);
                             startActivity(intent);
                             finish();
@@ -6625,7 +6622,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             } catch (Exception ee) {
 //                pb.dismiss();
 //                dialog.dismiss();
-                Toast.makeText(sale_entry.this,"No internet connection! Please check your internet connection!" /*ee.getMessage()*/, Toast.LENGTH_LONG).show();
+                Toast.makeText(sale_entry.this, "No internet connection! Please check your internet connection!" /*ee.getMessage()*/, Toast.LENGTH_LONG).show();
             }
         }
     }
