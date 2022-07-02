@@ -515,6 +515,18 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             TextView tvUnit = findViewById(R.id.unit);
             chkDeliver = findViewById(R.id.chkToDeliver);
             chkOffline = findViewById(R.id.chkOffline);
+            chkOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        selectInsertLibrary.OfflineCheck=true;
+                    }
+                    else
+                    {
+                        selectInsertLibrary.OfflineCheck=false;
+                    }
+                }
+            });
             boolean b = selectInsertLibrary.OfflineCheck;
             if (selectInsertLibrary.OfflineCheck) {
                 chkOffline.setChecked(true);
@@ -1619,16 +1631,17 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     comfirm = true;
 //                    voucherConfirmtoLite();
                     SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-                    if (chkOffline.isChecked()) {
-
-                        selectInsertLibrary.OfflineCheck = true;
-//                            voucherConfirmtoLiteDB();
-                        voucherConfirm();
-
-                    } else {
-                        selectInsertLibrary.OfflineCheck = false;
-                        voucherConfirm();
-                    }
+//                    if (chkOffline.isChecked()) {
+//
+//                        selectInsertLibrary.OfflineCheck = true;
+////                            voucherConfirmtoLiteDB();
+//                        voucherConfirm();
+//
+//                    } else {
+//                        selectInsertLibrary.OfflineCheck = false;
+//                        voucherConfirm();
+//                    }
+                    voucherConfirm();
                 } else {
                     AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
                     bd.setTitle("iStock");
@@ -6507,7 +6520,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        chkOffline.setChecked(true);
+                       // chkOffline.setChecked(true);
                         if (selectInsertLibrary.OfflineCheck == true && modify.equals("record")) {
                             insertdatatoLiteDb();
                         }
