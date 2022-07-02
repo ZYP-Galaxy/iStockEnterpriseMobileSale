@@ -245,7 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
 
             long rd = sqliteDb.insertWithOnConflict(table, null, initialValues, conflictAlgorithm);
-            System.out.println(table + rd + "This is result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println(table + rd + "This is result!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
         } catch (Exception e) {
             System.out.println("Db Error" + e.getMessage());

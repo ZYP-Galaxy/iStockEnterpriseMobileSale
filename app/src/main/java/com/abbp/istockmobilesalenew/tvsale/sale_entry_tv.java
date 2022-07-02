@@ -5312,7 +5312,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
 
             Confirm();
-            SaleVouSalesmen.clear();
+            //SaleVouSalesmen.clear();//comment by KLM for salemen print 30062022
 
 //        }
         } catch (Exception ee) {
@@ -6488,6 +6488,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         View voucher = getLayoutInflater().inflate(R.layout.bluetoothvoucherprint, null);
 
         TextView custname = voucher.findViewById(R.id.txtcustomer);
+        TextView salemenName=voucher.findViewById(R.id.txtsalemen);
         TextView tvdate = voucher.findViewById(R.id.txtdate);
         TextView tvinvoice = voucher.findViewById(R.id.txtinvoice);
         TextView tvtotalamount = voucher.findViewById(R.id.txttotalamount);
@@ -6504,6 +6505,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         TextView tvheader2 = voucher.findViewById(R.id.txtheadertitle2);
         TextView tvheader3 = voucher.findViewById(R.id.txtheadertitle3);
         TextView txtVoucherRemark = voucher.findViewById(R.id.txt_voucher_remark);
+        LinearLayout salemenLayout=voucher.findViewById(R.id.salemenlayout);
 
         LinearLayout tax_layout = voucher.findViewById(R.id.layout_tax);
         if (frmlogin.isusetax == 0) {
@@ -6567,6 +6569,19 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         tvdate.setText(Date);
         tvinvoice.setText(invoiceno);
         txtVoucherRemark.setText(sh.get(0).getHeadremark());
+        if(use_salesperson){
+            salemenLayout.setVisibility(View.VISIBLE);
+            String salesmenString="";
+            if(SaleVouSalesmen.size()>0){
+                for(int i=0;i<SaleVouSalesmen.size()-1;i++){
+                    salesmenString+=SaleVouSalesmen.get(i).getSalesmen_Name()+", ";
+                }
+
+                salesmenString+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Name();
+            }
+            salemenName.setText(salesmenString);
+        }
+
 
 //Detail
 
@@ -6590,7 +6605,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                item = item.substring(0, 20);
 //            }
             stamount = CurrencyFormat(amt);
-            qtyprice = "(" + CurrencyFormat(sale_entry_tv.sd.get(i).getUnit_qty()) + "  " + sale_entry_tv.sd.get(i).getUnit_short() + "x"
+            qtyprice = "(" + String.format("%,." + frmmain.qty_places + "f", sale_entry_tv.sd.get(i).getUnit_qty())+ "  " + sale_entry_tv.sd.get(i).getUnit_short() + "x"
                     + CurrencyFormat(sale_entry_tv.sd.get(i).getSale_price()) + ")";
 
             tvdescription.setText(item);

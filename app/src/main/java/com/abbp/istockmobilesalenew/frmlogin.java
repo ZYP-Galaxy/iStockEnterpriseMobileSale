@@ -108,7 +108,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     //    public static int allow_priceLevel;
 //    public static int select_location;
 //    public static int select_customer=1;
-//    public static int change_date;
+//    public static int change_date;F
 //    public static int change_price;
 //    public static int tax;
 //    public static int discount;
