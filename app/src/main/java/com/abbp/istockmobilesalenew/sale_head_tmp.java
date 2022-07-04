@@ -107,7 +107,7 @@ public class sale_head_tmp {
     private double taxamount, taxpercent, discountpercent, exgrate, advpayamount;
     private boolean iscashreceive;
     private int tranid;
-    private boolean isdeliver;
+    private boolean isdeliver, isuseecommerce;
     private String salesmenids;
 
 

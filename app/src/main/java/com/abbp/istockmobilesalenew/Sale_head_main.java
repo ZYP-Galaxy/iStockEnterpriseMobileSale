@@ -6,28 +6,28 @@ public class Sale_head_main {
 
     private long tranid;
     private String tranidstr;
-    private  int userid;
+    private int userid;
     private String docid;
     private String date;
     private String invoice_no;
-    private  long locationid;
+    private long locationid;
     private long customerid;
     @SerializedName("cashid")
     private int def_cashid;
-    private  int pay_type;
-    private  int due_in_days;
-    private  int currency;
+    private int pay_type;
+    private int due_in_days;
+    private int currency;
     private double discount;
     private String headremark;
-    private  double paid_amount;
-    private  double paidpercent;
+    private double paid_amount;
+    private double paidpercent;
     private double invoice_amount;
     private double invoice_qty;
     private double foc_amount;
     private double istemdis_amount;
     private double discount_per;
-    private  double tax_amount;
-    private  double tax_per;
+    private double tax_amount;
+    private double tax_per;
     private long townshipid;
     private String salesmenids;
 
@@ -50,12 +50,12 @@ public class Sale_head_main {
         this.invoice_no = invoice_no;
         this.locationid = locationid;
         this.customerid = customerid;
-        this.def_cashid=def_cashid;
+        this.def_cashid = def_cashid;
         this.pay_type = pay_type;
-        this.due_in_days=due_in_days;
+        this.due_in_days = due_in_days;
         this.currency = currency;
         this.discount = discount;
-        this.headremark=headremark;
+        this.headremark = headremark;
         this.paid_amount = paid_amount;
         this.invoice_amount = invoice_amount;
         this.invoice_qty = invoice_qty;
@@ -64,11 +64,8 @@ public class Sale_head_main {
         this.discount_per = discount_per;
         this.tax_amount = tax_amount;
         this.tax_per = tax_per;
-        this.townshipid=townshipid;
+        this.townshipid = townshipid;
     }
-
-
-
 
 
     public long getTownshipid() {
@@ -231,6 +228,7 @@ public class Sale_head_main {
     public void setIstemdis_amount(double istemdis_amount) {
         this.istemdis_amount = istemdis_amount;
     }
+
     public double getDiscount_per() {
         return discount_per;
     }
