@@ -424,6 +424,11 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
 
         }
 
+        sale_entry_tv.itemAdapter.notifyDataSetChanged();
+        sale_entry_tv.entrygrid.smoothScrollToPosition(sale_entry_tv.sd.size());
+        sale_entry_tv.getSummary();
+
+
     }
 
 

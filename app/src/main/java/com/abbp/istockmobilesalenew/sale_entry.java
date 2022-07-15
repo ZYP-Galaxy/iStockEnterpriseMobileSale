@@ -517,12 +517,10 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             chkOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if(isChecked){
-                        selectInsertLibrary.OfflineCheck=true;
-                    }
-                    else
-                    {
-                        selectInsertLibrary.OfflineCheck=false;
+                    if (isChecked) {
+                        selectInsertLibrary.OfflineCheck = true;
+                    } else {
+                        selectInsertLibrary.OfflineCheck = false;
                     }
                 }
             });
@@ -1904,7 +1902,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                         double creditL = 0.0;
                                         String nameSt = name.getText().toString().trim();
                                         String codeSt = code.getText().toString().trim();
-                                        String creditLimit = credit.getText().toString();
+                                        String creditLimit = credit.getText().toString().trim();
                                         int custid = getCustomerCount() + 1;
                                         if (chkCredit.isChecked()) {
                                             iscredit = true;
@@ -6144,7 +6142,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         View voucher = getLayoutInflater().inflate(R.layout.bluetoothvoucherprint, null);
 
         TextView custname = voucher.findViewById(R.id.txtcustomer);
-        TextView salemenName=voucher.findViewById(R.id.txtsalemen);
+        TextView salemenName = voucher.findViewById(R.id.txtsalemen);
         TextView tvdate = voucher.findViewById(R.id.txtdate);
         TextView tvinvoice = voucher.findViewById(R.id.txtinvoice);
         TextView tvtotalamount = voucher.findViewById(R.id.txttotalamount);
@@ -6161,7 +6159,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         TextView tvheader2 = voucher.findViewById(R.id.txtheadertitle2);
         TextView tvheader3 = voucher.findViewById(R.id.txtheadertitle3);
         TextView txtVoucherRemark = voucher.findViewById(R.id.txt_voucher_remark);
-        LinearLayout salemenLayout=voucher.findViewById(R.id.salemenlayout);
+        LinearLayout salemenLayout = voucher.findViewById(R.id.salemenlayout);
 
         LinearLayout tax_layout = voucher.findViewById(R.id.layout_tax);
         if (frmlogin.isusetax == 0) {
@@ -6226,20 +6224,18 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         tvinvoice.setText(invoiceno);
         txtVoucherRemark.setText(sh.get(0).getHeadremark());
 
-        if(use_salesperson){
+        if (use_salesperson) {
             salemenLayout.setVisibility(View.VISIBLE);
-            String salesmenString="";
-            if(SaleVouSalesmen.size()>0){
-                for(int i=0;i<SaleVouSalesmen.size()-1;i++){
-                    salesmenString+=SaleVouSalesmen.get(i).getSalesmen_Name()+", ";
+            String salesmenString = "";
+            if (SaleVouSalesmen.size() > 0) {
+                for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
+                    salesmenString += SaleVouSalesmen.get(i).getSalesmen_Name() + ", ";
                 }
 
-                salesmenString+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Name();
+                salesmenString += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Name();
             }
             salemenName.setText(salesmenString);
         }
-
-
 
 
 //Detail
@@ -6518,7 +6514,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                       // chkOffline.setChecked(true);
+                        // chkOffline.setChecked(true);
                         if (selectInsertLibrary.OfflineCheck == true && modify.equals("record")) {
                             insertdatatoLiteDb();
                         }

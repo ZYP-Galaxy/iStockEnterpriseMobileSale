@@ -1,7 +1,7 @@
 package com.abbp.istockmobilesalenew;
 
 public class sale_head_tmp {
-    //    -- Table: public.sale_head_main
+//    -- Table: public.sale_head_main
 //
 //-- DROP TABLE public.sale_head_main;
 //
