@@ -139,7 +139,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     public static int isallowsysdatechange;
     public static int isallowovercreditlimit;
     public static String isknockcode;
-    public static int istabletuser,istvuser;
+    public static int istabletuser, istvuser;
     public static int isallowpricelevel;
     public static int canselectcustomer;
     public static int canselectlocation;
@@ -172,7 +172,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private PrinterFactory printerFactory;
     private ArrayList<PrinterInterface> printerInterfaceArrayList = new ArrayList<>();
     private PrinterInterface curPrinterInterface = null;
-    public static boolean isTVMode =false;
+    public static boolean isTVMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,22 +192,29 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         sh_printer = getSharedPreferences("printer", MODE_PRIVATE);
         sh_ptype = getSharedPreferences("ptype", MODE_PRIVATE);
         updatetime = getSharedPreferences("datetime", MODE_PRIVATE);
-        SwitchCompat switchCompat=findViewById(R.id.switchBtn);
+        SwitchCompat switchCompat = findViewById(R.id.switchBtn);
 
+        isTVMode = sh_printer.getBoolean("isTVMode", false);
+        //added by KLM  for auto Detect if Device is TV or Tablet 25052022
+        if (checkIsTelevision() || SunmiPrintHelper.getInstance().checkSunmiPrinter()) {
+            switchCompat.setVisibility(View.GONE);
+            isTVMode = true;
+            SharedPreferences.Editor editor = sh_printer.edit();
+            editor.putBoolean("isTVMode", isTVMode);
+            editor.apply();
+        }
+
+        switchCompat.setChecked(isTVMode);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-              isTVMode =switchCompat.isChecked();
+                isTVMode = isChecked;
+                SharedPreferences.Editor editor = sh_printer.edit();
+                editor.putBoolean("isTVMode", isTVMode);
+                editor.apply();
             }
         });
-        if(isTVMode){
-            switchCompat.setChecked(true);
-        }
-        //added by KLM  for auto Detect if Device is TV or Tablet 25052022
-        if(checkIsTelevision() || SunmiPrintHelper.getInstance().checkSunmiPrinter()){
-            switchCompat.setVisibility(View.GONE);
-            isTVMode=true;
-        }
+
         setUI();
         CheckConnection();
         context = this;
@@ -251,7 +258,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         btnRegister = findViewById(R.id.btnRegister);
         btnposdown = findViewById(R.id.btnposdown);
         txtSetting = findViewById(R.id.btnSetting);
-        toggleButton=findViewById(R.id.toggleButton);
+        toggleButton = findViewById(R.id.toggleButton);
 //        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -1131,7 +1138,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                     String Cashier_Printer=cursor.getString(cursor.getColumnIndex("Cashier_Printer"));
                     int CAshier_PrinterType=cursor.getInt(cursor.getColumnIndex("Cashier_PrinterType"));
                     */
-                    aryUsers.add(new posuser(userid, name, branchid, shortdesc, password, canchangesaleprice, canchangepurprice, canchangedate, defaultlocationid, candiscount, isusetax, ishidepurprice, ishidesaleprice, ishidepurcostprice, isviewallsalepricelevel, isinactive, defaultbranchid, defaultcashid, isallowsysdatechange, isallowovercreditlimit, isknockcode, istabletuser,istvuser, isallowpricelevel, canselectcustomer, canselectlocation));/*posuser(userid,name,branchid,password,canchangesaleprice,canchangepurprice,defaultlocationid,candiscount,isusetax,ishidepurprice,ishidesaleprice,ishidepurcostprice,isviewallsalepricelevel,isinactive,defaultbranchid,defaultcashid,isallowsysdatechange,isallowovercreditlimit,isknockcode,istabletuser,isallowpricelevel));*///,Confirm_PrintVou,allow_priceLevel,select_location,select_customer, change_date,tax,discount,change_price,pass,locid,def_payment,Allow_Over_Credit_Limit,def_cashid,Cashier_Printer,CAshier_PrinterType));
+                    aryUsers.add(new posuser(userid, name, branchid, shortdesc, password, canchangesaleprice, canchangepurprice, canchangedate, defaultlocationid, candiscount, isusetax, ishidepurprice, ishidesaleprice, ishidepurcostprice, isviewallsalepricelevel, isinactive, defaultbranchid, defaultcashid, isallowsysdatechange, isallowovercreditlimit, isknockcode, istabletuser, istvuser, isallowpricelevel, canselectcustomer, canselectlocation));/*posuser(userid,name,branchid,password,canchangesaleprice,canchangepurprice,defaultlocationid,candiscount,isusetax,ishidepurprice,ishidesaleprice,ishidepurcostprice,isviewallsalepricelevel,isinactive,defaultbranchid,defaultcashid,isallowsysdatechange,isallowovercreditlimit,isknockcode,istabletuser,isallowpricelevel));*///,Confirm_PrintVou,allow_priceLevel,select_location,select_customer, change_date,tax,discount,change_price,pass,locid,def_payment,Allow_Over_Credit_Limit,def_cashid,Cashier_Printer,CAshier_PrinterType));
 
 
                 } while (cursor.moveToNext());
@@ -1388,16 +1395,16 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onResponse(Object response) {
                 try {//Added by KLM for YGN1-220410 21042022
-                String[] str = response.toString().split("&&");
-                String[] prt = str[0].split(",");
-                String[] pty = str[1].split(",");
-                for (int i = 0; i < prt.length; i++) {
-                    Printers.add(prt[i]);
-                }
+                    String[] str = response.toString().split("&&");
+                    String[] prt = str[0].split(",");
+                    String[] pty = str[1].split(",");
+                    for (int i = 0; i < prt.length; i++) {
+                        Printers.add(prt[i]);
+                    }
 
-                ptype.add(new Printer_Type(0, "A5"));
-                ptype.add(new Printer_Type(1, "A4"));
-                ptype.add(new Printer_Type(2, "Slip"));
+                    ptype.add(new Printer_Type(0, "A5"));
+                    ptype.add(new Printer_Type(1, "A4"));
+                    ptype.add(new Printer_Type(2, "Slip"));
 
 //                for (int i = 0; i < pty.length; i++) {
 //                    if (i == 0) {
@@ -1406,8 +1413,8 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 //                        ptype.add(new Printer_Type((i), pty[i]));
 //                    }
 //                }
-                }catch (Exception ex){
-                    Toast.makeText(frmlogin.this,"Something went wong! Please check Local Printer Link!",Toast.LENGTH_SHORT).show();
+                } catch (Exception ex) {
+                    Toast.makeText(frmlogin.this, "Something went wong! Please check Local Printer Link!", Toast.LENGTH_SHORT).show();
                 }
             }
         };

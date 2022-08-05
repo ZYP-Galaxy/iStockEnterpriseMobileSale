@@ -232,6 +232,8 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
     //Added by abbp barcode scanner on 19/6/2019
     public static void scanner(String usr_code) {
         AddData(usr_code);
+
+
     }
 
     private static void AddData(String usr_code) {
@@ -427,7 +429,6 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
         sale_entry_tv.itemAdapter.notifyDataSetChanged();
         sale_entry_tv.entrygrid.smoothScrollToPosition(sale_entry_tv.sd.size());
         sale_entry_tv.getSummary();
-
 
     }
 

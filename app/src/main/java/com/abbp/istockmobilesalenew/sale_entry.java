@@ -6207,7 +6207,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
         //Header
         String Date = sale_entry.sh.get(0).getDate();
-        String invoiceno = (sh.get(0).getInvoice_no().equals("") ? sh.get(0).getDocid() : sh.get(0).getInvoice_no());
+        String invoiceno = (sh.get(0).getInvoice_no().equals("") || sh.get(0).getInvoice_no().toLowerCase().equals("null")) ? sh.get(0).getDocid() : sh.get(0).getInvoice_no();
         String Customername = null;
         cursor = DatabaseHelper.rawQuery("select name from Customer where customerid=" + sh.get(0).getCustomerid());
         if (cursor != null && cursor.getCount() != 0) {
