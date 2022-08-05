@@ -70,6 +70,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     public static Context listcontext;
     public static String getActionName = "";
     private TextView title;
+    String def_locationName="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +94,24 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         FilterUser.uid = -1;
         FilterLocation.locid = -1;
         setUI();
+        FilterLocation.locid = frmlogin.det_locationid;
+        String sqlString = "select locationid,Name,shortdesc,branchid from Location  where locationid=" + frmlogin.det_locationid;
+        Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    def_locationName=cursor.getString(cursor.getColumnIndex("Name"));
+                    selectfilter.setText(def_locationName);
+                    //if(frmlogin.canselectlocation!=0){
+                        filterV = 3;
+                    //}
+
+
+                } while (cursor.moveToNext());
+
+            }
+        }
+        cursor.close();
         getActionName = getIntent().getExtras().getString("name");
         title.setText(getActionName);
 
@@ -241,7 +260,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 } else if (selectfilter.getText().toString().trim().equals("Choose User") || filterV == 2) {
                     filterV = 2;
                     selecter("User", selectfilter);
-                } else if (selectfilter.getText().toString().trim().equals("Choose Location") || filterV == 3) {
+                } else if (frmlogin.canselectlocation!=0 && (selectfilter.getText().toString().trim().equals("Choose Location") || filterV == 3)) {
                     filterV = 3;
                     selecter("Location", selectfilter);
                 } else if (filterV == 0) {
@@ -554,7 +573,13 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                     }
 
                     case R.id.locmenu:
-                        selectfilter.setText("Choose Location");
+                        if(frmlogin.canselectlocation==0){
+                            selectfilter.setText(def_locationName);
+                        }
+                        else{
+                            selectfilter.setText("Choose Location");
+                        }
+
                         filterV=3;
                         return true;
                     default:

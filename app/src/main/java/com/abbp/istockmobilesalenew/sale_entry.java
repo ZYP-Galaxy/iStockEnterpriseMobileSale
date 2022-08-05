@@ -3503,6 +3503,13 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 imgClear.setVisibility(View.GONE);
             }
 
+            imgAddCustomer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             imgChangSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -193,7 +193,10 @@ public class frmstockstatus extends AppCompatActivity {
             public void onClick(View v) {
 //                if (chooselocation.getText().toString().toLowerCase().equals("choose"))
 //                Toast.makeText(getApplicationContext(),"this is location ",Toast.LENGTH_LONG).show();
-                selecter("Location", chooselocation);
+                if(frmlogin.canselectlocation!=0){
+                    selecter("Location", chooselocation);
+                }
+
 
             }
         });
