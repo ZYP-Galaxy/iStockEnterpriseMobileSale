@@ -3,6 +3,11 @@ package com.abbp.istockmobilesalenew;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Base64;
+import android.util.Log;
+
+import com.abbp.istockmobilesalenew.tvsale.Posuser;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +21,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 public class SelectInsertLibrary {
     String sqlString;
@@ -145,6 +151,14 @@ public class SelectInsertLibrary {
                         contentValues.put("townshipname", townshipname);
                         contentValues.put("townshipcode", townshipcode);
                         DatabaseHelper.insertWithOnConflict("Customer", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                txtProgress.setText((custcount + 1) + "/" + cust.length());
+//                                pbDownload.setProgress(custcount + 1);
+//                            }
+//                        });
+//                        Thread.sleep(3);
 
 
                     }
@@ -412,7 +426,6 @@ public class SelectInsertLibrary {
             switch (table) {
                 case "Posuser":
                     JSONArray user = null;
-
                     user = jobj.getJSONArray("posuser");
                     for (int usercount = 0; usercount < user.length(); usercount++) {
                         JSONObject postobj = user.getJSONObject(usercount);
@@ -420,7 +433,18 @@ public class SelectInsertLibrary {
                         String name = postobj.optString("name", "null");
                         String shortdes = postobj.optString("shortdesc", "null");
                         int branchid = postobj.optInt("branchid");
-                        String password = postobj.optString("password", "null");
+                        String passwordFromJobj=postobj.optString("password","");
+                        String password = "";
+                        if(passwordFromJobj!="null"){
+                                byte[] passwordsbytes=passwordFromJobj.getBytes(StandardCharsets.UTF_8);
+                                passwordsbytes=Base64.decode(passwordsbytes,Base64.DEFAULT);
+                                try {
+                                    password = new String(passwordsbytes,"UTF-8");
+                                } catch (UnsupportedEncodingException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.i("Password",postobj.optString("password")+"    "+password);
+                        }
                         int canchangesaleprice = postobj.optBoolean("canchangesaleprice", false) == true ? 1 : 0;
                         int canchangepurprice = postobj.optBoolean("canchangepurprice", false) == true ? 1 : 0;
                         int canchangedate = postobj.optBoolean("canchangedate", false) == true ? 1 : 0;

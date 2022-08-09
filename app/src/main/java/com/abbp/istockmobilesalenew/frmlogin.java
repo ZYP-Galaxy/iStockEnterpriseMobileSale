@@ -957,20 +957,20 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private void SignIn() {
         String username = useredit.getText().toString();
         String password = passedit.getText().toString();
-        if (password.isEmpty()) {
-            password = "null";
-        }
+//        if (password.isEmpty()) {
+//            password = "null";
+//        }
         int userid = 0;
         String name = "";
         String pass = "";
-        sqlString = "select userid,name,isknockcode from posuser where userid=" + frmlogin.LoginUserid;
+        sqlString = "select userid,name,password from posuser where userid=" + frmlogin.LoginUserid;
         Cursor cursor = DatabaseHelper.rawQuery(sqlString);
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
                     userid = cursor.getInt(cursor.getColumnIndex("userid"));
                     name = cursor.getString(cursor.getColumnIndex("name"));
-                    pass = cursor.getString(cursor.getColumnIndex("isknockcode"));
+                    pass = cursor.getString(cursor.getColumnIndex("password"));
 
                 } while (cursor.moveToNext());
 
