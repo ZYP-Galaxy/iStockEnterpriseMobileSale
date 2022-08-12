@@ -4562,6 +4562,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 keynum = txtNum.getText().toString();
             }
         });
+        keynum = ClearFormat(keynum);
         txtNum.setText(String.valueOf(keynum));
 
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -4715,7 +4716,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             @Override
             public void onClick(View v) {
                 try {
-
                     double voudisAmt = 0.0, paidpercentAmt = 0.0;
                     boolean voudispercent = false, paidpercent = false;
                     if (voudis) {
