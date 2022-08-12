@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -191,12 +192,15 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static UnitAdapter uad;
     Date voudate;
     AlertDialog disDa = null;
-    TextView txtChangeQty;
+    TextView txtChangeQty,txtProgress,txtTable;
     EditText txtChangePrice;
     TextView txtamt;
     TextView txtdate;
     TextView tvBillCount;
     EditText txtinvoiceNo;
+    private AlertDialog downloadAlert;
+    private ProgressBar pbDownload;
+    private Context context;
     public static TextView txtitemDisAmt, txtper, txttotal, txtfoc, txtitemdiscount, txtvouper, txtvoudis, txtpaid, txtpaidamt, txtnet, txttaxamt, txttaxamT, txtshowUnit, txtoutstand, txtShowSP, txtdocid;
     ProgressDialog pb;
     com.applandeo.materialcalendarview.CalendarView calendar;
@@ -301,6 +305,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ClassAdapter classAdapter;
     Spinner spinDis, spinPricelvl, spinUnit;
 //    public int billPrintCount = 1;
+    String newCustomerName="";
+    int newCustomerId=0;
 
 
     @Override
@@ -1934,6 +1940,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                                 "null,null,null,null,null," + iscredit + ",null," + creditL + ",null, " +
                                                 "null,false,null, " + selected_custgroupid + ",null,null, " +
                                                 "null,null,localtimestamp,false)"; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
+                                        sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values "+
+                                                codeSt+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.userid+",uuid_generate_v4(),false,false)";
 
                                         InsertCustomer();
                                         name.setText("");
@@ -3171,19 +3179,24 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             ImageButton imgClear = view.findViewById(R.id.imgClear);
             ImageButton imgAddCustomer = view.findViewById(R.id.imgAddCustomer);    //added by ZYP for customer setup
             ImageButton imgDownloadCustomer = view.findViewById(R.id.imgDowloadCustomer);
-            imgDownloadCustomer.setVisibility(View.VISIBLE);
-            imgAddCustomer.setVisibility(View.VISIBLE);
+            imgDownloadCustomer.setVisibility(View.GONE);
+            imgAddCustomer.setVisibility(View.GONE);
 
             if (name.equals("Salesmen")) {
                 imgChangSave.setVisibility(View.VISIBLE);
                 imgClear.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else if (name.equals("Customer")){
+                imgAddCustomer.setVisibility(View.VISIBLE);
+            }
+            else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
             }
             imgAddCustomer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    da.dismiss();
 
                     AlertDialog.Builder custb = new AlertDialog.Builder(view.getContext());
                     View layout = getLayoutInflater().inflate(R.layout.custquickadd, null);
@@ -3257,12 +3270,22 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
+                                    newCustomerName=nameSt;
                                     int custid = getCustomerCount() + 1;
+                                    newCustomerId=custid;
                                     if (chkCredit.isChecked()) {
                                         iscredit = true;
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
-                                    String sqlString = "select customer_name from Customer where customer_name='" + nameSt + "'";
+                                    sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
+                                    if(codeSt.length()>0){
+                                        sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    else{
+                                        sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    sqlstring+="&"+frmlogin.LoginUserid;
+                                    String sqlString = "select name from Customer where name='" + nameSt + "'";
                                     Cursor cursor = DatabaseHelper.rawQuery(sqlString);
                                     if (cursor != null && cursor.getCount() > 0) {
                                         AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this);
@@ -3272,6 +3295,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                         bd.setNegativeButton("NO", new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialogmsg, int which) {
+                                                name.setText("");
+                                                code.setText("");
+                                                credit.setText("");
+                                                chkCredit.setChecked(false);
                                                 msg.dismiss();
                                                 return;
                                             }
@@ -3280,9 +3307,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                             @Override
                                             public void onClick(DialogInterface dialogmsg, int which) {
 
+
                                                 InsertCustomer();
 
-                                                addDialog.dismiss();
+//                                                custdia.dismiss();
                                                 msg.dismiss();
 
                                             }
@@ -3299,37 +3327,47 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
 
                                     }
+                                    else{
+//modified by ZYP 31-08-2021 for customer setup
+//                                        sqlstring = "insert into customer(customerid, shortdesc, sortid, name, companyname, townshipid, contact," +
+//                                                "pricelevelid, address, phone, fax, email, iscredit, balance, creditlimit, dueindays, " +
+//                                                "discountpercent, isinactive, discountamount, custgroupid, lastinvoiceno, branchid, " +
+//                                                "nationalcardid, birthdate, updateddatetime,isdeleted) " +
+//                                                "values (" + custid + ",'" + codeSt + "',null,'" + nameSt + "',null," + selected_townshipid + ",null, " +
+//                                                "null,null,null,null,null," + iscredit + ",null," + creditL + ",null, " +
+//                                                "null,false,null, " + selected_custgroupid + ",null,null, " +
+//                                                "null,null,localtimestamp,false)"; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
 
-                                    ArrayList<customer> customers = new ArrayList<>();
+//                                        sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
+//                                        if(codeSt.length()>0){
+//                                            sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+//                                        }
+//                                        else{
+//                                            sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+//                                        }
+//                                        sqlstring+="&"+frmlogin.LoginUserid;
+                                        InsertCustomer();
+                                        //name.setText("");
+//                                        code.setText("");
+//                                        credit.setText("");
+//                                        chkCredit.setChecked(false);
+                                        //custdia.dismiss();
+                                    }
+//                                    ArrayList<customer> customers = new ArrayList<>();
+//
+//                                    customer newcustomer = new customer();
+//                                    newcustomer.setCustomerid(custid);
+//                                    newcustomer.setName(nameSt);
+//                                    newcustomer.setIscredit(iscredit);
+//                                    newcustomer.setCreditlimit((int) creditL);
+//                                    newcustomer.setCustomerid(Integer.parseInt(String.valueOf(selected_custgroupid)));
+//                                    newcustomer.setTownshipid(Integer.parseInt(String.valueOf(selected_townshipid)));
+//                                    newcustomer.setIsdeleted(false);
+//                                    newcustomer.setIsinactive(false);
+//
+//                                    customers.add(newcustomer);
 
-                                    customer newcustomer = new customer();
-                                    newcustomer.setCustomerid(custid);
-                                    newcustomer.setName(nameSt);
-                                    newcustomer.setIscredit(iscredit);
-                                    newcustomer.setCreditlimit((int) creditL);
-                                    newcustomer.setCustomerid(Integer.parseInt(String.valueOf(selected_custgroupid)));
-                                    newcustomer.setTownshipid(Integer.parseInt(String.valueOf(selected_townshipid)));
-                                    newcustomer.setIsdeleted(false);
-                                    newcustomer.setIsinactive(false);
 
-                                    customers.add(newcustomer);
-
-                                    //modified by ZYP 31-08-2021 for customer setup
-                                    sqlstring = "insert into customer(customerid, shortdesc, sortid, name, companyname, townshipid, contact," +
-                                            "pricelevelid, address, phone, fax, email, iscredit, balance, creditlimit, dueindays, " +
-                                            "discountpercent, isinactive, discountamount, custgroupid, lastinvoiceno, branchid, " +
-                                            "nationalcardid, birthdate, updateddatetime,isdeleted) " +
-                                            "values (" + custid + ",'" + codeSt + "',null,'" + nameSt + "',null," + selected_townshipid + ",null, " +
-                                            "null,null,null,null,null," + iscredit + ",null," + creditL + ",null, " +
-                                            "null,false,null, " + selected_custgroupid + ",null,null, " +
-                                            "null,null,localtimestamp,false)"; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
-
-                                    InsertCustomer();
-                                    name.setText("");
-                                    code.setText("");
-                                    credit.setText("");
-                                    chkCredit.setChecked(false);
-                                    custdia.dismiss();
 //                                    runOnUiThread(new Runnable() {
 //
 //                                        @Override
@@ -4885,7 +4923,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         String port = sh_port.getString("port", "empty");
         String sqlUrl = "http://" + ip + ":" + port + "/api/mobile/AddCustomer";
         new addCust().execute(sqlUrl);
-        //Toast.makeText(getBaseContext(),"Thank",Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -6638,28 +6676,31 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             super.onPostExecute(result);
             pb.dismiss();
             try {
-
+                if(result!=null && !result.isEmpty()){
+                    newCustomerId=Integer.parseInt(result);
+                }
                 AlertDialog.Builder b = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
                 b.setTitle("iStock");
-                if (result.equals("Success")) {
+                if (result!=null && !result.isEmpty()) {
                     b.setMessage("Save Successful.");
-                    FillDataWithSignalr();
+                    DownloadingCustomer();
+                    custdia.dismiss();
 
                 } else {
-                    b.setMessage("Save Fail.");
+                    b.setMessage("Save Fail. Check your network connection");
                 }
                 b.setCancelable(false);
                 b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        dialog.dismiss();
+                        b.create().dismiss();
+                        //dialog.dismiss();
                     }
                 });
-                dialog = b.create();
-                dialog.show();
+                 b.create().show();
             } catch (Exception ee) {
                 pb.dismiss();
-                dialog.dismiss();
+                //dialog.dismiss();
             }
         }
     }
@@ -7135,7 +7176,194 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void DownloadingCustomer() {
 
+//        JSONArray jarr = null;
+        try {
+            AlertDialog.Builder bdProgress = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            View view = getLayoutInflater().inflate(R.layout.downloadprocess, null);
+            pbDownload = view.findViewById(R.id.progressDownload);
+            txtProgress = view.findViewById(R.id.txtProgress);
+            txtTable = view.findViewById(R.id.txtTable);
+            txtTable.setText("Customer");
+            txtProgress.setText("0/" + 10);
+            pbDownload.setMax(10);
+            bdProgress.setView(view);
+            bdProgress.setCancelable(false);
+            downloadAlert = bdProgress.create();
+            context = this;
+            downloadAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DownloadCustomer();
+//                            FillDataWithSignalr();
+                            downloadAlert.dismiss();
+                        }
+                    }).start();
+                }
+            });
+
+            downloadAlert.show();
+        } catch (Exception ee) {
+            Toast.makeText(sale_entry_tv.this, ee.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void DownloadCustomer(){
+        String ip = sh_ip.getString("ip", "empty");
+        String port = sh_port.getString("port", "empty");
+        String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+        Log.i("tvsale", url);
+        RequestQueue request = Volley.newRequestQueue(getApplicationContext());
+        final Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    jobj = jsonArray.getJSONObject(0);
+                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+                    try {
+                        if (jobj.getJSONArray("customer").length() > 0) {
+
+                            selectInsertLibrary.UpSertingData("Customer",jobj);
+                        }
+                        BindHeader();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        };
+        final Response.ErrorListener error = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+        request.add(req);
+    }
+
+    private void BindHeader() {
+        sh.get(0).setCustomerid(newCustomerId);
+        Cursor cursor=DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid="+newCustomerId+" and name='"+newCustomerName+"'");
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+
+                    btncustomer.setText(cursor.getString(cursor.getColumnIndex("name")));
+                    int townshipid=cursor.getInt(cursor.getColumnIndex("townshipid"));
+                    sale_entry_tv.selected_townshipid = townshipid;
+                    sale_entry_tv.selected_custgroupid=cursor.getInt(cursor.getColumnIndex("custgroupid"));
+                    btntownship.setText(cursor.getString(cursor.getColumnIndex("townshipname")));
+                    btncustgroup.setText(cursor.getString(cursor.getColumnIndex("custgroupname")));
+                    Boolean iscredit=cursor.getInt(cursor.getColumnIndex("iscredit"))==1?true:false;
+                    isCreditcustomer=iscredit;
+
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+
+                            if(iscredit){
+                                sh.get(0).setPay_type(2);
+                                btnpaytype.setText("Credit");
+
+                            } else {
+                                sh.get(0).setPay_type(1);
+                                btnpaytype.setText("Cash Down");
+                            }
+                        }
+                    });
+                } while (cursor.moveToNext());
+
+            }
+            cursor.close();
+        }
+        newCustomerName="";
+        newCustomerId=0;
+    }
+
+//    private void FillCustomer(){
+//        try {
+//            if (jobj.getJSONArray("customer").length() > 0) {
+//
+//                JSONArray cust = jobj.getJSONArray("customer");
+//                int custcount = 0;
+//
+//                for (custcount = 0; custcount < cust.length(); custcount++) {
+//                    JSONObject custobj = cust.getJSONObject(custcount);
+//                    long customerid = custobj.getLong("customerid");
+//                    String shortdesc = custobj.optString("shortdesc", "null");
+//                    String name = custobj.optString("name", "null");
+//                    int townshipid = custobj.optInt("townshipid", 1);
+//                    int pricelevelid = custobj.optInt("pricelevelid", 1);
+//                    int iscredit = custobj.optBoolean("iscredit", false) == true ? 1 : 0;
+//                    int balance = custobj.optInt("balance");
+//                    int creditlimit = custobj.optInt("creditlimit");
+//                    int dueindays = custobj.optInt("dueindays");
+//                    int discountpercent = custobj.optInt("discountpercent");
+//                    int isinactive = custobj.optBoolean("isinactive", false) == true ? 1 : 0;
+//                    int discountamount = custobj.optInt("discountamount");
+//                    int custgroupid = custobj.optInt("custgroupid");
+//                    int nationalcardid = custobj.optInt("nationalcardid");
+//                    int isdeleted = custobj.optInt("isdeleted");
+//
+//                    String custgroupname = custobj.optString("custgroupname");
+//                    String custgroupcode = custobj.optString("custgroupcode");
+//                    String townshipname = custobj.optString("townshipname");
+//                    String townshipcode = custobj.optString("townshipcode");
+//                    ContentValues contentValues = new ContentValues();
+//                    contentValues.put("customerid", customerid);
+//                    contentValues.put("name", name);
+//                    contentValues.put("shortdesc", shortdesc);
+//                    contentValues.put("townshipid", townshipid);
+//                    contentValues.put("pricelevelid", pricelevelid);
+//                    contentValues.put("iscredit", iscredit);
+//                    contentValues.put("balance", balance);
+//                    contentValues.put("creditlimit", creditlimit);
+//                    contentValues.put("dueindays", dueindays);
+//                    contentValues.put("discountpercent", discountpercent);
+//                    contentValues.put("isinactive", isinactive);
+//                    contentValues.put("discountamount", discountamount);
+//                    contentValues.put("custgroupid", custgroupid);
+//                    contentValues.put("nationalcardid", nationalcardid);
+//                    contentValues.put("isdeleted", isdeleted);
+//                    contentValues.put("custgroupname", custgroupname);
+//
+//                    contentValues.put("custgroupcode", custgroupcode);
+//                    contentValues.put("townshipname", townshipname);
+//                    contentValues.put("townshipcode", townshipcode);
+//                    DatabaseHelper.insertWithOnConflict("Customer", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//                    int finalCustcount = custcount;
+//
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            txtProgress.setText((finalCustcount + 1) + "/" + cust.length());
+//                            pbDownload.setProgress(finalCustcount + 1);
+//                        }
+//                    });
+//                    try {
+//                        Thread.sleep(3);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//
+//                }
+//            }
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//    }
     private void FillDataWithSignalr() {
 
 
@@ -7158,11 +7386,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         tablename = "Posuser";
                         selectInsertLibrary.UpSertingData(tablename, jobj);
                     }
-
+                   // FillCustomer();
                     try {
                         if (jobj.getJSONArray("customer").length() > 0) {
                             tablename = "Customer";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                           selectInsertLibrary.UpSertingData(tablename,jobj);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

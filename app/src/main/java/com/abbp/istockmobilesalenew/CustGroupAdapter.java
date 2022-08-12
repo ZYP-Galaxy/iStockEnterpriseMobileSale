@@ -99,7 +99,38 @@ public class CustGroupAdapter extends RecyclerView.Adapter<CustGroupAdapter.MyVi
             }
             cursor = null;
 
-        } else {
+        }
+        else if(context.toString().contains("sale_entry_tv")) {
+            String sqlString = "select customerid,name,townshipid,townshipname,iscredit from customer where customerid=(select min(customerid)customerid " +
+                    " from customer" +
+                    " where CustGroupID=" + sale_entry_tv.selected_custgroupid +
+                    " group by CustGroupID)";
+            Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+            if (cursor != null && cursor.getCount() != 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        long customerid = cursor.getLong(cursor.getColumnIndex("customerid"));
+                        String customername = cursor.getString(cursor.getColumnIndex("name"));
+                        int townshipid = cursor.getInt(cursor.getColumnIndex("townshipid"));
+                        String townshipname = cursor.getString(cursor.getColumnIndex("townshipname"));
+                        boolean credit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1;
+                        sale_entry_tv.btntownship.setText(/*townshipid+":"+*/townshipname);
+                        sale_entry_tv.btncustomer.setText(/*customerid+":"+*/customername);
+                        sale_entry_tv.selected_townshipid = townshipid;
+                        sale_entry_tv.creditcustomer = credit;
+                        String pay_type = !credit ? "Cash Down" : "Credit";
+                        sale_entry_tv.btnpaytype.setText(pay_type);
+                        sale_entry_tv.sh.get(0).setTownshipid(townshipid);
+                        sale_entry_tv.sh.get(0).setCustomerid(customerid);
+                        sale_entry_tv.sh.get(0).setPay_type(!credit ? 1 : 2);
+                    } while (cursor.moveToNext());
+
+                }
+
+            }
+            cursor = null;
+        }
+        else {
             String sqlString = "select customerid,name,townshipid,townshipname,iscredit from customer where customerid=(select min(customerid)customerid " +
                     " from customer" +
                     " where CustGroupID=" + sale_entry.selected_custgroupid +

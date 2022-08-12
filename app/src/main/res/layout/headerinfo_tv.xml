@@ -21,7 +21,7 @@
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/imgSave"
             android:background="@null"
-            android:visibility="visible"
+            android:visibility="gone"
             app:srcCompat="@drawable/custadd" />
 
         <ImageButton
