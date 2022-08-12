@@ -954,6 +954,9 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                         == 6 || sd.get(i).getDis_type() == 7) {
                     foc_tmp += sd.get(i).getSale_price() * saleorder_entry.sd.get(i).getUnit_qty();
                     sh.get(0).setFoc_amount(foc_tmp);
+                } else{
+                    //itemDis_tmp=0;
+                    sh.get(0).setIstemdis_amount(itemDis_tmp);
                 }
 
             }
