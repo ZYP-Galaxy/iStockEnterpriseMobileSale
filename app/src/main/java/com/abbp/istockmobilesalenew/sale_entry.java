@@ -4399,8 +4399,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 keynum = txtNum.getText().toString();
             }
         });
-//        txtNum.setText(String.valueOf(keynum));
-        txtNum.setText(ClearFormat(keynum));
+        keynum = ClearFormat(keynum);
+        txtNum.setText(String.valueOf(keynum));
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
