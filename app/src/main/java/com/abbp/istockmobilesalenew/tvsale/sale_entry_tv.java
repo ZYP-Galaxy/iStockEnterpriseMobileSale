@@ -4288,9 +4288,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     foc_tmp += sd.get(i).getSale_price() * sale_entry_tv.sd.get(i).getUnit_qty();
                     sh.get(0).setFoc_amount(foc_tmp);
                 }
-//                else{
-//                    itemDis_tmp=0;
-//                }
+                else{
+                    //itemDis_tmp=0;
+                    sh.get(0).setIstemdis_amount(itemDis_tmp);
+                }
 
             }
             sh.get(0).setInvoice_qty(qty_tmp);
