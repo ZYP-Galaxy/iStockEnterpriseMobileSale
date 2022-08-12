@@ -3981,7 +3981,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     try {
 
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            String paidAmount = tvPaid.getText().toString();
+                            String paidAmount = ClearFormat(tvPaid.getText().toString());
                             fromSaleChange = true;
                             //showKeyPad(tvAmount, tvPaid);
                             if (fromSaleChange) {
