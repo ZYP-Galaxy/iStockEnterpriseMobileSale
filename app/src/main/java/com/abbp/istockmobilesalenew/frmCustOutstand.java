@@ -291,11 +291,11 @@ public class frmCustOutstand extends AppCompatActivity {
         if (btnname.equals("choosebranchid")) {
             // sql="select * from Branch where isdeleted=0";
             //modiifed by EKK 
-            if (frmlogin.defaultbranchid == 0) {
-                sql = "select * from Branch where isdeleted=0";
-            } else {
-                sql = "select * from Branch where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
-            }
+//            if (frmlogin.defaultbranchid == 0) {
+                sql = "select * from Branch b join Branch_User bu on b.branchid=bu.branchid where b.isdeleted=0 and bu.isenabled=1 and bu.userid="+frmlogin.LoginUserid+" order by b.branchid";
+//            } else {
+//                sql = "select * from Branch where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
+//            }
             cursor = DatabaseHelper.rawQuery(sql);
             if (cursor != null && cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {

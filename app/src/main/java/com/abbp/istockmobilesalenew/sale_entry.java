@@ -37,6 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -250,6 +251,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     RTPrinter btPrinter;
 
     static long specialPrice = 0;
+    String newCustomerName="";
+    int newCustomerId=0;
+    private AlertDialog downloadAlert;
+    private ProgressBar pbDownload;
+    TextView txtProgress,txtTable;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -3498,7 +3505,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             if (name.equals("Salesmen")) {
                 imgChangSave.setVisibility(View.VISIBLE);
                 imgClear.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else if (name.equals("Customer")) {
+                imgAddCustomer.setVisibility(View.VISIBLE);
+                //imgClear.setVisibility(View.GONE);
+            }
+            else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
             }
@@ -3506,6 +3518,151 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             imgAddCustomer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    da.dismiss();
+
+                    AlertDialog.Builder custb = new AlertDialog.Builder(view.getContext());
+                    View layout = getLayoutInflater().inflate(R.layout.custquickadd, null);
+                    custb.setCancelable(true);
+                    custb.setView(layout);
+                    final EditText name = layout.findViewById(R.id.txtName);
+//                        final EditText shortdesc = layout.findViewById(R.id.txtShort);
+                    final EditText code = layout.findViewById(R.id.txtCode);
+                    final CheckBox chkCredit = layout.findViewById(R.id.chkCredit);
+                    Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
+                    Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
+                    EditText credit = layout.findViewById(R.id.txtCredit);
+                    credit.setEnabled(false);
+                    Button btnclose = layout.findViewById(R.id.btnclose);
+                    Button btnok = layout.findViewById(R.id.btnok);
+                    btnclose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            custdia.dismiss();
+                        }
+                    });
+                    custdia = custb.create();
+                    custdia.show();
+
+                    //modified by ZYP 01-09-2021 for customer setup
+
+                    imgCustomerTownship.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ChangeHeader("Township", imgCustomerTownship, imgCustomerTownship);
+                        }
+                    });
+                    imgCustomerGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ChangeHeader("Customer Group", imgCustomerGroup, imgCustomerGroup);
+                        }
+                    });
+
+                    chkCredit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                credit.setEnabled(true);
+                            } else {
+                                credit.setEnabled(false);
+                            }
+                        }
+                    });
+
+                    btnok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (name.getText().toString().trim().isEmpty()) {
+                                //|| code.getText().toString().trim().isEmpty()
+                                AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
+                                bd.setTitle("iStock");
+                                bd.setMessage("No data to Confirm!");
+                                bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        bd.create().dismiss();
+                                    }
+                                });
+                                bd.create().show();
+                            } else {
+                                try {
+                                    boolean iscredit = false;
+                                    double creditL = 0.0;
+                                    String nameSt = name.getText().toString().trim();
+                                    String codeSt = code.getText().toString().trim();
+                                    String creditLimit = credit.getText().toString();
+                                    newCustomerName=nameSt;
+                                    int custid = getCustomerCount() + 1;
+                                    newCustomerId=custid;
+                                    if (chkCredit.isChecked()) {
+                                        iscredit = true;
+                                        creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
+                                    }
+                                    sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
+                                    if(codeSt.length()>0){
+                                        sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    else{
+                                        sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    sqlstring+="&"+frmlogin.LoginUserid;
+                                    String sqlString = "select name from Customer where name='" + nameSt + "'";
+                                    Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+                                    if (cursor != null && cursor.getCount() > 0) {
+                                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this);
+                                        bd.setCancelable(false);
+                                        bd.setTitle("iStock");
+                                        bd.setMessage("This name alredy exists. Do you want to create?");
+                                        bd.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogmsg, int which) {
+                                                name.setText("");
+                                                code.setText("");
+                                                credit.setText("");
+                                                chkCredit.setChecked(false);
+                                                msg.dismiss();
+                                                return;
+                                            }
+                                        });
+                                        bd.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogmsg, int which) {
+
+
+                                                InsertCustomer();
+
+
+                                                msg.dismiss();
+
+                                            }
+                                        });
+                                        msg = bd.create();
+                                        msg.setOnShowListener(new DialogInterface.OnShowListener() {
+                                            @Override
+                                            public void onShow(DialogInterface dialog) {
+                                                msg.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                                                msg.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                                            }
+                                        });
+                                        msg.show();
+
+
+                                    }
+                                    else{
+
+                                        InsertCustomer();
+
+                                    }
+
+
+                                } catch (Exception eee) {
+                                    Toast.makeText(getBaseContext(), eee.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    });
 
                 }
             });
@@ -3861,32 +4018,38 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                     break;
                 case "Location":
-
+                    //added by KLM for Location select base on branch user 13082022
+                    SelectInsertLibrary.GetLocationBaseOnBrachUser(locations);
+//                    sqlString="select * from Branch_User";
+//                    sqlString="select l.* from Location l left join Branch_User bu on bu.branchid=l.branchid where  l.isdeleted=0 and bu.isenabled=1 and bu.userid="+frmlogin.LoginUserid;
                     //modified by EKK
-                    if (frmlogin.defaultbranchid == 0) {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
-                    } else {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
-                    }
+//                    if (frmlogin.defaultbranchid == 0) {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
+//                    } else {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
+//                    }
 
-                    cursor = DatabaseHelper.rawQuery(sqlString);
-                    System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    if (cursor != null && cursor.getCount() != 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
-                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
-                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
-                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
-                                locations.add(new Location(locationid, locationname, shortname, branchid));
-                            } while (cursor.moveToNext());
-
-                        }
-
-                    } else {
-                        da.dismiss();
-                    }
-                    cursor.close();
+//                    cursor = DatabaseHelper.rawQuery(sqlString);
+//                    System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                    if (cursor != null && cursor.getCount() != 0) {
+//                        if (cursor.moveToFirst()) {
+//                            do {
+////                                int branchid=cursor.getInt(cursor.getColumnIndex("branchid"));
+//
+//                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
+//                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
+//                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
+//                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
+//                                locations.add(new Location(locationid, locationname, shortname, branchid));
+//                                Log.i("branchid",branchid+"");
+//                            } while (cursor.moveToNext());
+//
+//                        }
+//
+//                    } else {
+//                        da.dismiss();
+//                    }
+//                    cursor.close();
 
                     LocationAdapter lad = new LocationAdapter(sale_entry.this, locations, btn, da);
                     rv.setAdapter(lad);
@@ -6057,33 +6220,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
             HttpURLConnection connection;
             StringBuffer response = new StringBuffer();
-//            try {
-//                URL url = new URL(strings[0]);
-//                connection = (HttpURLConnection) url.openConnection();
-//                connection.setRequestMethod("POST");
-//                connection.addRequestProperty("Content-Type", "text/plain");
-//                connection.setDoOutput(true);
-//                connection.setDoInput(true);
-//                if (sqlstring != null) {
-//                    //connection.setRequestProperty("Content-Length", Integer.toString(sqlstring.length()));
-//                    connection.getOutputStream().write(sqlstring.getBytes("UTF8"));
-//                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//                    String inputLine;
-//
-//
-//                    while ((inputLine = in.readLine()) != null) {
-//                        response.append(inputLine);
-//                    }
-//                    in.close();
-//
-//                }
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-
             SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
             response = selectInsertLibrary.PostToApi(sqlstring, strings);
 
@@ -6095,12 +6231,16 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             super.onPostExecute(result);
             pb.dismiss();
             try {
-
+                if(result!=null && !result.isEmpty()){
+                    newCustomerId=Integer.parseInt(result);
+                }
                 AlertDialog.Builder b = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
                 b.setTitle("iStock");
-                if (result.equals("Success")) {
+                if (result!=null && !result.isEmpty()) {
                     b.setMessage("Save Successful.");
-                    FillDataWithSignalr();
+                    DownloadingCustomer();
+                    custdia.dismiss();
+//                    FillDataWithSignalr();
 
                 } else {
                     b.setMessage("Save Fail.");
@@ -6121,6 +6261,82 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             }
         }
     }
+
+    private void DownloadingCustomer() {
+
+//        JSONArray jarr = null;
+        try {
+            AlertDialog.Builder bdProgress = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            View view = getLayoutInflater().inflate(R.layout.downloadprocess, null);
+            pbDownload = view.findViewById(R.id.progressDownload);
+            txtProgress = view.findViewById(R.id.txtProgress);
+            txtTable = view.findViewById(R.id.txtTable);
+            txtTable.setText("Customer");
+            txtProgress.setText("0/" + 10);
+            pbDownload.setMax(10);
+            bdProgress.setView(view);
+            bdProgress.setCancelable(false);
+            downloadAlert = bdProgress.create();
+            context = this;
+            downloadAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DownloadCustomer();
+//                            FillDataWithSignalr();
+                            downloadAlert.dismiss();
+                        }
+                    }).start();
+                }
+            });
+
+            downloadAlert.show();
+        } catch (Exception ee) {
+            Toast.makeText(sale_entry.this, ee.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void DownloadCustomer(){
+        String ip = sh_ip.getString("ip", "empty");
+        String port = sh_port.getString("port", "empty");
+        String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+        Log.i("tvsale", url);
+        RequestQueue request = Volley.newRequestQueue(getApplicationContext());
+        final Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    jobj = jsonArray.getJSONObject(0);
+                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+                    try {
+                        if (jobj.getJSONArray("customer").length() > 0) {
+
+                            selectInsertLibrary.UpSertingData("Customer",jobj);
+                        }
+                        SelectInsertLibrary.BindHeader(sale_entry.this,newCustomerId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        };
+        final Response.ErrorListener error = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+        request.add(req);
+    }
+
 
 
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})

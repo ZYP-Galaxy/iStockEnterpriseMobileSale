@@ -22,7 +22,7 @@
             android:layout_toLeftOf="@+id/imgSave"
             android:background="@null"
             android:src="@drawable/custadd"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/imgSave"

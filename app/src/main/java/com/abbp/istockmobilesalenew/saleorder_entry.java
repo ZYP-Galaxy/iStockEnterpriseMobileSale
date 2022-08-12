@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -205,6 +207,12 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     String ToDeliver = "";
     double tmpSalePrice;
     static long specialPrice = 0;
+    static int newCustomerId=0;
+    private AlertDialog downloadAlert;
+    private ProgressBar pbDownload;
+    TextView txtProgress,txtTable;
+    private Context context;
+    private JSONObject jobj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -954,7 +962,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                         == 6 || sd.get(i).getDis_type() == 7) {
                     foc_tmp += sd.get(i).getSale_price() * saleorder_entry.sd.get(i).getUnit_qty();
                     sh.get(0).setFoc_amount(foc_tmp);
-                } else{
+                } else {
                     //itemDis_tmp=0;
                     sh.get(0).setIstemdis_amount(itemDis_tmp);
                 }
@@ -2007,13 +2015,12 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                             sd.get(itemPosition).setDis_price(dis_price);
 
 
-                        } else  if(!btndiscount.getText().toString().equals("Discount")){
+                        } else if (!btndiscount.getText().toString().equals("Discount")) {
                             double dis_percent = saleorder_entry.dis_percent;
                             sd.get(itemPosition).setDis_percent(dis_percent);
                             double dis_price = sd.get(itemPosition).getSale_price() - Double.parseDouble(btndiscount.getText().toString());
                             sd.get(itemPosition).setDis_price(dis_price);
-                        }
-                        else{
+                        } else {
                             sd.get(itemPosition).setDis_type(0);
                         }
                     }
@@ -2962,13 +2969,171 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             });
             ImageButton imgChangSave = view.findViewById(R.id.imgChangeSave);
             ImageButton imgClear = view.findViewById(R.id.imgClear);
+            ImageButton imgAddCustomer = view.findViewById(R.id.imgAddCustomer);
             if (name == "Salesmen") {
                 imgChangSave.setVisibility(View.VISIBLE);
                 imgClear.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else if (name.equals("Customer")) {
+                imgAddCustomer.setVisibility(View.VISIBLE);
+                //imgClear.setVisibility(View.GONE);
+            }
+            else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
             }
+            imgAddCustomer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    da.dismiss();
+
+                    AlertDialog.Builder custb = new AlertDialog.Builder(view.getContext());
+                    View layout = getLayoutInflater().inflate(R.layout.custquickadd, null);
+                    custb.setCancelable(true);
+                    custb.setView(layout);
+                    final EditText name = layout.findViewById(R.id.txtName);
+//                        final EditText shortdesc = layout.findViewById(R.id.txtShort);
+                    final EditText code = layout.findViewById(R.id.txtCode);
+                    final CheckBox chkCredit = layout.findViewById(R.id.chkCredit);
+                    Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
+                    Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
+                    EditText credit = layout.findViewById(R.id.txtCredit);
+                    credit.setEnabled(false);
+                    Button btnclose = layout.findViewById(R.id.btnclose);
+                    Button btnok = layout.findViewById(R.id.btnok);
+                    btnclose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            custdia.dismiss();
+                        }
+                    });
+                    custdia = custb.create();
+                    custdia.show();
+
+                    //modified by ZYP 01-09-2021 for customer setup
+
+                    imgCustomerTownship.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ChangeHeader("Township", imgCustomerTownship, imgCustomerTownship);
+                        }
+                    });
+                    imgCustomerGroup.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            ChangeHeader("Customer Group", imgCustomerGroup, imgCustomerGroup);
+                        }
+                    });
+
+                    chkCredit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            if (isChecked) {
+                                credit.setEnabled(true);
+                            } else {
+                                credit.setEnabled(false);
+                            }
+                        }
+                    });
+
+                    btnok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (name.getText().toString().trim().isEmpty()) {
+                                //|| code.getText().toString().trim().isEmpty()
+                                AlertDialog.Builder bd = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+                                bd.setTitle("iStock");
+                                bd.setMessage("No data to Confirm!");
+                                bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        bd.create().dismiss();
+                                    }
+                                });
+                                bd.create().show();
+                            } else {
+                                try {
+                                    boolean iscredit = false;
+                                    double creditL = 0.0;
+                                    String nameSt = name.getText().toString().trim();
+                                    String codeSt = code.getText().toString().trim();
+                                    String creditLimit = credit.getText().toString();
+//                                    newCustomerName=nameSt;
+//                                    int custid = getCustomerCount() + 1;
+//                                    newCustomerId=custid;
+                                    if (chkCredit.isChecked()) {
+                                        iscredit = true;
+                                        creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
+                                    }
+                                    sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
+                                    if(codeSt.length()>0){
+                                        sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    else{
+                                        sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    sqlstring+="&"+frmlogin.LoginUserid;
+                                    String sqlString = "select name from Customer where name='" + nameSt + "'";
+                                    Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+                                    if (cursor != null && cursor.getCount() > 0) {
+                                        AlertDialog.Builder bd = new AlertDialog.Builder(saleorder_entry.this);
+                                        bd.setCancelable(false);
+                                        bd.setTitle("iStock");
+                                        bd.setMessage("This name alredy exists. Do you want to create?");
+                                        bd.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogmsg, int which) {
+                                                name.setText("");
+                                                code.setText("");
+                                                credit.setText("");
+                                                chkCredit.setChecked(false);
+                                                msg.dismiss();
+                                                return;
+                                            }
+                                        });
+                                        bd.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogmsg, int which) {
+
+
+                                                InsertCustomer();
+
+
+                                                msg.dismiss();
+
+                                            }
+                                        });
+                                        msg = bd.create();
+                                        msg.setOnShowListener(new DialogInterface.OnShowListener() {
+                                            @Override
+                                            public void onShow(DialogInterface dialog) {
+                                                msg.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                                                msg.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                                            }
+                                        });
+                                        msg.show();
+
+
+                                    }
+                                    else{
+
+                                        InsertCustomer();
+
+                                    }
+
+
+                                } catch (Exception eee) {
+                                    Toast.makeText(getBaseContext(), eee.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                        }
+                    });
+
+                }
+            });
+
             imgChangSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -3309,14 +3474,15 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
                     break;
                 case "Location":
-
+                    //added by KLM for Location select base on branch user 13082022
+                    SelectInsertLibrary.GetLocationBaseOnBrachUser(locations);
                     //sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
 
-                    //modified by EKK
-                    if (frmlogin.defaultbranchid == 0) {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
-                    } else {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
+//                    //modified by EKK
+//                    if (frmlogin.defaultbranchid == 0) {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
+//                    } else {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
 
                        /* if (frmlogin.det_locationid == 0)
                         {
@@ -3326,73 +3492,76 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                         {
                             sqlString = "select locationid,Name,shortdesc,branchID from Location where isdeleted=0 and branchid = "+frmlogin.defaultbranchid +" and locationid ="+frmlogin.det_locationid;
                         }*/
+//            }
+
+//                    cursor = DatabaseHelper.rawQuery(sqlString);
+//                    System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                    if (cursor != null && cursor.getCount() != 0) {
+//                        if (cursor.moveToFirst()) {
+//                            do {
+//                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
+//                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
+//                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
+//                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
+//                                locations.add(new Location(locationid, locationname, shortname, branchid));
+//                            } while (cursor.moveToNext());
+//
+//                        }
+//
+//                    } else {
+//                        da.dismiss();
+//                    }
+//                    cursor.close();
+
+            LocationAdapter lad = new LocationAdapter(saleorder_entry.this, locations, btn, da);
+            rv.setAdapter(lad);
+            GridLayoutManager gridLayoutManagerLocation = new GridLayoutManager(getApplicationContext(), 4);
+            rv.setLayoutManager(gridLayoutManagerLocation);
+            da.show();
+
+            break;
+            case "Payment Type":
+
+                if (pay_types.size() > 0) {
+                    pay_types.clear();
+                }
+                if (isCreditcustomer) {
+                    sqlString = "select * from Payment_Type where paytypeid!=3 and paytypeid!=4";
+                } else {
+                    sqlString = "select * from Payment_Type where paytypeid=1";
+                }
+                cursor = DatabaseHelper.rawQuery(sqlString);
+                if (cursor != null && cursor.getCount() != 0) {
+                    if (cursor.moveToFirst()) {
+                        do {
+                            int pay_type = cursor.getInt(cursor.getColumnIndex("paytypeid"));
+                            String pay_typename = cursor.getString(cursor.getColumnIndex("name"));
+                            String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
+                            pay_types.add(new pay_type(pay_type, pay_typename, shortname));
+                        } while (cursor.moveToNext());
+
                     }
 
-                    cursor = DatabaseHelper.rawQuery(sqlString);
-                    System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    if (cursor != null && cursor.getCount() != 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
-                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
-                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
-                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
-                                locations.add(new Location(locationid, locationname, shortname, branchid));
-                            } while (cursor.moveToNext());
+                } else {
+                    da.dismiss();
+                }
+                cursor.close();
 
-                        }
+                PaymentTypeAdapter pad = new PaymentTypeAdapter(saleorder_entry.this, pay_types, btn, da);
+                rv.setAdapter(pad);
+                GridLayoutManager gridLayoutManagerPaymentType = new GridLayoutManager(getApplicationContext(), 4);
+                rv.setLayoutManager(gridLayoutManagerPaymentType);
+                da.show();
 
-                    } else {
-                        da.dismiss();
-                    }
-                    cursor.close();
-
-                    LocationAdapter lad = new LocationAdapter(saleorder_entry.this, locations, btn, da);
-                    rv.setAdapter(lad);
-                    GridLayoutManager gridLayoutManagerLocation = new GridLayoutManager(getApplicationContext(), 4);
-                    rv.setLayoutManager(gridLayoutManagerLocation);
-                    da.show();
-
-                    break;
-                case "Payment Type":
-
-                    if (pay_types.size() > 0) {
-                        pay_types.clear();
-                    }
-                    if (isCreditcustomer) {
-                        sqlString = "select * from Payment_Type where paytypeid!=3 and paytypeid!=4";
-                    } else {
-                        sqlString = "select * from Payment_Type where paytypeid=1";
-                    }
-                    cursor = DatabaseHelper.rawQuery(sqlString);
-                    if (cursor != null && cursor.getCount() != 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                int pay_type = cursor.getInt(cursor.getColumnIndex("paytypeid"));
-                                String pay_typename = cursor.getString(cursor.getColumnIndex("name"));
-                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
-                                pay_types.add(new pay_type(pay_type, pay_typename, shortname));
-                            } while (cursor.moveToNext());
-
-                        }
-
-                    } else {
-                        da.dismiss();
-                    }
-                    cursor.close();
-
-                    PaymentTypeAdapter pad = new PaymentTypeAdapter(saleorder_entry.this, pay_types, btn, da);
-                    rv.setAdapter(pad);
-                    GridLayoutManager gridLayoutManagerPaymentType = new GridLayoutManager(getApplicationContext(), 4);
-                    rv.setLayoutManager(gridLayoutManagerPaymentType);
-                    da.show();
-
-                    break;
-            }
-        } catch (Exception e) {
-            da.dismiss();
+                break;
         }
+    } catch(
+    Exception e)
+
+    {
+        da.dismiss();
     }
+}
 
     public void bindingCreditBalance() {
         try {
@@ -4487,18 +4656,18 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         return codes;
     }
 
-    public class addCust extends AsyncTask<String, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pb.show();
-        }
+public class addCust extends AsyncTask<String, Void, String> {
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        pb.show();
+    }
 
-        @Override
-        protected String doInBackground(String... strings) {
+    @Override
+    protected String doInBackground(String... strings) {
 
-            HttpURLConnection connection;
-            StringBuffer response = new StringBuffer();
+        HttpURLConnection connection;
+        StringBuffer response = new StringBuffer();
 //            try {
 //                URL url = new URL(strings[0]);
 //                connection = (HttpURLConnection) url.openConnection();
@@ -4526,42 +4695,119 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                e.printStackTrace();
 //            }
 
-            SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-            response = selectInsertLibrary.PostToApi(sqlstring, strings);
+        SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+        response = selectInsertLibrary.PostToApi(sqlstring, strings);
 
-            return response.toString();
-        }
+        return response.toString();
+    }
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            pb.dismiss();
-            try {
-
-                AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
-                b.setTitle("iStock");
-                if (result.equals("Success")) {
-                    b.setMessage("Save Successful.");
-                    FillDataWithSignalr();
-
-                } else {
-                    b.setMessage("Save Fail.");
-                }
-                b.setCancelable(false);
-                b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        b.create().dismiss();
-                    }
-                });
-//                dialog =
-                b.create().show();
-//                dialog.show();
-            } catch (Exception ee) {
-                pb.dismiss();
-                dialog.dismiss();
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        pb.dismiss();
+        try {
+            if(result!=null && !result.isEmpty()){
+                newCustomerId=Integer.parseInt(result);
             }
+            AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+            b.setTitle("iStock");
+            if (result!=null && !result.isEmpty()) {
+                b.setMessage("Save Successful.");
+                DownloadingCustomer();
+                custdia.dismiss();
+//                FillDataWithSignalr();
+
+            } else {
+                b.setMessage("Save Fail.");
+            }
+            b.setCancelable(false);
+            b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    b.create().dismiss();
+                }
+            });
+//                dialog =
+            b.create().show();
+//                dialog.show();
+        } catch (Exception ee) {
+            pb.dismiss();
+            dialog.dismiss();
         }
+    }
+
+}
+
+    private void DownloadingCustomer() {
+        try {
+            AlertDialog.Builder bdProgress = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
+            View view = getLayoutInflater().inflate(R.layout.downloadprocess, null);
+            pbDownload = view.findViewById(R.id.progressDownload);
+            txtProgress = view.findViewById(R.id.txtProgress);
+            txtTable = view.findViewById(R.id.txtTable);
+            txtTable.setText("Customer");
+            txtProgress.setText("0/" + 10);
+            pbDownload.setMax(10);
+            bdProgress.setView(view);
+            bdProgress.setCancelable(false);
+            downloadAlert = bdProgress.create();
+            context = this;
+            downloadAlert.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(DialogInterface dialog) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            DownloadCustomer();
+                            downloadAlert.dismiss();
+                        }
+                    }).start();
+                }
+            });
+
+            downloadAlert.show();
+        } catch (Exception ee) {
+            Toast.makeText(saleorder_entry.this, ee.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void DownloadCustomer(){
+        String ip = sh_ip.getString("ip", "empty");
+        String port = sh_port.getString("port", "empty");
+        String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
+        Log.i("tvsale", url);
+        RequestQueue request = Volley.newRequestQueue(getApplicationContext());
+        final Response.Listener<String> listener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray jsonArray = new JSONArray(response);
+                    jobj = jsonArray.getJSONObject(0);
+                    SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+                    try {
+                        if (jobj.getJSONArray("customer").length() > 0) {
+
+                            selectInsertLibrary.UpSertingData("Customer",jobj);
+                        }
+                        SelectInsertLibrary.BindHeader(saleorder_entry.this,newCustomerId);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }catch (Exception e){
+
+                }
+            }
+        };
+        final Response.ErrorListener error = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+        request.add(req);
     }
 
     private void FillDataWithSignalr() {

@@ -502,32 +502,33 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                     break;
 
                 case "Location":
+                    SelectInsertLibrary.GetLocationBaseOnBrachUser(locs);
                     //sqlString = "select locationid,Name,shortdesc,branchID from Location where isdeleted=0";
 
                     //modified by EKK
-                    if (frmlogin.defaultbranchid == 0) {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
-                    } else {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
-                    }
-
-                    cursor = DatabaseHelper.rawQuery(sqlString);
-                    if (cursor != null && cursor.getCount() != 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
-                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
-                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
-                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
-                                locs.add(new Location(locationid, locationname, shortname, branchid));
-                            } while (cursor.moveToNext());
-
-                        }
-
-                    } else {
-                        da.dismiss();
-                    }
-                    cursor.close();
+//                    if (frmlogin.defaultbranchid == 0) {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
+//                    } else {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
+//                    }
+//
+//                    cursor = DatabaseHelper.rawQuery(sqlString);
+//                    if (cursor != null && cursor.getCount() != 0) {
+//                        if (cursor.moveToFirst()) {
+//                            do {
+//                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
+//                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
+//                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
+//                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
+//                                locs.add(new Location(locationid, locationname, shortname, branchid));
+//                            } while (cursor.moveToNext());
+//
+//                        }
+//
+//                    } else {
+//                        da.dismiss();
+//                    }
+//                    cursor.close();
 
                     FilterLocation lad = new FilterLocation(frmsalelist.this, locs, btn, da,getActionName);
                     rv.setAdapter(lad);

@@ -305,8 +305,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ClassAdapter classAdapter;
     Spinner spinDis, spinPricelvl, spinUnit;
 //    public int billPrintCount = 1;
-    String newCustomerName="";
-    int newCustomerId=0;
+    static String newCustomerName="";
+    static int newCustomerId=0;
 
 
     @Override
@@ -3743,32 +3743,33 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                     break;
                 case "Location":
-
+                    //added by KLM for Location select base on branch user 13082022
+                    SelectInsertLibrary.GetLocationBaseOnBrachUser(locations);
                     //modified by EKK
-                    if (frmlogin.defaultbranchid == 0) {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
-                    } else {
-                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
-                    }
-
-                    cursor = DatabaseHelper.rawQuery(sqlString);
-                    System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                    if (cursor != null && cursor.getCount() != 0) {
-                        if (cursor.moveToFirst()) {
-                            do {
-                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
-                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
-                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
-                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
-                                locations.add(new Location(locationid, locationname, shortname, branchid));
-                            } while (cursor.moveToNext());
-
-                        }
-
-                    } else {
-                        da.dismiss();
-                    }
-                    cursor.close();
+//                    if (frmlogin.defaultbranchid == 0) {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0";
+//                    } else {
+//                        sqlString = "select locationid,name,shortdesc,branchid from Location where isdeleted=0 and branchid = " + frmlogin.defaultbranchid;
+//                    }
+//
+//                    cursor = DatabaseHelper.rawQuery(sqlString);
+//                    System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//                    if (cursor != null && cursor.getCount() != 0) {
+//                        if (cursor.moveToFirst()) {
+//                            do {
+//                                long locationid = cursor.getLong(cursor.getColumnIndex("locationid"));
+//                                String locationname = cursor.getString(cursor.getColumnIndex("Name"));
+//                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
+//                                long branchid = cursor.getLong(cursor.getColumnIndex("branchID"));
+//                                locations.add(new Location(locationid, locationname, shortname, branchid));
+//                            } while (cursor.moveToNext());
+//
+//                        }
+//
+//                    } else {
+//                        da.dismiss();
+//                    }
+//                    cursor.close();
 
                     LocationAdapter lad = new LocationAdapter(sale_entry_tv.this, locations, btn, da);
                     rv.setAdapter(lad);
@@ -7231,7 +7232,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                             selectInsertLibrary.UpSertingData("Customer",jobj);
                         }
-                        BindHeader();
+                        SelectInsertLibrary.BindHeader(sale_entry_tv.this,newCustomerId);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -7252,7 +7253,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         request.add(req);
     }
 
-    private void BindHeader() {
+    public static void BindHeader() {
         sh.get(0).setCustomerid(newCustomerId);
         Cursor cursor=DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid="+newCustomerId+" and name='"+newCustomerName+"'");
         if (cursor != null && cursor.getCount() != 0) {
@@ -7268,10 +7269,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     Boolean iscredit=cursor.getInt(cursor.getColumnIndex("iscredit"))==1?true:false;
                     isCreditcustomer=iscredit;
 
-                    runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
+//                    runOnUiThread(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
 
                             if(iscredit){
                                 sh.get(0).setPay_type(2);
@@ -7281,8 +7282,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                 sh.get(0).setPay_type(1);
                                 btnpaytype.setText("Cash Down");
                             }
-                        }
-                    });
+//                        }
+//                    });
                 } while (cursor.moveToNext());
 
             }
