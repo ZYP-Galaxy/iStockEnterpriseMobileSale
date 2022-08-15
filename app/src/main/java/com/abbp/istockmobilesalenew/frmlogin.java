@@ -768,6 +768,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         tableNames.add("SystemSetting");
         tableNames.add("Salesmen");
         tableNames.add("Branch");
+        tableNames.add("Branch_User");
         tableNames.add("usr_code_img"); //added by EKK on 28-10-2020
         tableNames.add("s_saleprice"); //added by EKK on 10-11-2020
         tableNames.add("Alias_Code"); //added by EKK on 16-11-2020
