@@ -3987,6 +3987,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             tvAmount.setText(txtnet.getText().toString());
             tvChange = v.findViewById(R.id.txtChange);
             TextView tvPaid = v.findViewById(R.id.txtpaidAmount);
+            tvPaid.setText(txtnet.getText().toString());
             CheckBox chkPrint = v.findViewById(R.id.chkPrint);
             chkPrint.setChecked(false);
             bill_not_print = false;
@@ -4076,27 +4077,37 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             imgSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
-                    salechange.dismiss();
-                    if (tvPaid.getText().toString().trim().isEmpty()) {
-                        paid = 0;
+                    if (Double.parseDouble(keynum) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
+                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
+                        bd.setTitle("iStock");
+                        bd.setMessage("Paid Amount is less than Net Amount");
+                        bd.setCancelable(false);
+                        bd.setPositiveButton("OK", (dialog, which) -> { });
+                        bd.create().show();
                     } else {
-                        paid = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
-                    }
-                    if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
-                        changeamount = 0;
-                    } else {
-                        changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
-                    }
-                    if (selectInsertLibrary.OfflineCheck) {
-                        insertdatatoLiteDb();
-                    } else {
-                        updateVoucher();
-                    }
 
-                    ConfirmedTranid = Long.parseLong("0");
+                        salechange.dismiss();
+                        if (tvPaid.getText().toString().trim().isEmpty()) {
+                            paid = 0;
+                        } else {
+                            paid = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
+                        }
+                        if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
+                            changeamount = 0;
+                        } else {
+                            changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
+                        }
+                        if (selectInsertLibrary.OfflineCheck) {
+                            insertdatatoLiteDb();
+                        } else {
+                            updateVoucher();
+                        }
+
+                        ConfirmedTranid = Long.parseLong("0");
+                    }
                 }
             });
+
             imgClose.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -4286,14 +4297,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             bd.setTitle("iStock");
             bd.setMessage("Paid Amount is more than Net Amount");
             bd.setCancelable(false);
-            bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    paidAmt_tmp = net_amount + paidAmt_tmp;
-                    sh.get(0).setPaid_amount(paidAmt_tmp);
-                    getSummary();
-                    dialog.dismiss();
-                }
+            bd.setPositiveButton("OK", (dialog, which) -> {
+                paidAmt_tmp = net_amount + paidAmt_tmp;
+                sh.get(0).setPaid_amount(paidAmt_tmp);
+                getSummary();
+                dialog.dismiss();
             });
             bd.create().show();
         } else {
@@ -4755,9 +4763,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                 bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        changeamount = 0;
-                                        tvChange.setText("0");
-                                        source.setText("0");
+//                                        changeamount = 0;
+//                                        tvChange.setText("0");
+//                                        source.setText("0");
+                                        changeamount = Double.parseDouble(keynum) - Double.parseDouble(ClearFormat(txtnet.getText().toString()));
+                                        SummaryFormat(tvChange, changeamount);
                                         dialog.dismiss();
                                     }
                                 });
@@ -4774,7 +4784,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                             source.setText(String.valueOf(keynum));
                         }
                         frombillcount = false;
-                        keynum = "";
+                        //keynum = "";
                         pw.dismiss();
                     }
                 } catch (Exception e) {
