@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.abbp.istockmobilesalenew.bluetoothprinter.BaseEnum;
+import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
 import com.rt.printerlibrary.printer.RTPrinter;
 
 public class BaseApplication extends Application {
@@ -26,6 +27,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        initSunmiPrintHelper();
     }
 
     public static BaseApplication getInstance() {
@@ -56,6 +58,13 @@ public class BaseApplication extends Application {
 
     public void setCurrentConnectType(@BaseEnum.ConnectType int currentConnectType) {
         this.currentConnectType = currentConnectType;
+    }
+
+    /**
+     * Connect print service through interface library
+     */
+    private void initSunmiPrintHelper() {
+        SunmiPrintHelper.getInstance().initSunmiPrinterService(this);
     }
 
 }

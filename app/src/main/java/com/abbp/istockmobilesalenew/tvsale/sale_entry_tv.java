@@ -3179,8 +3179,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             ImageButton imgClear = view.findViewById(R.id.imgClear);
             ImageButton imgAddCustomer = view.findViewById(R.id.imgAddCustomer);    //added by ZYP for customer setup
             ImageButton imgDownloadCustomer = view.findViewById(R.id.imgDowloadCustomer);
-            imgDownloadCustomer.setVisibility(View.GONE);
-            imgAddCustomer.setVisibility(View.GONE);
+            imgDownloadCustomer.setVisibility(View.VISIBLE);
+            imgAddCustomer.setVisibility(View.VISIBLE);
 
             if (name.equals("Salesmen")) {
                 imgChangSave.setVisibility(View.VISIBLE);
@@ -6709,11 +6709,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        b.create().dismiss();
-                        //dialog.dismiss();
+                        dialog.dismiss();
                     }
                 });
-                 b.create().show();
+                dialog = b.create();
+                dialog.show();
             } catch (Exception ee) {
                 pb.dismiss();
                 //dialog.dismiss();

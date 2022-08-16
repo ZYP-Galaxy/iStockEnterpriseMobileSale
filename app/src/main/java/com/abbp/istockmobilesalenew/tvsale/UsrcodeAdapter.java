@@ -179,14 +179,11 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
                         sale_entry_tv.getSummary();
 
                     }
-
-
                 }
             });
         }
 
     }
-
 
     private void GetDiscountCode() {
         if (sale_entry_tv.sd.size() > 0) {
@@ -228,12 +225,9 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
         }
     }
 
-
     //Added by abbp barcode scanner on 19/6/2019
     public static void scanner(String usr_code) {
         AddData(usr_code);
-
-
     }
 
     private static void AddData(String usr_code) {
