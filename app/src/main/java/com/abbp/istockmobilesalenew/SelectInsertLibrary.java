@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Base64;
 import android.util.Log;
 
-import com.abbp.istockmobilesalenew.tvsale.Posuser;
 import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,8 +32,8 @@ public class SelectInsertLibrary {
 
     //added by KLM to Select location base on Branch User 12082022
     public static void GetLocationBaseOnBrachUser(ArrayList<Location> locations) {
-       String sqlString="select l.* from Location l left join Branch_User bu on bu.branchid=l.branchid where  l.isdeleted=0 and bu.isenabled=1 and bu.userid="+frmlogin.LoginUserid+" order by branchid,locationid";
-       Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+        String sqlString = "select l.* from Location l left join Branch_User bu on bu.branchid=l.branchid where  l.isdeleted=0 and bu.isenabled=1 and bu.userid=" + frmlogin.LoginUserid + " order by branchid,locationid";
+        Cursor cursor = DatabaseHelper.rawQuery(sqlString);
 //        System.out.println(cursor.getCount() + "count!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
@@ -56,9 +54,9 @@ public class SelectInsertLibrary {
     }
 
     public static void BindHeader(Context context, int newCustomerId) {
-        Cursor cursor=DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid="+newCustomerId);
+        Cursor cursor = DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid=" + newCustomerId);
         String contextString = context.getClass().toString().split("com.abbp.istockmobilesalenew.")[1];
-        switch (contextString){
+        switch (contextString) {
             case "saleorder_entry":
                 saleorder_entry.sh.get(0).setCustomerid(newCustomerId);
                 if (cursor != null && cursor.getCount() != 0) {
@@ -66,14 +64,14 @@ public class SelectInsertLibrary {
                         do {
 
                             saleorder_entry.btncustomer.setText(cursor.getString(cursor.getColumnIndex("name")));
-                            int townshipid=cursor.getInt(cursor.getColumnIndex("townshipid"));
+                            int townshipid = cursor.getInt(cursor.getColumnIndex("townshipid"));
                             saleorder_entry.selected_townshipid = townshipid;
-                            saleorder_entry.selected_custgroupid=cursor.getInt(cursor.getColumnIndex("custgroupid"));
+                            saleorder_entry.selected_custgroupid = cursor.getInt(cursor.getColumnIndex("custgroupid"));
                             saleorder_entry.btntownship.setText(cursor.getString(cursor.getColumnIndex("townshipname")));
                             saleorder_entry.btncustgroup.setText(cursor.getString(cursor.getColumnIndex("custgroupname")));
-                            Boolean iscredit=cursor.getInt(cursor.getColumnIndex("iscredit"))==1?true:false;
-                            saleorder_entry.isCreditcustomer=iscredit;
-                            if(iscredit){
+                            Boolean iscredit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
+                            saleorder_entry.isCreditcustomer = iscredit;
+                            if (iscredit) {
                                 saleorder_entry.sh.get(0).setPay_type(2);
                                 saleorder_entry.btnpaytype.setText("Credit");
 
@@ -95,14 +93,14 @@ public class SelectInsertLibrary {
                         do {
 
                             sale_entry.btncustomer.setText(cursor.getString(cursor.getColumnIndex("name")));
-                            int townshipid=cursor.getInt(cursor.getColumnIndex("townshipid"));
+                            int townshipid = cursor.getInt(cursor.getColumnIndex("townshipid"));
                             sale_entry.selected_townshipid = townshipid;
-                            sale_entry.selected_custgroupid=cursor.getInt(cursor.getColumnIndex("custgroupid"));
+                            sale_entry.selected_custgroupid = cursor.getInt(cursor.getColumnIndex("custgroupid"));
                             sale_entry.btntownship.setText(cursor.getString(cursor.getColumnIndex("townshipname")));
                             sale_entry.btncustgroup.setText(cursor.getString(cursor.getColumnIndex("custgroupname")));
-                            Boolean iscredit=cursor.getInt(cursor.getColumnIndex("iscredit"))==1?true:false;
-                            sale_entry.isCreditcustomer=iscredit;
-                            if(iscredit){
+                            Boolean iscredit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
+                            sale_entry.isCreditcustomer = iscredit;
+                            if (iscredit) {
                                 sale_entry.sh.get(0).setPay_type(2);
                                 sale_entry.btnpaytype.setText("Credit");
 
@@ -123,14 +121,14 @@ public class SelectInsertLibrary {
                         do {
 
                             sale_entry_tv.btncustomer.setText(cursor.getString(cursor.getColumnIndex("name")));
-                            int townshipid=cursor.getInt(cursor.getColumnIndex("townshipid"));
+                            int townshipid = cursor.getInt(cursor.getColumnIndex("townshipid"));
                             sale_entry_tv.selected_townshipid = townshipid;
-                            sale_entry_tv.selected_custgroupid=cursor.getInt(cursor.getColumnIndex("custgroupid"));
+                            sale_entry_tv.selected_custgroupid = cursor.getInt(cursor.getColumnIndex("custgroupid"));
                             sale_entry_tv.btntownship.setText(cursor.getString(cursor.getColumnIndex("townshipname")));
                             sale_entry_tv.btncustgroup.setText(cursor.getString(cursor.getColumnIndex("custgroupname")));
-                            Boolean iscredit=cursor.getInt(cursor.getColumnIndex("iscredit"))==1?true:false;
-                            sale_entry_tv.isCreditcustomer=iscredit;
-                            if(iscredit){
+                            Boolean iscredit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
+                            sale_entry_tv.isCreditcustomer = iscredit;
+                            if (iscredit) {
                                 sale_entry_tv.sh.get(0).setPay_type(2);
                                 sale_entry_tv.btnpaytype.setText("Credit");
 
@@ -398,7 +396,6 @@ public class SelectInsertLibrary {
                     for (int syscount = 0; syscount < sys.length(); syscount++) {
 
 
-
                         JSONObject systobj = sys.getJSONObject(syscount);
 
                         String title = systobj.getString("title");
@@ -555,17 +552,17 @@ public class SelectInsertLibrary {
                         String name = postobj.optString("name", "null");
                         String shortdes = postobj.optString("shortdesc", "null");
                         int branchid = postobj.optInt("branchid");
-                        String passwordFromJobj=postobj.optString("password","");
+                        String passwordFromJobj = postobj.optString("password", "");
                         String password = "";
-                        if(passwordFromJobj!="null"){
-                                byte[] passwordsbytes=passwordFromJobj.getBytes(StandardCharsets.UTF_8);
-                                passwordsbytes=Base64.decode(passwordsbytes,Base64.DEFAULT);
-                                try {
-                                    password = new String(passwordsbytes,"UTF-8");
-                                } catch (UnsupportedEncodingException e) {
-                                    e.printStackTrace();
-                                }
-                                Log.i("Password",postobj.optString("password")+"    "+password);
+                        if (passwordFromJobj != "null") {
+                            byte[] passwordsbytes = passwordFromJobj.getBytes(StandardCharsets.UTF_8);
+                            passwordsbytes = Base64.decode(passwordsbytes, Base64.DEFAULT);
+                            try {
+                                password = new String(passwordsbytes, "UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            Log.i("Password", postobj.optString("password") + "    " + password);
                         }
                         int canchangesaleprice = postobj.optBoolean("canchangesaleprice", false) == true ? 1 : 0;
                         int canchangepurprice = postobj.optBoolean("canchangepurprice", false) == true ? 1 : 0;
@@ -990,8 +987,8 @@ public class SelectInsertLibrary {
                         int userid = branchobj.getInt("userid");
                         int branchid = branchobj.getInt("branchid");
                         String name = branchobj.optString("name");
-                        int isenabled = branchobj.getBoolean("isenabled")==true?1:0;
-                        int isdefaultbranch =  branchobj.getBoolean("isdefaultbranch")==true?1:0;
+                        int isenabled = branchobj.getBoolean("isenabled") == true ? 1 : 0;
+                        int isdefaultbranch = branchobj.getBoolean("isdefaultbranch") == true ? 1 : 0;
 
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("userid", userid);
@@ -999,7 +996,7 @@ public class SelectInsertLibrary {
                         contentValues.put("name", name);
                         contentValues.put("isenabled", isenabled);
                         contentValues.put("isdefaultbranch", isdefaultbranch);
-                        DatabaseHelper.upsertWithOnConflit("Branch_User", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE, "branchid=? and userid=?", new String[]{String.valueOf(branchid),String.valueOf(userid)});
+                        DatabaseHelper.upsertWithOnConflit("Branch_User", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE, "branchid=? and userid=?", new String[]{String.valueOf(branchid), String.valueOf(userid)});
                     }
                     break;
                 //added by EKK on 28-10-2020
@@ -1189,8 +1186,6 @@ public class SelectInsertLibrary {
         }
 
     }
-
-
 
 
 //    public void UpSertingData(String table, JSONObject jobj) {
