@@ -57,6 +57,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ClearCacheRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
@@ -4230,7 +4231,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             imgSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Double.parseDouble(keynum) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
+                    if (Double.parseDouble(ClearFormat(tvPaid.getText().toString())) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
 
                         GlobalClass.showAlertDialog(sale_entry.this, "iStock", "Paid Amount is less than Net Amount!");
                     } else {
