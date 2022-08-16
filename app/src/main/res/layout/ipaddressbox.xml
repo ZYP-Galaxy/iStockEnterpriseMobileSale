@@ -69,6 +69,7 @@
                     android:drawableLeft="@drawable/instance_name"
                     android:hint="  Port"
                     android:imeOptions="actionDone|flagNoExtractUi"
+                    android:inputType="number"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white" />
             </com.google.android.material.textfield.TextInputLayout>

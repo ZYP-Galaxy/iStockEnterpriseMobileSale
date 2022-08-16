@@ -187,13 +187,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ArrayList<String> keys = new ArrayList<>();
     String sqlstring = "";
     String keynum = "";
-
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
     Date voudate;
     AlertDialog disDa = null;
-    TextView txtChangeQty, txtProgress, txtTable;
+    TextView txtChangeQty,txtProgress,txtTable;
     EditText txtChangePrice;
     TextView txtamt;
     TextView txtdate;
@@ -305,9 +304,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static String sortcode;
     ClassAdapter classAdapter;
     Spinner spinDis, spinPricelvl, spinUnit;
-    //    public int billPrintCount = 1;
-    String newCustomerName = "";
-    int newCustomerId = 0;
+//    public int billPrintCount = 1;
+    String newCustomerName="";
+    int newCustomerId=0;
 
 
     @Override
@@ -1600,7 +1599,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //
 //                    } else {
 //                        selectInsertLibrary.OfflineCheck = false;
-                    voucherConfirm();
+                        voucherConfirm();
 //                    }
                 } else {
                     AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
@@ -1879,7 +1878,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                             creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                         }
 
-                                        String sqlString = "select name from Customer where customer_name='" + nameSt + "'";
+                                        String sqlString = "select name from Customer where customer_name='" + nameSt+ "'";
                                         Cursor cursor = DatabaseHelper.rawQuery(sqlString);
                                         if (cursor != null && cursor.getCount() > 0) {
                                             AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this);
@@ -1941,8 +1940,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                                 "null,null,null,null,null," + iscredit + ",null," + creditL + ",null, " +
                                                 "null,false,null, " + selected_custgroupid + ",null,null, " +
                                                 "null,null,localtimestamp,false)"; //gson.toJson(customers) + "&" + frmlogin.LoginUserid;
-                                        sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values " +
-                                                codeSt + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.userid + ",uuid_generate_v4(),false,false)";
+                                        sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values "+
+                                                codeSt+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.userid+",uuid_generate_v4(),false,false)";
 
                                         InsertCustomer();
                                         name.setText("");
@@ -3186,9 +3185,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             if (name.equals("Salesmen")) {
                 imgChangSave.setVisibility(View.VISIBLE);
                 imgClear.setVisibility(View.VISIBLE);
-            } else if (name.equals("Customer")) {
+            }
+            else if (name.equals("Customer")){
                 imgAddCustomer.setVisibility(View.VISIBLE);
-            } else {
+            }
+            else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
             }
@@ -3269,20 +3270,21 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
-                                    newCustomerName = nameSt;
+                                    newCustomerName=nameSt;
                                     int custid = getCustomerCount() + 1;
-                                    newCustomerId = custid;
+                                    newCustomerId=custid;
                                     if (chkCredit.isChecked()) {
                                         iscredit = true;
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
-                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
-                                    if (codeSt.length() > 0) {
-                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
-                                    } else {
-                                        sqlstring += null + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
+                                    sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
+                                    if(codeSt.length()>0){
+                                        sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
                                     }
-                                    sqlstring += "&" + frmlogin.LoginUserid;
+                                    else{
+                                        sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    }
+                                    sqlstring+="&"+frmlogin.LoginUserid;
                                     String sqlString = "select name from Customer where name='" + nameSt + "'";
                                     Cursor cursor = DatabaseHelper.rawQuery(sqlString);
                                     if (cursor != null && cursor.getCount() > 0) {
@@ -3324,7 +3326,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                         msg.show();
 
 
-                                    } else {
+                                    }
+                                    else{
 //modified by ZYP 31-08-2021 for customer setup
 //                                        sqlstring = "insert into customer(customerid, shortdesc, sortid, name, companyname, townshipid, contact," +
 //                                                "pricelevelid, address, phone, fax, email, iscredit, balance, creditlimit, dueindays, " +
@@ -3885,7 +3888,37 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     bill_not_print = isChecked;
                 }
             });
+
+
+//            rlBT.setVisibility(View.VISIBLE);//Add by TZW for BlueToothPrinter
+//            RadioButton chkBT = v.findViewById(R.id.chkBT);//Add by TZW for BlueToothPrinter
+//            chkBT.setChecked(true);//Add by TZW for BlueToothPrinter
             use_bluetooth = true;//Add by tZW for BlueToothPrinter
+
+//            chkBT.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                @Override
+//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                    if (isChecked) {
+//                        use_bluetooth = true;
+//                        //Show_BT_Deivice();
+//                        // showPrinterList();
+//                        //getSavedPrinter();
+//                        // printView();
+//                    } else {
+//                        use_bluetooth = false;
+//                    }
+//
+//                }
+//            });
+
+            //Added by ZYP for localprint
+//            RadioButton chkLocalPrint = v.findViewById(R.id.chkLocalPrint);
+//            //use_localprint = chkLocalPrint.isChecked();
+//            chkLocalPrint.setChecked(use_localprint);
+//
+//            chkLocalPrint.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//                use_localprint = isChecked;
+//            });
 
             chkPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -3920,6 +3953,17 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
             });
 
+
+//            rlBillCount.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    frombillcount = true;
+//                    keynum = tvBillCount.getText().toString();
+//                    showKeyPad(txtAmounttext, tvBillCount);
+//
+//                }
+//            });
+
             RelativeLayout rlPaid = v.findViewById(R.id.rlPaid);
             rlPaid.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -3935,12 +3979,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             tvPaid.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    String paidAmount = "0";
                     try {
 
                         if (actionId == EditorInfo.IME_ACTION_DONE) {
-                            paidAmount = ClearFormat(v.getText().toString());
-                            paidAmount = paidAmount.isEmpty() ? "0" : paidAmount;
+                            String paidAmount = ClearFormat(tvPaid.getText().toString());
                             fromSaleChange = true;
                             //showKeyPad(tvAmount, tvPaid);
                             if (fromSaleChange) {
@@ -3949,15 +3991,14 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                     bd.setTitle("iStock");
                                     bd.setMessage("Paid Amount is less than Net Amount!");
                                     bd.setCancelable(false);
-                                    String finalPaidAmount = paidAmount;
                                     bd.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
 //                                            changeamount = 0;
 //                                            tvChange.setText("0");
 //                                            tvPaid.setText(paidAmount);
-                                            changeamount = Double.parseDouble(finalPaidAmount) - Double.parseDouble(ClearFormat(txtnet.getText().toString()));
-                                            SummaryFormat(tvPaid, Double.parseDouble(finalPaidAmount));
+                                            changeamount = Double.parseDouble(paidAmount) - Double.parseDouble(ClearFormat(txtnet.getText().toString()));
+                                            SummaryFormat(tvPaid, Double.parseDouble(paidAmount));
                                             SummaryFormat(tvChange, changeamount);
                                             dialog.dismiss();
                                         }
@@ -3981,12 +4022,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         }
                     } catch (Exception ex) {
                         GlobalClass.showAlertDialog(sale_entry_tv.this, "iStock", "Incorrect number format!");
-                        paidAmount = "0";
-                        tvPaid.setText(paidAmount);
-                        changeamount = Double.parseDouble(paidAmount) - Double.parseDouble(ClearFormat(txtnet.getText().toString()));
-                        SummaryFormat(tvPaid, Double.parseDouble(paidAmount));
-                        SummaryFormat(tvChange, changeamount);
-
                     }
                     return false;
                 }
@@ -4083,7 +4118,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                if (selectInsertLibrary.OfflineCheck) {
 //                    insertdatatoLiteDb();
 //                } else {
-                updateVoucher();
+                    updateVoucher();
 //                }
 
                 ConfirmedTranid = Long.parseLong("0");
@@ -4267,7 +4302,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         == 6 || sd.get(i).getDis_type() == 7) {
                     foc_tmp += sd.get(i).getSale_price() * sale_entry_tv.sd.get(i).getUnit_qty();
                     sh.get(0).setFoc_amount(foc_tmp);
-                } else {
+                }
+                else{
                     //itemDis_tmp=0;
                     sh.get(0).setIstemdis_amount(itemDis_tmp);
                 }
@@ -6656,12 +6692,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             super.onPostExecute(result);
             pb.dismiss();
             try {
-                if (result != null && !result.isEmpty()) {
-                    newCustomerId = Integer.parseInt(result);
+                if(result!=null && !result.isEmpty()){
+                    newCustomerId=Integer.parseInt(result);
                 }
                 AlertDialog.Builder b = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
                 b.setTitle("iStock");
-                if (result != null && !result.isEmpty()) {
+                if (result!=null && !result.isEmpty()) {
                     b.setMessage("Save Successful.");
                     DownloadingCustomer();
                     custdia.dismiss();
@@ -6677,7 +6713,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         //dialog.dismiss();
                     }
                 });
-                b.create().show();
+                 b.create().show();
             } catch (Exception ee) {
                 pb.dismiss();
                 //dialog.dismiss();
@@ -6696,7 +6732,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         View voucher = getLayoutInflater().inflate(R.layout.bluetoothvoucherprint, null);
 
         TextView custname = voucher.findViewById(R.id.txtcustomer);
-        TextView salemenName = voucher.findViewById(R.id.txtsalemen);
+        TextView salemenName=voucher.findViewById(R.id.txtsalemen);
         TextView tvdate = voucher.findViewById(R.id.txtdate);
         TextView tvinvoice = voucher.findViewById(R.id.txtinvoice);
         TextView tvtotalamount = voucher.findViewById(R.id.txttotalamount);
@@ -6713,7 +6749,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         TextView tvheader2 = voucher.findViewById(R.id.txtheadertitle2);
         TextView tvheader3 = voucher.findViewById(R.id.txtheadertitle3);
         TextView txtVoucherRemark = voucher.findViewById(R.id.txt_voucher_remark);
-        LinearLayout salemenLayout = voucher.findViewById(R.id.salemenlayout);
+        LinearLayout salemenLayout=voucher.findViewById(R.id.salemenlayout);
 
         LinearLayout tax_layout = voucher.findViewById(R.id.layout_tax);
         if (frmlogin.isusetax == 0) {
@@ -6777,15 +6813,15 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         tvdate.setText(Date);
         tvinvoice.setText(invoiceno);
         txtVoucherRemark.setText(sh.get(0).getHeadremark());
-        if (use_salesperson) {
+        if(use_salesperson){
             salemenLayout.setVisibility(View.VISIBLE);
-            String salesmenString = "";
-            if (SaleVouSalesmen.size() > 0) {
-                for (int i = 0; i < SaleVouSalesmen.size() - 1; i++) {
-                    salesmenString += SaleVouSalesmen.get(i).getSalesmen_Name() + ", ";
+            String salesmenString="";
+            if(SaleVouSalesmen.size()>0){
+                for(int i=0;i<SaleVouSalesmen.size()-1;i++){
+                    salesmenString+=SaleVouSalesmen.get(i).getSalesmen_Name()+", ";
                 }
 
-                salesmenString += SaleVouSalesmen.get(SaleVouSalesmen.size() - 1).getSalesmen_Name();
+                salesmenString+=SaleVouSalesmen.get(SaleVouSalesmen.size()-1).getSalesmen_Name();
             }
             salemenName.setText(salesmenString);
         }
@@ -6813,7 +6849,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                item = item.substring(0, 20);
 //            }
             stamount = CurrencyFormat(amt);
-            qtyprice = "(" + String.format("%,." + frmmain.qty_places + "f", sale_entry_tv.sd.get(i).getUnit_qty()) + "  " + sale_entry_tv.sd.get(i).getUnit_short() + "x"
+            qtyprice = "(" + String.format("%,." + frmmain.qty_places + "f", sale_entry_tv.sd.get(i).getUnit_qty())+ "  " + sale_entry_tv.sd.get(i).getUnit_short() + "x"
                     + CurrencyFormat(sale_entry_tv.sd.get(i).getSale_price()) + ")";
 
             tvdescription.setText(item);
@@ -7192,7 +7228,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void DownloadCustomer() {
+    private void DownloadCustomer(){
         String ip = sh_ip.getString("ip", "empty");
         String port = sh_port.getString("port", "empty");
         String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
@@ -7208,13 +7244,13 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     try {
                         if (jobj.getJSONArray("customer").length() > 0) {
 
-                            selectInsertLibrary.UpSertingData("Customer", jobj);
+                            selectInsertLibrary.UpSertingData("Customer",jobj);
                         }
                         BindHeader();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } catch (Exception e) {
+                }catch (Exception e){
 
                 }
             }
@@ -7233,26 +7269,26 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
     private void BindHeader() {
         sh.get(0).setCustomerid(newCustomerId);
-        Cursor cursor = DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid=" + newCustomerId + " and name='" + newCustomerName + "'");
+        Cursor cursor=DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid="+newCustomerId+" and name='"+newCustomerName+"'");
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
 
                     btncustomer.setText(cursor.getString(cursor.getColumnIndex("name")));
-                    int townshipid = cursor.getInt(cursor.getColumnIndex("townshipid"));
+                    int townshipid=cursor.getInt(cursor.getColumnIndex("townshipid"));
                     sale_entry_tv.selected_townshipid = townshipid;
-                    sale_entry_tv.selected_custgroupid = cursor.getInt(cursor.getColumnIndex("custgroupid"));
+                    sale_entry_tv.selected_custgroupid=cursor.getInt(cursor.getColumnIndex("custgroupid"));
                     btntownship.setText(cursor.getString(cursor.getColumnIndex("townshipname")));
                     btncustgroup.setText(cursor.getString(cursor.getColumnIndex("custgroupname")));
-                    Boolean iscredit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
-                    isCreditcustomer = iscredit;
+                    Boolean iscredit=cursor.getInt(cursor.getColumnIndex("iscredit"))==1?true:false;
+                    isCreditcustomer=iscredit;
 
                     runOnUiThread(new Runnable() {
 
                         @Override
                         public void run() {
 
-                            if (iscredit) {
+                            if(iscredit){
                                 sh.get(0).setPay_type(2);
                                 btnpaytype.setText("Credit");
 
@@ -7267,11 +7303,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
             cursor.close();
         }
-        newCustomerName = "";
-        newCustomerId = 0;
+        newCustomerName="";
+        newCustomerId=0;
     }
 
-    //    private void FillCustomer(){
+//    private void FillCustomer(){
 //        try {
 //            if (jobj.getJSONArray("customer").length() > 0) {
 //
@@ -7366,11 +7402,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         tablename = "Posuser";
                         selectInsertLibrary.UpSertingData(tablename, jobj);
                     }
-                    // FillCustomer();
+                   // FillCustomer();
                     try {
                         if (jobj.getJSONArray("customer").length() > 0) {
                             tablename = "Customer";
-                            selectInsertLibrary.UpSertingData(tablename, jobj);
+                           selectInsertLibrary.UpSertingData(tablename,jobj);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();

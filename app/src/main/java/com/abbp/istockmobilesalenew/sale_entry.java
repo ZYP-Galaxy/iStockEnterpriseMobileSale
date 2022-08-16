@@ -52,7 +52,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbp.istockmobilesalenew.bluetoothprinter.BluetoothPrinter;
-import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -216,7 +215,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     ImageButton imgScanner, btncustadd;
     public static Context datacontext;
     EditText etdSearchCode;
-    public static double paid, changeamount;
+    public static double paidamount, changeamount;
     public static boolean fromSaleChange, frombillcount = false;
     public TextView tvChange;
     static Double voudisper = 0.0, paiddispercent = 0.0;
@@ -2687,6 +2686,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
     private void voucherConfirmtoLiteDB() {
 
+        paidamount = 0.0;
+        changeamount = 0.0;
+
         if (sh.get(0).getPay_type() == 1) {
             AlertDialog.Builder change = new AlertDialog.Builder(sale_entry.this);
             change.setCancelable(false);
@@ -2758,9 +2760,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
                     salechange.dismiss();
                     if (tvPaid.getText().toString().trim().isEmpty()) {
-                        paid = 0;
+                        paidamount = 0;
                     } else {
-                        paid = Double.parseDouble(tvPaid.getText().toString().trim());
+                        paidamount = Double.parseDouble(tvPaid.getText().toString().trim());
                     }
                     if (tvChange.getText().toString().trim().isEmpty()) {
                         changeamount = 0;
@@ -2786,7 +2788,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         } else {
 
             //This Customer's Credit Limit is Over.Do you want to continue ???
-
+            bill_not_print = false;
+            billprintcount = 1;
             double outstandamt = net_amount + Double.parseDouble(ClearFormat(txtoutstand.getText().toString()));
             System.out.println(sale_entry.credit_limit + " this is credit limit" + frmlogin.isallowovercreditlimit);
             if (outstandamt > sale_entry.credit_limit && sale_entry.credit_limit != 0) {
@@ -2952,7 +2955,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 ContentValues contentValues2 = new ContentValues();
                 contentValues2.put("tranid", sh.get(0).getTranid());
                 contentValues2.put("currencyid", 1);
-                contentValues2.put("paidamount", paid);
+                contentValues2.put("paidamount", paidamount);
                 contentValues2.put("changeamount", changeamount);
                 contentValues2.put("exgrate", 1);
                 contentValues2.put("invoiceamount", sh.get(0).getInvoice_amount());
@@ -4240,34 +4243,26 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             imgSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (Double.parseDouble(keynum) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
-                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
-                        bd.setTitle("iStock");
-                        bd.setMessage("Paid Amount is less than Net Amount");
-                        bd.setCancelable(false);
-                        bd.setPositiveButton("OK", (dialog, which) -> { });
-                        bd.create().show();
+//                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
+                    salechange.dismiss();
+                    if (tvPaid.getText().toString().trim().isEmpty()) {
+                        paidamount = 0;
                     } else {
-
-                        salechange.dismiss();
-                        if (tvPaid.getText().toString().trim().isEmpty()) {
-                            paid = 0;
-                        } else {
-                            paid = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
-                        }
-                        if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
-                            changeamount = 0;
-                        } else {
-                            changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
-                        }
-                        if (selectInsertLibrary.OfflineCheck) {
-                            insertdatatoLiteDb();
-                        } else {
-                            updateVoucher();
-                        }
+                        paidamount = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
+                    }
+                    if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
+                        changeamount = 0;
+                    } else {
+                        changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
+                    }
+                    if (selectInsertLibrary.OfflineCheck) {
+                        insertdatatoLiteDb();
+                    } else {
+                        updateVoucher();
+                    }
 
                         ConfirmedTranid = Long.parseLong("0");
-                    }
+
                 }
             });
 
@@ -5469,7 +5464,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                 salechanges.add(new salechange((int) sh.get(0).getTranid(),
                         1,
-                        paid,
+                        paidamount,
                         changeamount,
                         1,
                         sh.get(0).getInvoice_amount()));
@@ -6259,7 +6254,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        b.create().dismiss();
+                        dialogInterface.dismiss();
                     }
                 });
 //                dialog =
@@ -6510,7 +6505,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         String DisAmount = CurrencyFormat(sh.get(0).getDiscount() + sh.get(0).getIstemdis_amount());
         String FocAmount = CurrencyFormat(sh.get(0).getFoc_amount());
         String NetAmount = CurrencyFormat(net_amount);
-        String PaidAmount = CurrencyFormat(paid);
+        String PaidAmount = CurrencyFormat(paidamount);
         String ChangeAmount = CurrencyFormat(changeamount);
 
         tvtotalamount.setText(TotalAmount);

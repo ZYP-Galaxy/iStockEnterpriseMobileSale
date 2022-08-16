@@ -1003,6 +1003,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     }
 
     private void LockUser(int userid, Boolean locked) {
+        DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
         String ip = sh_ip.getString("ip", "Localhost");
         String port = sh_port.getString("port", "80");
         String Device = frmlogin.Device_Name.replace(" ", "%20");
@@ -1015,7 +1016,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             public void onResponse(String response) {
 
                 if (response.equals("True")) {
-                    DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
+//                    DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
                     DatabaseHelper.execute("insert into Login_User(userid,hostname)values(" + frmlogin.LoginUserid + ",'" + frmlogin.Device_Name + "')");
                     Intent intent = new Intent(frmlogin.this, frmmain.class);
                     startActivity(intent);
@@ -1062,7 +1063,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
             @Override
             public void onErrorResponse(VolleyError error) {
                 //added offline
-                DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
+//                DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
                 DatabaseHelper.execute("insert into Login_User(userid,hostname)values(" + frmlogin.LoginUserid + ",'" + frmlogin.Device_Name + "')");
                 Intent intent = new Intent(frmlogin.this, frmmain.class);
                 startActivity(intent);

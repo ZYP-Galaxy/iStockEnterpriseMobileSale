@@ -494,6 +494,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void UnLockUser(int Userid) {
+        DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
         String ip = sh_ip.getString("ip", "Localhost");
         String port = sh_port.getString("port", "80");
         String Device = frmlogin.Device_Name.replace(" ", "%20");
@@ -504,11 +505,8 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         final Response.Listener<String> listener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-
-                DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
+//                DatabaseHelper.execute("delete from Login_User where userid=" + frmlogin.LoginUserid);
             }
-
-
         };
 
         final Response.ErrorListener error = new Response.ErrorListener() {
