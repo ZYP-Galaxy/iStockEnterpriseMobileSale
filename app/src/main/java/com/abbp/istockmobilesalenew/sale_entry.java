@@ -4243,26 +4243,34 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             imgSave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
-                    salechange.dismiss();
-                    if (tvPaid.getText().toString().trim().isEmpty()) {
-                        paidamount = 0;
+                    if (Double.parseDouble(keynum) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
+                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
+                        bd.setTitle("iStock");
+                        bd.setMessage("Paid Amount is less than Net Amount");
+                        bd.setCancelable(false);
+                        bd.setPositiveButton("OK", (dialog, which) -> { });
+                        bd.create().show();
                     } else {
-                        paidamount = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
-                    }
-                    if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
-                        changeamount = 0;
-                    } else {
-                        changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
-                    }
-                    if (selectInsertLibrary.OfflineCheck) {
-                        insertdatatoLiteDb();
-                    } else {
-                        updateVoucher();
-                    }
+
+                        salechange.dismiss();
+                        if (tvPaid.getText().toString().trim().isEmpty()) {
+                            paidamount = 0;
+                        } else {
+                            paidamount = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
+                        }
+                        if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
+                            changeamount = 0;
+                        } else {
+                            changeamount = Double.parseDouble(ClearFormat(tvChange.getText().toString()));
+                        }
+                        if (selectInsertLibrary.OfflineCheck) {
+                            insertdatatoLiteDb();
+                        } else {
+                            updateVoucher();
+                        }
 
                         ConfirmedTranid = Long.parseLong("0");
-
+                    }
                 }
             });
 
