@@ -295,7 +295,9 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private void GetDeviceName() {
 
         BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
-        Device_Name = myDevice.getName();
+        if(myDevice != null){
+            Device_Name = myDevice.getName();
+        }
 
     }
 

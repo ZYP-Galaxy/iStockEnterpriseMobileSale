@@ -250,11 +250,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     RTPrinter btPrinter;
 
     static long specialPrice = 0;
-    String newCustomerName="";
-    int newCustomerId=0;
+    String newCustomerName = "";
+    int newCustomerId = 0;
     private AlertDialog downloadAlert;
     private ProgressBar pbDownload;
-    TextView txtProgress,txtTable;
+    TextView txtProgress, txtTable;
     private Context context;
 
     @Override
@@ -2683,7 +2683,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
     }
 
-
     private void voucherConfirmtoLiteDB() {
 
         paidamount = 0.0;
@@ -2788,8 +2787,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         } else {
 
             //This Customer's Credit Limit is Over.Do you want to continue ???
-            bill_not_print = false;
-            billprintcount = 1;
             double outstandamt = net_amount + Double.parseDouble(ClearFormat(txtoutstand.getText().toString()));
             System.out.println(sale_entry.credit_limit + " this is credit limit" + frmlogin.isallowovercreditlimit);
             if (outstandamt > sale_entry.credit_limit && sale_entry.credit_limit != 0) {
@@ -3508,12 +3505,10 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             if (name.equals("Salesmen")) {
                 imgChangSave.setVisibility(View.VISIBLE);
                 imgClear.setVisibility(View.VISIBLE);
-            }
-            else if (name.equals("Customer")) {
+            } else if (name.equals("Customer")) {
                 imgAddCustomer.setVisibility(View.VISIBLE);
                 //imgClear.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
             }
@@ -3595,21 +3590,20 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
-                                    newCustomerName=nameSt;
+                                    newCustomerName = nameSt;
                                     int custid = getCustomerCount() + 1;
-                                    newCustomerId=custid;
+                                    newCustomerId = custid;
                                     if (chkCredit.isChecked()) {
                                         iscredit = true;
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
-                                    sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
-                                    if(codeSt.length()>0){
-                                        sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
+                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
+                                    if (codeSt.length() > 0) {
+                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
+                                    } else {
+                                        sqlstring += null + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
                                     }
-                                    else{
-                                        sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
-                                    }
-                                    sqlstring+="&"+frmlogin.LoginUserid;
+                                    sqlstring += "&" + frmlogin.LoginUserid;
                                     String sqlString = "select name from Customer where name='" + nameSt + "'";
                                     Cursor cursor = DatabaseHelper.rawQuery(sqlString);
                                     if (cursor != null && cursor.getCount() > 0) {
@@ -3651,8 +3645,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                         msg.show();
 
 
-                                    }
-                                    else{
+                                    } else {
 
                                         InsertCustomer();
 
@@ -4142,6 +4135,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
     private void voucherConfirm() {
 
+        paidamount = 0.0;
+        changeamount = 0.0;
+
         if (sh.get(0).getPay_type() == 1) {
             AlertDialog.Builder change = new AlertDialog.Builder(sale_entry.this);
             change.setCancelable(false);
@@ -4160,22 +4156,13 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
             rlBT.setVisibility(View.VISIBLE);//Add by TZW for BlueToothPrinter
             RadioButton chkBT = v.findViewById(R.id.chkBT);//Add by TZW for BlueToothPrinter
-            chkBT.setChecked(true);//Add by TZW for BlueToothPrinter
-            use_bluetooth = true;//Add by tZW for BlueToothPrinter
+            chkBT.setChecked(use_bluetooth);//Add by TZW for BlueToothPrinter
+//            use_bluetooth = true;//Add by tZW for BlueToothPrinter
 
             chkBT.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        use_bluetooth = true;
-                        //Show_BT_Deivice();
-                        // showPrinterList();
-                        //getSavedPrinter();
-                        // printView();
-                    } else {
-                        use_bluetooth = false;
-                    }
-
+                    use_bluetooth = isChecked;
                 }
             });
 
@@ -4244,12 +4231,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onClick(View v) {
                     if (Double.parseDouble(keynum) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
-                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
-                        bd.setTitle("iStock");
-                        bd.setMessage("Paid Amount is less than Net Amount");
-                        bd.setCancelable(false);
-                        bd.setPositiveButton("OK", (dialog, which) -> { });
-                        bd.create().show();
+
+                        GlobalClass.showAlertDialog(sale_entry.this, "iStock", "Paid Amount is less than Net Amount!");
                     } else {
 
                         salechange.dismiss();
@@ -4288,7 +4271,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         } else {
 
             //This Customer's Credit Limit is Over.Do you want to continue ???
-
+            use_bluetooth = bill_not_print = false;
             double outstandamt = net_amount + Double.parseDouble(ClearFormat(txtoutstand.getText().toString()));
             if (outstandamt > sale_entry.credit_limit && sale_entry.credit_limit != 0) {
                 if (frmlogin.isallowovercreditlimit == 1) {
@@ -4368,8 +4351,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         == 6 || sd.get(i).getDis_type() == 7) {
                     foc_tmp += sd.get(i).getSale_price() * sale_entry.sd.get(i).getUnit_qty();
                     sh.get(0).setFoc_amount(foc_tmp);
-                }
-                else{
+                } else {
                     //itemDis_tmp=0;
                     sh.get(0).setIstemdis_amount(itemDis_tmp);
                 }
@@ -6244,12 +6226,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             super.onPostExecute(result);
             pb.dismiss();
             try {
-                if(result!=null && !result.isEmpty()){
-                    newCustomerId=Integer.parseInt(result);
+                if (result != null && !result.isEmpty()) {
+                    newCustomerId = Integer.parseInt(result);
                 }
                 AlertDialog.Builder b = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
                 b.setTitle("iStock");
-                if (result!=null && !result.isEmpty()) {
+                if (result != null && !result.isEmpty()) {
                     b.setMessage("Save Successful.");
                     DownloadingCustomer();
                     custdia.dismiss();
@@ -6311,7 +6293,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         }
     }
 
-    private void DownloadCustomer(){
+    private void DownloadCustomer() {
         String ip = sh_ip.getString("ip", "empty");
         String port = sh_port.getString("port", "empty");
         String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
@@ -6327,13 +6309,13 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     try {
                         if (jobj.getJSONArray("customer").length() > 0) {
 
-                            selectInsertLibrary.UpSertingData("Customer",jobj);
+                            selectInsertLibrary.UpSertingData("Customer", jobj);
                         }
-                        SelectInsertLibrary.BindHeader(sale_entry.this,newCustomerId);
+                        SelectInsertLibrary.BindHeader(sale_entry.this, newCustomerId);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
@@ -6349,7 +6331,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
         request.add(req);
     }
-
 
 
     @SuppressLint({"SetTextI18n", "ResourceAsColor"})
