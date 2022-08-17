@@ -4536,11 +4536,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         btndec = layout.findViewById(R.id.txtdec);
         btnenter = layout.findViewById(R.id.txtenter);
         btndel = layout.findViewById(R.id.txtdel);
-        if (frombillcount) {
-            btndec.setEnabled(false);
-        } else {
-            btndec.setEnabled(true);
-        }
+        btndec.setEnabled(!frombillcount);
         btnper = layout.findViewById(R.id.btnpercent);
         TextView txtNum = layout.findViewById(R.id.txtNum);
         if (voudis || paiddis) btnper.setVisibility(View.VISIBLE);

@@ -94,7 +94,6 @@ import com.abbp.istockmobilesalenew.priceLevelAdapter;
 import com.abbp.istockmobilesalenew.reportviewer;
 import com.abbp.istockmobilesalenew.sale_det;
 import com.abbp.istockmobilesalenew.sale_det_tmp;
-import com.abbp.istockmobilesalenew.sale_entry;
 import com.abbp.istockmobilesalenew.sale_head_tmp;
 import com.abbp.istockmobilesalenew.salechange;
 import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
@@ -266,7 +265,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     ImageButton imgScanner, btncustadd;
     public static Context datacontext;
     EditText etdSearchCode;
-    public static double paid, changeamount;
+    public static double paidamount, changeamount;
     public static boolean fromSaleChange, frombillcount = false;
     public TextView tvChange;
     static Double voudisper = 0.0, paiddispercent = 0.0;
@@ -2440,9 +2439,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
                     salechange.dismiss();
                     if (tvPaid.getText().toString().trim().isEmpty()) {
-                        paid = 0;
+                        paidamount = 0;
                     } else {
-                        paid = Double.parseDouble(tvPaid.getText().toString().trim());
+                        paidamount = Double.parseDouble(tvPaid.getText().toString().trim());
                     }
                     if (tvChange.getText().toString().trim().isEmpty()) {
                         changeamount = 0;
@@ -2634,7 +2633,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 ContentValues contentValues2 = new ContentValues();
                 contentValues2.put("tranid", sh.get(0).getTranid());
                 contentValues2.put("currencyid", 1);
-                contentValues2.put("paidamount", paid);
+                contentValues2.put("paidamount", paidamount);
                 contentValues2.put("changeamount", changeamount);
                 contentValues2.put("exgrate", 1);
                 contentValues2.put("invoiceamount", sh.get(0).getInvoice_amount());
@@ -4009,9 +4008,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
                         salechange.dismiss();
                         if (tvPaid.getText().toString().trim().isEmpty()) {
-                            paid = 0;
+                            paidamount = 0;
                         } else {
-                            paid = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
+                            paidamount = Double.parseDouble(ClearFormat(tvPaid.getText().toString()));
                         }
                         if (ClearFormat(tvChange.getText().toString()).isEmpty()) {
                             changeamount = 0;
@@ -5363,7 +5362,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 salechanges.add(new salechange((int) sh.get(0).getTranid(),
                         1,
-                        paid,
+                        paidamount,
                         changeamount,
                         1,
                         sh.get(0).getInvoice_amount()));
@@ -6829,7 +6828,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         String DisAmount = CurrencyFormat(sh.get(0).getDiscount() + sh.get(0).getIstemdis_amount());
         String FocAmount = CurrencyFormat(sh.get(0).getFoc_amount());
         String NetAmount = CurrencyFormat(net_amount);
-        String PaidAmount = CurrencyFormat(paid);
+        String PaidAmount = CurrencyFormat(paidamount);
         String ChangeAmount = CurrencyFormat(changeamount);
 
 

@@ -608,8 +608,8 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="35dp"
                                         android:layout_alignParentRight="true"
-                                        android:layout_marginRight="10dp"
                                         android:layout_marginTop="5dp"
+                                        android:layout_marginRight="10dp"
                                         android:background="@drawable/entrybtn"
                                         android:text="Details"
                                         android:textAllCaps="false"
@@ -763,7 +763,6 @@
                                 android:id="@+id/txtSave"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/imgSave"
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginBottom="2dp"
                                 android:text="Confirm"
@@ -938,7 +937,7 @@
                             android:layout_toLeftOf="@+id/imgSearchCode"
                             android:background="@null"
                             android:src="@drawable/cuticon"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                     </RelativeLayout>
                 </RelativeLayout>

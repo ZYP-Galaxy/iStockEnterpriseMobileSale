@@ -1145,7 +1145,7 @@ public class SelectInsertLibrary {
 
                         long code = discount.getLong("code");
                         int unit_type = discount.optInt("unittypeid", 1);
-                        int locationid = discount.getInt("locationid");
+                        int locationid = discount.optInt("locationid", 1);
 
                         cv.put("code", discount.getLong("code"));
                         cv.put("locationid", discount.getInt("locationid"));
