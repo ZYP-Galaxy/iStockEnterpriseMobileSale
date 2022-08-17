@@ -1144,12 +1144,14 @@ public class SelectInsertLibrary {
                         ContentValues cv = new ContentValues();
 
                         long code = discount.getLong("code");
-                        int unit_type = discount.optInt("unittypeid", 1);
                         int locationid = discount.optInt("locationid", 1);
+                        String locationids = discount.optString("locationids", "");
+                        int unit_type = discount.optInt("unittypeid", 1);
 
-                        cv.put("code", discount.getLong("code"));
-                        cv.put("locationid", discount.getInt("locationid"));
-                        cv.put("unit_type", discount.optInt("unittypeid", 1));
+                        cv.put("code", code);
+                        cv.put("locationid", locationid);
+                        cv.put("locationids", locationids);
+                        cv.put("unit_type", unit_type);
 
                         cv.put("disamount", discount.optDouble("discountamount", 0));
                         cv.put("disamount1", discount.optDouble("discount1amount", 0));
@@ -1175,8 +1177,7 @@ public class SelectInsertLibrary {
                         cv.put("dispercent9", discount.optDouble("discount9percent", 0));
                         cv.put("dispercent10", discount.optDouble("discount10percent", 0));
 
-                        DatabaseHelper.upsertWithOnConflit("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE, "code=? and unit_type=? and locationid=?",
-                                new String[]{String.valueOf(code), String.valueOf(unit_type), String.valueOf(locationid)});
+                        DatabaseHelper.upsertWithOnConflit("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE, null, null);
                     }
                     break;
             }

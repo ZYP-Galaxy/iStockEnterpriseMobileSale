@@ -197,7 +197,7 @@ public class UsrcodeAdapter extends RecyclerView.Adapter<UsrcodeAdapter.MyViewHo
 
             String sql = "select disamount" + s + ",dispercent" + s + " from discount_code " +
                     " where code=" + code + " and unit_type=" + unit_type +
-                    " and locationid=" + locationid;
+                    " and '" + locationid + "' in (locationids)";
             Cursor cursor = DatabaseHelper.rawQuery(sql);
             if (cursor != null && cursor.getCount() != 0) {
                 if (cursor.moveToFirst()) {
