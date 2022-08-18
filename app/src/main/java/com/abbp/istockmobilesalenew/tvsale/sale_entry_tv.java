@@ -3997,13 +3997,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 public void onClick(View v) {
                     String paidAmount = ClearFormat(tvPaid.getText().toString());
                     if (Double.parseDouble(paidAmount) < Double.parseDouble(ClearFormat(txtnet.getText().toString()))) {
-                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry_tv.this, R.style.AlertDialogTheme);
-                        bd.setTitle("iStock");
-                        bd.setMessage("Paid Amount is less than Net Amount");
-                        bd.setCancelable(false);
-                        bd.setPositiveButton("OK", (dialog, which) -> {
-                        });
-                        bd.create().show();
+                        GlobalClass.showAlertDialog(sale_entry_tv.this, "iStock", "Paid Amount is less than Net Amount!");
                     } else {
 //                    Toast.makeText(sale_entry.this,"u click save!",Toast.LENGTH_LONG).show();
                         salechange.dismiss();
