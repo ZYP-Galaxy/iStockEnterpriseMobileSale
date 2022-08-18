@@ -143,10 +143,6 @@ public class SelectInsertLibrary {
                 }
                 break;
         }
-
-
-//        newCustomerName="";
-//        newCustomerId=0;
     }
 
     public void insertingData(String table, JSONObject jobj) {

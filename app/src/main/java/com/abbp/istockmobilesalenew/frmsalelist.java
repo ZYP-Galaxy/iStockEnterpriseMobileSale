@@ -180,6 +180,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 //FilterUser.uid=-1;
                 //FilterLocation.locid=-1;
                 if (frmlogin.det_locationid != 0) {
+                   // selectfilter.setText(def_locationName);
                     FilterLocation.locid = frmlogin.det_locationid;
                 } else {
                     FilterLocation.locid = -1;

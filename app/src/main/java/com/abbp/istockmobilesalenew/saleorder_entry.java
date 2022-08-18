@@ -1079,7 +1079,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         txtitemdiscount = view.findViewById(R.id.txtitemDisAmt);
         txttaxamT = view.findViewById(R.id.txttaxamt);
         txtvoudis = view.findViewById(R.id.txtvoudisamt);
-        txtpaidAmt = view.findViewById(R.id.txtPaidAmt);
+        saleorder_entry.txtpaidAmt = view.findViewById(R.id.txtPaidAmt);
         taxlo = view.findViewById(R.id.taxlo);
         txtitemDisAmt.setText(txtitem);
         txtpaid = view.findViewById(R.id.txtPaidlabel);
@@ -1088,7 +1088,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         txtper.setText(taxper);
         txttotal.setText(total);
         txtvoudis.setText(txtvou);
-        txtpaidAmt.setText(txtpaidamt);
+        saleorder_entry.txtpaidAmt.setText(txtpaidamt);
         txttaxamT.setText(txttaxam);
         txtfoc.setText(txtfocamt);
 
@@ -1118,7 +1118,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 changeheader = false;
                 voudis = true;
                 keynum = txtvoudis.getText().toString();
-                showKeyPad(txtpaidAmt, txtvoudis);
+                showKeyPad(saleorder_entry.txtpaidAmt, txtvoudis);
 
 
             }
@@ -1135,14 +1135,14 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         });
 
 
-        txtpaidAmt.setOnClickListener(new View.OnClickListener() {
+        saleorder_entry.txtpaidAmt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 changeheader = false;
                 if (isCreditcustomer && sh.get(0).getPay_type() == 2) {
-                    keynum = txtpaidAmt.getText().toString();
+                    keynum = saleorder_entry.txtpaidAmt.getText().toString();
                     paiddis = true;
-                    showKeyPad(txtpaidAmt, txtpaidAmt);
+                    showKeyPad(saleorder_entry.txtpaidAmt, saleorder_entry.txtpaidAmt);
                 } else {
 
                     AlertDialog.Builder ab = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);

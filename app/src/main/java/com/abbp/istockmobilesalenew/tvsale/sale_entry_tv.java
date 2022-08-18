@@ -5990,7 +5990,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         cursor = null;
                         disDa.show();
 
-
                     } catch (Exception e) {
                         disDa.dismiss();
                     }
@@ -6062,11 +6061,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
 
             });
-
-
-//not change_price in sale entry modified by ABBP
-            //txtChangePrice.setText(String.valueOf(sd.get(itemPosition).getSale_price()));
-
 
             //modified by EKK on 18-11-2020
             tmpSalePrice = sd.get(itemPosition).getSale_price();
@@ -6148,7 +6142,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
             });
 
-
             txtChangePrice.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -6168,27 +6161,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     return false;
                 }
             });
-
-            /*txtChangePrice.setText("9999");
-            txtChangePrice.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    int op = sd.get(itemPosition).getOpen_price();
-
-                    if (frmlogin.canchangesaleprice == 1 || op == 1) {
-                        changeheader = true;
-                        keynum = String.format("%,." + frmmain.price_places + "f", StringTODouble(txtChangePrice.getText().toString()));
-                        showKeyPad(txtChangeQty, txtChangePrice);
-                    }
-
-                    Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * StringTODouble(txtChangePrice.getText().toString());
-                    String numberAsString = String.format("%,." + frmmain.price_places + "f", amt);
-                    txtamt.setText(numberAsString);
-
-                }
-
-            });*/
 
             // Double amt=Double.parseDouble(txtChangeQty.getText().toString())* StringTODouble(txtChangePrice.getText().toString());
             Double amt = Double.parseDouble(txtChangeQty.getText().toString()) * tmpSalePrice;

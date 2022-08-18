@@ -46,7 +46,7 @@ public class PaymentTypeAdapter extends RecyclerView.Adapter<PaymentTypeAdapter.
                     btn.setText(/*data.get(position).getPay_type()+":"+*/data.get(position).getName());
                     saleorder_entry.sh.get(0).setPay_type(data.get(position).getPay_type());
                     if (data.get(position).getPay_type() == 1) {
-                        saleorder_entry.txtpaidAmt.setText("0");
+                        saleorder_entry.txtadvAmt.setText("0");
                         saleorder_entry.sh.get(0).setPaid_amount(0);
                         saleorder_entry.getSummary();
                     }

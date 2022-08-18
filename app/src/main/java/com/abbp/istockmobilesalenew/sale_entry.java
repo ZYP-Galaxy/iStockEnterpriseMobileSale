@@ -3508,7 +3508,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 imgClear.setVisibility(View.VISIBLE);
             } else if (name.equals("Customer")) {
                 imgAddCustomer.setVisibility(View.VISIBLE);
-                //imgClear.setVisibility(View.GONE);
+
             } else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
