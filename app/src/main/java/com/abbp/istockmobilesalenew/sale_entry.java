@@ -257,6 +257,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     private ProgressBar pbDownload;
     TextView txtProgress, txtTable;
     private Context context;
+    public static boolean isnewCustomer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -362,7 +363,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
     public void bindingCreditBalance() {
         try {
-
+            txtoutstand.setText("0");
             String ip = sh_ip.getString("ip", "empty");
             String port = sh_port.getString("port", "empty");
             String data = "_userid=" + frmlogin.LoginUserid + "&_filterdate=" + sh.get(0).getDate() + "&_customerid=" + sh.get(0).getCustomerid();
@@ -2051,7 +2052,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         //Added for credit limit customer
 
                         //Added for Outstand
-                        if (isCreditcustomer && sh.get(0).getPay_type() == 2) {
+                        if (isCreditcustomer /*&& sh.get(0).getPay_type() == 2*/) {
                             bindingCreditBalance();
 //                            GetCustomerOutstand(sh.get(0).getCustomerid());
                         } else {

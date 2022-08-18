@@ -94,7 +94,12 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         FilterUser.uid = -1;
         FilterLocation.locid = -1;
         setUI();
-        FilterLocation.locid = frmlogin.det_locationid;
+        if (frmlogin.det_locationid != 0) {
+            FilterLocation.locid = frmlogin.det_locationid;
+        } else {
+            FilterLocation.locid = -1;
+        }
+        //FilterLocation.locid = frmlogin.det_locationid;
         String sqlString = "select locationid,Name,shortdesc,branchid from Location  where locationid=" + frmlogin.det_locationid;
         Cursor cursor = DatabaseHelper.rawQuery(sqlString);
         if (cursor != null && cursor.getCount() != 0) {
@@ -180,7 +185,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 //FilterUser.uid=-1;
                 //FilterLocation.locid=-1;
                 if (frmlogin.det_locationid != 0) {
-                   // selectfilter.setText(def_locationName);
+                    selectfilter.setText(def_locationName);//added by KLm
                     FilterLocation.locid = frmlogin.det_locationid;
                 } else {
                     FilterLocation.locid = -1;

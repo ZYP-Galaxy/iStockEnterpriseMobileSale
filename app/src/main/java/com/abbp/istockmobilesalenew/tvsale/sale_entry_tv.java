@@ -731,7 +731,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
     public void bindingCreditBalance() {
         try {
-
+            txtoutstand.setText("0");
             String ip = sh_ip.getString("ip", "empty");
             String port = sh_port.getString("port", "empty");
             String data = "_userid=" + frmlogin.LoginUserid + "&_filterdate=" + sh.get(0).getDate() + "&_customerid=" + sh.get(0).getCustomerid();
@@ -2054,7 +2054,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         //Added for credit limit customer
 
                         //Added for Outstand
-                        if (isCreditcustomer && sh.get(0).getPay_type() == 2) {
+                        if (isCreditcustomer/* && sh.get(0).getPay_type() == 2*/) {
                             bindingCreditBalance();
 //                            GetCustomerOutstand(sh.get(0).getCustomerid());
                         } else {

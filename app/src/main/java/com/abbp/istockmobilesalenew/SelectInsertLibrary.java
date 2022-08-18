@@ -54,6 +54,7 @@ public class SelectInsertLibrary {
     }
 
     public static void BindHeader(Context context, int newCustomerId) {
+        //sale_entry.isnewCustomer=true;
         Cursor cursor = DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid=" + newCustomerId);
         String contextString = context.getClass().toString().split("com.abbp.istockmobilesalenew.")[1];
         switch (contextString) {
