@@ -1136,7 +1136,6 @@ public class SelectInsertLibrary {
                 case "discount_code":
                     JSONArray discountcode = null;
                     discountcode = jobj.getJSONArray("discount_code");
-
                     DatabaseHelper.execute("DELETE FROM discount_code");
 
                     for (int i = 0; i < discountcode.length(); i++) {
@@ -1177,7 +1176,8 @@ public class SelectInsertLibrary {
                         cv.put("dispercent9", discount.optDouble("discount9percent", 0));
                         cv.put("dispercent10", discount.optDouble("discount10percent", 0));
 
-                        DatabaseHelper.upsertWithOnConflit("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE, null, null);
+                        //DatabaseHelper.upsertWithOnConflit("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE, null, null);
+                        DatabaseHelper.insertWithOnConflict("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
                     }
                     break;
             }
