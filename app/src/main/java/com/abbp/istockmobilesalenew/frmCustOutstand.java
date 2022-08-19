@@ -237,6 +237,8 @@ public class frmCustOutstand extends AppCompatActivity {
                 BindDefaultBranchID();
                 fdate = new Date();
                 tdate = new Date();
+                custOutstandArrayList.clear();
+                custOutstandAdapter.notifyDataSetChanged();
 //                custOutstandArrayList.clear();
 //                custOutstandAdapter.notifyDataSetChanged();
             }

@@ -621,8 +621,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             total = 0.0;
             String ip = sh_ip.getString("ip", "empty");
             String port = sh_port.getString("port", "empty");
-//            url = "http://"+ip+":"+port+"/api/mobile/GetEnqData?userid="+frmlogin.LoginUserid+"&uid="+FilterUser.uid+"&fdate="+dateFormat.format(fdate)+"&tdate="+dateFormat.format(tdate)+"&ccid="+FilterCustomer.ccid+"&locid="+FilterLocation.locid;
-            //modified by EKK
+
             url = "http://" + ip + ":" + port + "/api/mobile/GetEnqData?userid=" + frmlogin.LoginUserid + "&uid=" + FilterUser.uid + "&fdate=" + dateFormat.format(fdate) + "&tdate=" + dateFormat.format(tdate) + "&ccid=" + FilterCustomer.ccid + "&locid=" + FilterLocation.locid + "&branchid=" + frmlogin.defaultbranchid + "&name=" + getActionName;
             requestQueue = Volley.newRequestQueue(listcontext);
             final Response.Listener<String> listener = new Response.Listener<String>() {

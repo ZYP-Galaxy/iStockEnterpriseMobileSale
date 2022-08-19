@@ -3528,6 +3528,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                        final EditText shortdesc = layout.findViewById(R.id.txtShort);
                     final EditText code = layout.findViewById(R.id.txtCode);
                     final CheckBox chkCredit = layout.findViewById(R.id.chkCredit);
+                    EditText txtdueDay=layout.findViewById(R.id.txtdueday);
                     Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
                     Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
                     EditText credit = layout.findViewById(R.id.txtCredit);
@@ -3564,6 +3565,10 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 credit.setEnabled(true);
+                                if(frmmain.isuseduedate){
+                                    txtdueDay.setVisibility(View.VISIBLE);
+                                }
+
                             } else {
                                 credit.setEnabled(false);
                             }
@@ -3592,6 +3597,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
+                                    int dueinday=0;
+                                    if(!txtdueDay.getText().toString().isEmpty()){
+                                        dueinday=Integer.parseInt(txtdueDay.getText().toString());
+                                    }
+
                                     newCustomerName = nameSt;
                                     int custid = getCustomerCount() + 1;
                                     newCustomerId = custid;
@@ -3599,12 +3609,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                         iscredit = true;
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
-                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
-                                    if (codeSt.length() > 0) {
-                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
-                                    } else {
-                                        sqlstring += null + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
-                                    }
+                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted,dueindays) values (";
+//                                    if (codeSt.length() > 0) {
+//                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
+//                                    } else {
+                                    sqlstring += (codeSt.length() > 0?"'" + codeSt + "'":null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
+//                                    }
                                     sqlstring += "&" + frmlogin.LoginUserid;
                                     String sqlString = "select name from Customer where name='" + nameSt + "'";
                                     Cursor cursor = DatabaseHelper.rawQuery(sqlString);
@@ -3990,6 +4000,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                 int balance = cursor.getInt(cursor.getColumnIndex("balance"));
                                 int creditlimit = cursor.getInt(cursor.getColumnIndex("creditlimit"));
                                 int dueindays = cursor.getInt(cursor.getColumnIndex("dueindays"));
+//                                due_in_days=dueindays;
+//                                if(iscredit){
+                                  //  sh.get(0).setDue_in_days(dueindays);
+//                                }
+
                                 int discountpercent = cursor.getInt(cursor.getColumnIndex("discountpercent"));
                                 boolean isinactive = cursor.getInt(cursor.getColumnIndex("isinactive")) == 1 ? true : false;
                                 int discountamount = cursor.getInt(cursor.getColumnIndex("discountamount"));

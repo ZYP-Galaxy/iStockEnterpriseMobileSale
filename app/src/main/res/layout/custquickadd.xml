@@ -216,6 +216,22 @@
                             android:layout_centerVertical="true"
                             android:layout_toRightOf="@+id/credittv"
                             tools:ignore="NotSibling" />
+                        <EditText
+                            android:id="@+id/txtdueday"
+                            android:layout_width="185dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:hint=" Enter DueDay"
+                            android:textColorHint="#fff"
+                            android:textColor="@color/white"
+                            android:layout_height="35dp"
+                            android:textSize="15dp"
+                            android:background="@drawable/txtinvoice"
+                            android:visibility="gone"
+                            android:textStyle="bold"
+                            android:layout_toRightOf="@+id/chkCredit"
+                            android:inputType="number"
+                            />
                     </RelativeLayout>
 
                 </RelativeLayout>

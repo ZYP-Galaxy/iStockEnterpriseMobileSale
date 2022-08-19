@@ -1,5 +1,7 @@
 package com.abbp.istockmobilesalenew;
 
+import androidx.annotation.Nullable;
+
 public class sale_head_tmp {
 //    -- Table: public.sale_head_main
 //
@@ -101,7 +103,10 @@ public class sale_head_tmp {
     private String docid;
     private String date;
     private String invoiceno;
-    private int locationid, customerid, cashid, townshipid, paytypeid, dueindays, salecurr;
+    private int locationid, customerid, cashid, townshipid, paytypeid,  salecurr;
+    private int dueindays;
+    @Nullable
+    private Integer dueinday=null;
     private double discountamount, paidamount, invoiceamount, invoiceqty, focamount, netamount, paidpercent;
     private String voucherremark;
     private double taxamount, taxpercent, discountpercent, exgrate, advpayamount;
@@ -109,6 +114,37 @@ public class sale_head_tmp {
     private int tranid;
     private boolean isdeliver, isuseecommerce;
     private String salesmenids;
+
+    public sale_head_tmp(int tranid, int userid, String docid, String date, String invoiceno, int locationid, int customerid, int cashid, int townshipid, int paytypeid, Integer dueinday, int salecurr, double discountamount, double paidamount, double invoiceamount, double invoiceqty, double focamount, double netamount, String voucherremark, double taxamount, double taxpercent, double discountpercent, double exgrate, boolean iscashreceive, boolean isdeliver, String salesmenids, double advpayamount, double paidpercent) {
+        this.tranid = tranid;
+        this.userid = userid;
+        this.docid = docid;
+        this.date = date;
+        this.invoiceno = invoiceno;
+        this.locationid = locationid;
+        this.customerid = customerid;
+        this.cashid = cashid;
+        this.townshipid = townshipid;
+        this.paytypeid = paytypeid;
+        this.dueinday = dueinday;
+        this.salecurr = salecurr;
+        this.discountamount = discountamount;
+        this.paidamount = paidamount;
+        this.invoiceamount = invoiceamount;
+        this.invoiceqty = invoiceqty;
+        this.focamount = focamount;
+        this.netamount = netamount;
+        this.voucherremark = voucherremark;
+        this.taxamount = taxamount;
+        this.taxpercent = taxpercent;
+        this.discountpercent = discountpercent;
+        this.exgrate = exgrate;
+        this.iscashreceive = iscashreceive;
+        this.isdeliver = isdeliver;
+        this.salesmenids = salesmenids;
+        this.paidpercent = paidpercent;
+
+    }
 
 
     public boolean isIscashreceive() {

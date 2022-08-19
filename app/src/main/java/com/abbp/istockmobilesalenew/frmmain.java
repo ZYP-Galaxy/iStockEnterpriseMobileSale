@@ -47,6 +47,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
     Intent intent;
     public static int CCount = 0;
     private JSONObject jobj;
+    public static boolean isuseduedate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         getAfterDiscount(); // added by EKK on 05-11-2020
         isUseSpecialPrice(); //added by EKK on 13-11-2020
         isAllowUserAllView();
+        getuseduedayStatus();//added by KLM for dueday 18082022
         // Toast .makeText(frmmain.this,"User View " + isallowallusersviewforSE + "\n Sale Order "+ isallowallusersviewforSO, Toast.LENGTH_LONG).show();
     }
 
@@ -286,6 +288,20 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         request.add(req);
 
 
+    }
+    private void getuseduedayStatus() {
+
+        Cursor cursor = DatabaseHelper.rawQuery("select  isuseduedate from systemsetting");
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    isuseduedate = cursor.getInt(cursor.getColumnIndex("isuseduedate"))==1;
+                } while (cursor.moveToNext());
+            }
+            //test for default uint type
+            //defunit=3;
+        }
+//        cpyname.setText(cpystr);
     }
 
     private void settingcpyname() {

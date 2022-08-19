@@ -52,6 +52,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                     btn.setText(/*data.get(position).getCustomerid()+":"+*/data.get(position).getName());
                     saleorder_entry.sh.get(0).setCustomerid(data.get(position).getCustomerid());
                     saleorder_entry.isCreditcustomer=selectInsertLibrary.CheckingCreditCustomer(data.get(position).getCustomerid());
+                    //saleorder_entry.sh.get(0).setDue_in_days(data.get(position).getDueindays());
                     saleorder_entry.btnpaytype.setText("Cash Down");
 
                 /*sale_entry.isCreditcustomer=data.get(position).isIscredit();
@@ -100,6 +101,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                     btn.setText(/*data.get(position).getCustomerid()+":"+*/data.get(position).getName());
                     sale_entry_tv.sh.get(0).setCustomerid(data.get(position).getCustomerid());
                     sale_entry_tv.isCreditcustomer=selectInsertLibrary.CheckingCreditCustomer(data.get(position).getCustomerid());
+                    sale_entry_tv.sh.get(0).setDue_in_days(data.get(position).getDueindays());
                     sale_entry_tv.btnpaytype.setText("Cash Down");
                     da.dismiss();
                 }
@@ -133,6 +135,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                     btn.setText(/*data.get(position).getCustomerid()+":"+*/data.get(position).getName());
                     sale_entry.sh.get(0).setCustomerid(data.get(position).getCustomerid());
                     sale_entry.isCreditcustomer=selectInsertLibrary.CheckingCreditCustomer(data.get(position).getCustomerid());
+                    sale_entry.sh.get(0).setDue_in_days(data.get(position).getDueindays());
                     sale_entry.btnpaytype.setText("Cash Down");
 
                 /*sale_entry.isCreditcustomer=data.get(position).isIscredit();
@@ -297,7 +300,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
     }
 
     public void CheckingCreditCustomer(int custid){
-      String   sqlString = "select customerid,name,iscredit from Customer where customerid="+custid ;//,credit,due_in_days,credit_limit
+      String   sqlString = "select customerid,name,iscredit,dueindays from Customer where customerid="+custid ;//,credit,due_in_days,credit_limit
      Cursor   cursor = DatabaseHelper.rawQuery(sqlString);
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
@@ -306,10 +309,12 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                     String customername = cursor.getString(cursor.getColumnIndex("name"));
 //                    String customercode = cursor.getString(cursor.getColumnIndex("customer_code"));
                     boolean credit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
+                    int dueindays = cursor.getInt(cursor.getColumnIndex("dueindays"));
 //                    int due_in_days = cursor.getInt(cursor.getColumnIndex("due_in_days"));
 //                    double credit_limit=cursor.getDouble(cursor.getColumnIndex("credit_limit"));
 //                    btn.get(2).setText(customerid+":"+customername);
                     sale_entry.isCreditcustomer=credit;
+                    //sale_entry.due_in_days=dueindays;
                 } while (cursor.moveToNext());
 
             }

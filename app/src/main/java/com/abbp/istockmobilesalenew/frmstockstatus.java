@@ -265,10 +265,12 @@ public class frmstockstatus extends AppCompatActivity {
                 categoryAdapter.categoryid = null;
                 FilterLocation.locid = -1; //modified by EKK
                 chooselocation.setText("Choose Location");
+                GetDefaultLocation();
                 fdate = new Date();
                 tdate = new Date();
                 stockStatuses.clear();
                 stockStatusAdapter.notifyDataSetChanged();
+
 //                BindingData();
             }
         });

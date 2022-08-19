@@ -774,7 +774,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
     private void getHeaderWithUUID() {
         Cursor cursor = DatabaseHelper.rawQuery("select * from sale_head_main");
-        tranidInt = cursor.getCount() + 1;
+        if(cursor!=null && cursor.getCount()>0){
+            tranidInt = cursor.getCount() + 1;
+        }
         sh.add(new Sale_head_main(tranid, frmlogin.LoginUserid, "VOU-1", dateFormat.format(new Date()), "", "", frmlogin.det_locationid, 1, frmlogin.def_cashid, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0));
         try {
             String voudate = new SimpleDateFormat("dd/MM/yyyy").format(dateFormat.parse(sh.get(0).getDate()));
@@ -3207,6 +3209,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
                     Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
                     EditText credit = layout.findViewById(R.id.txtCredit);
+                    EditText txtdueDay=layout.findViewById(R.id.txtdueday);
                     credit.setEnabled(false);
                     Button btnclose = layout.findViewById(R.id.btnclose);
                     Button btnok = layout.findViewById(R.id.btnok);
@@ -3240,6 +3243,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 credit.setEnabled(true);
+                                if(frmmain.isuseduedate){
+                                    txtdueDay.setVisibility(View.VISIBLE);
+                                }
                             } else {
                                 credit.setEnabled(false);
                             }
@@ -3268,6 +3274,10 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
+                                    int dueinday=0;
+                                    if(!txtdueDay.getText().toString().isEmpty()){
+                                        dueinday=Integer.parseInt(txtdueDay.getText().toString());
+                                    }
                                     newCustomerName = nameSt;
                                     int custid = getCustomerCount() + 1;
                                     newCustomerId = custid;
@@ -3275,12 +3285,13 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                         iscredit = true;
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
-                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted) values (";
-                                    if (codeSt.length() > 0) {
-                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
-                                    } else {
-                                        sqlstring += null + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
-                                    }
+                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted,dueindays) values (";
+                                    sqlstring += (codeSt.length() > 0?"'" + codeSt + "'":null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
+//                                    if (codeSt.length() > 0) {
+//                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
+//                                    } else {
+//                                        sqlstring += null + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
+//                                    }
                                     sqlstring += "&" + frmlogin.LoginUserid;
                                     String sqlString = "select name from Customer where name='" + nameSt + "'";
                                     Cursor cursor = DatabaseHelper.rawQuery(sqlString);
@@ -7066,7 +7077,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             } else {
                                 PrintVoucher(tranid);
                                 billprintcount = 1;
-                                tvBillCount.setText("1");
+                                //tvBillCount.setText("1");
                             }
 
                         }

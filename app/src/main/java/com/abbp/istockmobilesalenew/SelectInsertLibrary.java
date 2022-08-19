@@ -55,7 +55,7 @@ public class SelectInsertLibrary {
 
     public static void BindHeader(Context context, int newCustomerId) {
         //sale_entry.isnewCustomer=true;
-        Cursor cursor = DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit from Customer where customerid=" + newCustomerId);
+        Cursor cursor = DatabaseHelper.rawQuery("select customerid,name,townshipid,townshipname,custgroupid,custgroupname,iscredit,dueindays from Customer where customerid=" + newCustomerId);
         String contextString = context.getClass().toString().split("com.abbp.istockmobilesalenew.")[1];
         switch (contextString) {
             case "saleorder_entry":
@@ -100,10 +100,12 @@ public class SelectInsertLibrary {
                             sale_entry.btntownship.setText(cursor.getString(cursor.getColumnIndex("townshipname")));
                             sale_entry.btncustgroup.setText(cursor.getString(cursor.getColumnIndex("custgroupname")));
                             Boolean iscredit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
+
                             sale_entry.isCreditcustomer = iscredit;
                             if (iscredit) {
                                 sale_entry.sh.get(0).setPay_type(2);
                                 sale_entry.btnpaytype.setText("Credit");
+                                sale_entry.sh.get(0).setDue_in_days(cursor.getInt(cursor.getColumnIndex("dueindays")));
 
                             } else {
                                 sale_entry.sh.get(0).setPay_type(1);
@@ -132,6 +134,7 @@ public class SelectInsertLibrary {
                             if (iscredit) {
                                 sale_entry_tv.sh.get(0).setPay_type(2);
                                 sale_entry_tv.btnpaytype.setText("Credit");
+                                sale_entry_tv.sh.get(0).setDue_in_days(cursor.getInt(cursor.getColumnIndex("dueindays")));
 
                             } else {
                                 sale_entry_tv.sh.get(0).setPay_type(1);
@@ -415,6 +418,7 @@ public class SelectInsertLibrary {
                         int isusecustomergroup = systobj.optBoolean("isusecustomergroup", false) == true ? 1 : 0;
                         int isusedelivery = systobj.optBoolean("isusedelivery", false) == true ? 1 : 0;
                         int afterdiscount = systobj.optBoolean("afterdiscount", false) == true ? 1 : 0; // added by EKK on 05-11-2020
+                        int isuseduedate=systobj.optBoolean("isuseduedate",false)==true?1:0;
                         String receiptheaderline1 = systobj.getString("receiptheaderline1");
                         String receiptheaderline2 = systobj.getString("receiptheaderline2");
                         String receiptheaderline3 = systobj.getString("receiptheaderline3");
@@ -446,7 +450,7 @@ public class SelectInsertLibrary {
                         contentValues.put("receiptheaderline2", receiptheaderline2);
                         contentValues.put("receiptheaderline3", receiptheaderline3);
                         contentValues.put("receiptheaderline4", receiptheaderline4);
-
+                        contentValues.put("isuseduedate", isuseduedate);
                         DatabaseHelper.insertWithOnConflict("SystemSetting", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
                     }
                     break;
@@ -842,7 +846,7 @@ public class SelectInsertLibrary {
                         String receiptheaderline4 = systobj.getString("receiptheaderline4");
                         int isusespecialprice = systobj.optBoolean("isusespecialprice", false) == true ? 1 : 0; // added by EKK on 05-11-2020
                         int isusemulticash = systobj.optBoolean("isusemulticash", false) == true ? 1 : 0; // added by EKK on 17-11-2020
-
+                        int isuseduedate=systobj.optBoolean("isuseduedate",false)==true?1:0;
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("title", title);
                         contentValues.put("isuseunit", isuseunit);
@@ -870,7 +874,7 @@ public class SelectInsertLibrary {
                         contentValues.put("receiptheaderline4", receiptheaderline4);
                         contentValues.put("isusespecialprice", isusespecialprice);
                         contentValues.put("isusemulticash", isusemulticash); //added by EKK on 17-11-2020
-
+                        contentValues.put("isuseduedate", isuseduedate);
                         DatabaseHelper.deleteWithOnConflit("SystemSetting", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE, "title=?", title);
                     }
                     break;
