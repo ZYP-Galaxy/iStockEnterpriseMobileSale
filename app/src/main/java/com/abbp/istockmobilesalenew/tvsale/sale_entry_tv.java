@@ -694,6 +694,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                }
                 String vouper = "Vou Discount";
                 if (sh.get(0).getDiscount_per() > 0) {
+                    custDis=sh.get(0).getDiscount_per();
                     vouper = "Vou Discount( " + custDis + "% )";
                     sh.get(0).setDiscount_per(custDis);
                     getSummary();
@@ -703,7 +704,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 String paidPer = "Paid%";
                 if (sh.get(0).getPaidpercent() > 0) {
                     paidPer = "Paid( " + sh.get(0).getPaidpercent() + "% )";
-//                    sh.get(0).setDiscount_per(custDis);
                     getSummary();
                 } else {
                     paidPer = "Paid" + (sh.get(0).getPaidpercent() > 0 ? "( " + sh.get(0).getPaidpercent() + "% )" : "");
@@ -3724,9 +3724,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                 int balance = cursor.getInt(cursor.getColumnIndex("balance"));
                                 int creditlimit = cursor.getInt(cursor.getColumnIndex("creditlimit"));
                                 int dueindays = cursor.getInt(cursor.getColumnIndex("dueindays"));
-                                int discountpercent = cursor.getInt(cursor.getColumnIndex("discountpercent"));
+                                double discountpercent = cursor.getDouble(cursor.getColumnIndex("discountpercent"));
                                 boolean isinactive = cursor.getInt(cursor.getColumnIndex("isinactive")) == 1 ? true : false;
-                                int discountamount = cursor.getInt(cursor.getColumnIndex("discountamount"));
+                                double discountamount = cursor.getDouble(cursor.getColumnIndex("discountamount"));
                                 int custgroupid = cursor.getInt(cursor.getColumnIndex("custgroupid"));
                                 int nationalcardid = cursor.getInt(cursor.getColumnIndex("nationalcardid"));
                                 boolean isdeleted = cursor.getInt(cursor.getColumnIndex("isdeleted")) == 1 ? true : false;

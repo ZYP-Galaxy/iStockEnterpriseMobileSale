@@ -32,9 +32,9 @@ public class customer {
     int balance;
     int creditlimit;
     int dueindays;
-    int discountpercent;
+    double discountpercent;
     boolean isinactive;
-    int discountamount;
+    double discountamount;
     int custgroupid;
     int nationalcardid;
     boolean isdeleted;
@@ -52,7 +52,7 @@ public class customer {
         this.townshipname = townshipname;
     }
 
-    public customer(int customerid, String shortdesc, String name, int townshipid, int pricelevelid, boolean iscredit, int balance, int creditlimit, int dueindays, int discountpercent, boolean isinactive, int discountamount, int custgroupid, int nationalcardid, boolean isdeleted, String custgroupname, String custgroupcode, String townshipname, String townshipcode) {
+    public customer(int customerid, String shortdesc, String name, int townshipid, int pricelevelid, boolean iscredit, int balance, int creditlimit, int dueindays, double discountpercent, boolean isinactive, int discountamount, int custgroupid, int nationalcardid, boolean isdeleted, String custgroupname, String custgroupcode, String townshipname, String townshipcode) {
         this.customerid = customerid;
         this.shortdesc = shortdesc;
         this.name = name;
@@ -106,7 +106,7 @@ public class customer {
         this.townshipcode = townshipcode;
     }
 
-    public customer(int customerid, String shortdesc, String name, int townshipid, int pricelevelid, boolean iscredit, int balance, int creditlimit, int dueindays, int discountpercent, boolean isinactive, int discountamount, int custgroupid, int nationalcardid, boolean isdeleted) {
+    public customer(int customerid, String shortdesc, String name, int townshipid, int pricelevelid, boolean iscredit, int balance, int creditlimit, int dueindays, double discountpercent, boolean isinactive, double discountamount, int custgroupid, int nationalcardid, boolean isdeleted) {
         this.customerid = customerid;
         this.shortdesc = shortdesc;
         this.name = name;
@@ -196,11 +196,11 @@ public class customer {
         this.dueindays = dueindays;
     }
 
-    public int getDiscountpercent() {
+    public double getDiscountpercent() {
         return discountpercent;
     }
 
-    public void setDiscountpercent(int discountpercent) {
+    public void setDiscountpercent(double discountpercent) {
         this.discountpercent = discountpercent;
     }
 
@@ -212,11 +212,11 @@ public class customer {
         this.isinactive = isinactive;
     }
 
-    public int getDiscountamount() {
+    public double getDiscountamount() {
         return discountamount;
     }
 
-    public void setDiscountamount(int discountamount) {
+    public void setDiscountamount(double discountamount) {
         this.discountamount = discountamount;
     }
 

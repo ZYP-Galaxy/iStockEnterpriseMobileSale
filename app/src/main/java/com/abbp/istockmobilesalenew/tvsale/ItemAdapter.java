@@ -436,7 +436,7 @@ public class ItemAdapter extends BaseAdapter {
                             sale_entry_tv.sh.get(0).setTax_per(sale_entry_tv.getTax());
                             sale_entry_tv.sh.get(0).setTax_amount(0.0);
                             sale_entry_tv.sh.get(0).setDiscount(0.0);
-                            sale_entry_tv.sh.get(0).setDiscount_per(0);
+//                            sale_entry_tv.sh.get(0).setDiscount_per(0);//comment by KLM to remain discount while deleting code
                             sale_entry_tv.sh.get(0).setPaid_amount(0);
                             sale_entry_tv.txtvoudis.setText("0");
                             sale_entry_tv.txtpaidamt.setText("0");

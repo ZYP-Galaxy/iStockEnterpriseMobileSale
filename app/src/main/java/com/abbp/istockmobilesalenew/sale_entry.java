@@ -794,6 +794,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                     String vouper = "Vou Discount";
                     if (sh.get(0).getDiscount_per() > 0) {
+                        custDis=sh.get(0).getDiscount_per();
                         vouper = "Vou Discount( " + custDis + "% )";
                         sh.get(0).setDiscount_per(custDis);
                         getSummary();
@@ -4005,9 +4006,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                   //  sh.get(0).setDue_in_days(dueindays);
 //                                }
 
-                                int discountpercent = cursor.getInt(cursor.getColumnIndex("discountpercent"));
+                                double discountpercent = cursor.getDouble(cursor.getColumnIndex("discountpercent"));
                                 boolean isinactive = cursor.getInt(cursor.getColumnIndex("isinactive")) == 1 ? true : false;
-                                int discountamount = cursor.getInt(cursor.getColumnIndex("discountamount"));
+                                double discountamount = cursor.getDouble(cursor.getColumnIndex("discountamount"));
                                 int custgroupid = cursor.getInt(cursor.getColumnIndex("custgroupid"));
                                 int nationalcardid = cursor.getInt(cursor.getColumnIndex("nationalcardid"));
                                 boolean isdeleted = cursor.getInt(cursor.getColumnIndex("isdeleted")) == 1 ? true : false;
@@ -4343,9 +4344,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
         if (txttax.getText().toString().contains(getTax() + "")) {
             sh.get(0).setTax_per(getTax());
-        }/*else {
-            taxchange=false;
-        }*/
+        }
         totalAmt_tmp = 0.0;
         qty_tmp = 0.0;
         vouDis_tmp = 0.0;

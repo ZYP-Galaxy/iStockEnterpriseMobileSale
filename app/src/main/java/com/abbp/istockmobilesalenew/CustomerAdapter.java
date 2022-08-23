@@ -2,6 +2,7 @@ package com.abbp.istockmobilesalenew;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +104,17 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                     sale_entry_tv.isCreditcustomer=selectInsertLibrary.CheckingCreditCustomer(data.get(position).getCustomerid());
                     sale_entry_tv.sh.get(0).setDue_in_days(data.get(position).getDueindays());
                     sale_entry_tv.btnpaytype.setText("Cash Down");
+                   //added by KLM for customer discount 22082022
+                    if(data.get(position).discountamount>0){
+                        sale_entry_tv.sh.get(0).setDiscount_per(data.get(position).discountamount);
+                        sale_entry_tv.sh.get(0).setDiscount(0);
+                        Log.i("discount",data.get(position).discountamount+"");
+                        sale_entry_tv.getSummary();
+                    }
+                    else{
+                        sale_entry_tv.sh.get(0).setDiscount_per(0);
+                    }
+                    //added by KLM for customer discount 22082022
                     da.dismiss();
                 }
                 else
@@ -136,6 +148,18 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                     sale_entry.sh.get(0).setCustomerid(data.get(position).getCustomerid());
                     sale_entry.isCreditcustomer=selectInsertLibrary.CheckingCreditCustomer(data.get(position).getCustomerid());
                     sale_entry.sh.get(0).setDue_in_days(data.get(position).getDueindays());
+                    //added by KLM for customer discount 22082022
+                    if(data.get(position).discountamount>0){
+                        sale_entry.sh.get(0).setDiscount_per(data.get(position).discountamount);
+                        sale_entry.sh.get(0).setDiscount(0);
+                        Log.i("discount",data.get(position).discountamount+"");
+                        sale_entry.getSummary();
+                    }
+                    else{
+                        sale_entry_tv.sh.get(0).setDiscount_per(0);
+                    }
+                    //added by KLM for customer discount 22082022
+                    //sale_entry.SummaryFormat(sale_entry.txtfoc, sale_entry.foc_tmp + sale_entry.itemDis_tmp + sale_entry.sh.get(0).getDiscount());
                     sale_entry.btnpaytype.setText("Cash Down");
 
                 /*sale_entry.isCreditcustomer=data.get(position).isIscredit();

@@ -149,396 +149,396 @@ public class SelectInsertLibrary {
         }
     }
 
-    public void insertingData(String table, JSONObject jobj) {
-        try {
-            switch (table) {
-                case "Posuser":
-                    JSONArray user = null;
-
-                    user = jobj.getJSONArray("posuser");
-                    for (int usercount = 0; usercount < user.length(); usercount++) {
-                        JSONObject postobj = user.getJSONObject(usercount);
-                        int userid = postobj.getInt("userid");
-                        String name = postobj.optString("name", "null");
-                        String shortdes = postobj.optString("shortdesc", "null");
-                        int branchid = postobj.optInt("branchid");
-                        String password = postobj.optString("password", "null");
-                        int canchangesaleprice = postobj.optBoolean("canchangesaleprice", false) == true ? 1 : 0;
-                        int canchangepurprice = postobj.optBoolean("canchangepurprice", false) == true ? 1 : 0;
-                        int canchangedate = postobj.optBoolean("canchangedate", false) == true ? 1 : 0;
-                        int defaultlocationid = postobj.optInt("defaultlocationid", 0); //1
-                        int candiscount = postobj.optBoolean("candiscount", false) == true ? 1 : 0;
-                        int isusetax = postobj.optBoolean("isusetax", false) == true ? 1 : 0;
-                        int ishidepurprice = postobj.optBoolean("ishidepurprice", false) == true ? 1 : 0;
-                        int ishidesaleprice = postobj.optBoolean("ishidesaleprice", false) == true ? 1 : 0;
-                        int ishidepurcostprice = postobj.optBoolean("ishidepurcostprice", false) == true ? 1 : 0;
-                        int isviewallsalepricelevel = postobj.optBoolean("isviewallsalepricelevel", false) == true ? 1 : 0;
-                        int isinactive = postobj.optBoolean("isinactive", false) == true ? 1 : 0;
-
-                        int defaultbranchid = postobj.optInt("defaultbranchid", 0);//1
-                        int defaultcashid = postobj.optInt("defaultcashid", 1);
-                        int isallowsysdatechange = postobj.optBoolean("isallowsysdatechange", false) == true ? 1 : 0;
-                        int isallowovercreditlimit = postobj.optBoolean("isallowovercreditlimit", false) == true ? 1 : 0;
-                        String isknockcode = postobj.optString("isknockcode", "null");
-                        int istabletuser = postobj.optBoolean("istabletuser", false) == true ? 1 : 0;
-                        int isallowpricelevel = postobj.optBoolean("isallowpricelevel", false) == true ? 1 : 0;
-                        int canselectcustomer = postobj.optBoolean("canselectcustomer", false) == true ? 1 : 0;
-                        int canselectlocation = postobj.optBoolean("canselectlocation", false) == true ? 1 : 0;
-                        int salepricelevelid = postobj.optInt("salepricelevelid", 0);
-
-                        ContentValues values2 = new ContentValues();
-                        values2.put("userid", userid);
-                        values2.put("name", name);
-                        values2.put("shortdesc", shortdes);
-                        values2.put("branchid", branchid);
-                        values2.put("password", password);
-                        values2.put("canchangesaleprice", canchangesaleprice);
-
-
-                        values2.put("canchangepurprice", canchangepurprice);
-                        values2.put("canchangedate", canchangedate);
-                        values2.put("defaultlocationid", defaultlocationid);
-                        values2.put("candiscount", candiscount);
-
-
-                        values2.put("isusetax", isusetax);
-                        values2.put("ishidepurprice", ishidepurprice);
-                        values2.put("ishidesaleprice", ishidesaleprice);
-                        values2.put("ishidepurcostprice", ishidepurcostprice);
-                        values2.put("isviewallsalepricelevel", isviewallsalepricelevel);
-                        values2.put("isinactive", isinactive);
-                        values2.put("defaultbranchid", defaultbranchid);
-                        values2.put("defaultcashid", defaultcashid);
-                        values2.put("isallowsysdatechange", isallowsysdatechange);
-                        values2.put("isallowovercreditlimit", isallowovercreditlimit);
-                        values2.put("isknockcode", isknockcode);
-                        values2.put("istabletuser", istabletuser);
-
-                        values2.put("isallowpricelevel", isallowpricelevel);
-                        values2.put("canselectcustomer", canselectcustomer);
-                        values2.put("canselectlocation", canselectlocation);
-                        values2.put("salepricelevelid", salepricelevelid);
-
-
-                        DatabaseHelper.insertWithOnConflict("Posuser", null, values2, SQLiteDatabase.CONFLICT_REPLACE);
-                    }
-                    break;
-                case "Customer":
-                    JSONArray cust = jobj.getJSONArray("customer");
-
-
-                    for (int custcount = 0; custcount < cust.length(); custcount++) {
-                        JSONObject custobj = cust.getJSONObject(custcount);
-                        long customerid = custobj.getLong("customerid");
-                        String shortdesc = custobj.optString("shortdesc", "null");
-                        String name = custobj.optString("name", "null");
-                        int townshipid = custobj.optInt("townshipid", 1);
-                        int pricelevelid = custobj.optInt("pricelevelid", 1);
-                        int iscredit = custobj.optBoolean("iscredit", false) == true ? 1 : 0;
-                        int balance = custobj.optInt("balance");
-                        int creditlimit = custobj.optInt("creditlimit");
-                        int dueindays = custobj.optInt("dueindays");
-                        int discountpercent = custobj.optInt("discountpercent");
-                        int isinactive = custobj.optBoolean("isinactive", false) == true ? 1 : 0;
-                        int discountamount = custobj.optInt("discountamount");
-                        int custgroupid = custobj.optInt("custgroupid");
-                        int nationalcardid = custobj.optInt("nationalcardid");
-                        int isdeleted = custobj.optInt("isdeleted");
-
-                        String custgroupname = custobj.optString("custgroupname");
-                        String custgroupcode = custobj.optString("custgroupcode");
-                        String townshipname = custobj.optString("townshipname");
-                        String townshipcode = custobj.optString("townshipcode");
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("customerid", customerid);
-                        contentValues.put("name", name);
-                        contentValues.put("shortdesc", shortdesc);
-                        contentValues.put("townshipid", townshipid);
-                        contentValues.put("pricelevelid", pricelevelid);
-                        contentValues.put("iscredit", iscredit);
-                        contentValues.put("balance", balance);
-                        contentValues.put("creditlimit", creditlimit);
-                        contentValues.put("dueindays", dueindays);
-                        contentValues.put("discountpercent", discountpercent);
-                        contentValues.put("isinactive", isinactive);
-                        contentValues.put("discountamount", discountamount);
-                        contentValues.put("custgroupid", custgroupid);
-                        contentValues.put("nationalcardid", nationalcardid);
-                        contentValues.put("isdeleted", isdeleted);
-                        contentValues.put("custgroupname", custgroupname);
-
-                        contentValues.put("custgroupcode", custgroupcode);
-                        contentValues.put("townshipname", townshipname);
-                        contentValues.put("townshipcode", townshipcode);
-                        DatabaseHelper.insertWithOnConflict("Customer", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                txtProgress.setText((custcount + 1) + "/" + cust.length());
-//                                pbDownload.setProgress(custcount + 1);
-//                            }
-//                        });
-//                        Thread.sleep(3);
-
-
-                    }
-                    break;
-                case "Location":
-                    JSONArray loc = jobj.getJSONArray("location");
-                    for (int loccount = 0; loccount < loc.length(); loccount++) {
-
-
-                        JSONObject locobj = loc.getJSONObject(loccount);
-                        long locationid = locobj.getLong("locationid");
-                        int branchid = locobj.optInt("branchid", 1);
-                        String parentgroupid = locobj.optString("parentgroupid", "null");
-                        String oldparentgroupid = locobj.optString("oldparentgroupid");
-                        int sortid = locobj.optInt("sortid");
-                        String name = locobj.optString("name", "null");
-                        String shortdesc = locobj.optString("shortdesc");
-                        int iscalculate = locobj.optInt("iscalculate", 0);
-                        int isdiffsaleprice = locobj.optInt("isdiffsaleprice");
-                        int customerid = locobj.optInt("customerid", 1);
-                        int isdeleted = locobj.optInt("isdeleted");
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("locationid", locationid);
-                        contentValues.put("branchid", branchid);
-                        contentValues.put("parentgroupid", parentgroupid);
-                        contentValues.put("oldparentgroupid", oldparentgroupid);
-                        contentValues.put("sortid", sortid);
-                        contentValues.put("name", name);
-                        contentValues.put("shortdesc", shortdesc);
-                        contentValues.put("iscalculate", iscalculate);
-                        contentValues.put("isdiffsaleprice", isdiffsaleprice);
-                        contentValues.put("customerid", customerid);
-                        contentValues.put("isdeleted", isdeleted);
-                        DatabaseHelper.insertWithOnConflict("Location", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-                        //DatabaseHelper.execute(sqlString);
-                    }
-                    break;
-                case "Usr_Code":
-                    ContentValues usrcodevalue = new ContentValues();
-                    JSONArray usr_code = jobj.getJSONArray("usr_code");
-                    //JSONArray usr_code=data.getJSONObject(0).getJSONArray("usr_code");
-                    for (int codecount = 0; codecount < usr_code.length(); codecount++) {
-
-                        JSONObject codeobj = usr_code.getJSONObject(codecount);
-
-
-                        long code = codeobj.getLong("code");
-                        String usrcode = codeobj.getString("usrcode");
-                        String description = codeobj.optString("description", usrcode);
-                        double saleprice = codeobj.optDouble("saleprice", 0);
-                        int salecur = codeobj.optInt("salecur", 1);
-                        long classid = codeobj.getLong("class");
-                        String classname = codeobj.optString("classname", "null");
-                        long categoryid = codeobj.getLong("category");
-                        String categoryname = codeobj.optString("categoryname", "null");
-                        int unit_type = codeobj.optInt("unittype", 1);
-                        String unitname = codeobj.optString("unitname", "null");
-                        String unitshort = codeobj.optString("unitshort", "null");
-
-                        usrcodevalue.put("code", code);
-                        usrcodevalue.put("usr_code", usrcode);
-                        usrcodevalue.put("description", description);
-                        usrcodevalue.put("sale_price", saleprice);
-                        usrcodevalue.put("sale_curr", salecur);
-                        usrcodevalue.put("class", classid);
-                        usrcodevalue.put("classname", classname);
-                        usrcodevalue.put("categoryname", categoryname);
-                        usrcodevalue.put("category", categoryid);
-                        usrcodevalue.put("unit_type", unit_type);
-                        usrcodevalue.put("unitname", unitname);
-                        usrcodevalue.put("unitshort", unitshort);
-                        DatabaseHelper.insertWithOnConflict("Usr_Code", null, usrcodevalue, SQLiteDatabase.CONFLICT_IGNORE);
-
-                    }
-                    break;
-                case "Payment_Type":
-                    JSONArray pay = jobj.getJSONArray("paymenttype");
-
-                    for (int paycount = 0; paycount < pay.length(); paycount++) {
-                        JSONObject paytobj = pay.getJSONObject(paycount);
-                        long pay_type = paytobj.getLong("paytypeid");
-                        String name = paytobj.optString("name", "null");
-                        String shortdes = paytobj.optString("shortdesc", "null");
-                        sqlString = "insert into Payment_Type(paytypeid,name,shortdesc)" +
-                                " values(" + pay_type + ",'" + name + "','" + shortdes + "')";
-
-                        DatabaseHelper.execute(sqlString);
-
-                    }
-                    break;
-                case "Dis_Type":
-                    JSONArray dis = jobj.getJSONArray("dis_type");
-
-                    for (int discount = 0; discount < dis.length(); discount++) {
-
-                        JSONObject distobj = dis.getJSONObject(discount);
-                        long pay_type = distobj.getLong("itemdiscounttypeid");
-                        String name = distobj.optString("name", "null");
-                        String shortdes = distobj.optString("shortdesc", "null");
-                        int paid = distobj.optBoolean("ispaid", false) == true ? 1 : 0;
-                        int disamt = distobj.optInt("discount", 0);
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("itemdiscounttypeid", pay_type);
-                        contentValues.put("name", name);
-                        contentValues.put("shortdesc", shortdes);
-                        contentValues.put("ispaid", paid);
-                        contentValues.put("discount", disamt);
-                        DatabaseHelper.insertWithOnConflict("Dis_Type", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-
-                    }
-                    break;
-                case "System Setting":
-                    JSONArray sys = jobj.getJSONArray("systemsetting");
-
-                    for (int syscount = 0; syscount < sys.length(); syscount++) {
-
-
-                        JSONObject systobj = sys.getJSONObject(syscount);
-
-                        String title = systobj.getString("title");
-                        int isuseunit = systobj.optBoolean("isuseunit", false) == true ? 1 : 0;
-                        int isusetownship = systobj.optBoolean("isusetownship", false) == true ? 1 : 0;
-                        int isuselocation = systobj.optBoolean("isuselocation", false) == true ? 1 : 0;
-                        int isusemultipaid = systobj.optBoolean("isusemultipaid", false) == true ? 1 : 0;
-                        int isusemultiinvoice = systobj.optBoolean("isusemultiinvoice", false) == true ? 1 : 0;
-                        int isusesalesmen = systobj.optBoolean("isusesalesmen", false) == true ? 1 : 0;
-                        int qtydecimalplaces = systobj.optBoolean("qtydecimalplaces", false) == true ? 1 : 0;
-                        int pricedecimalplaces = systobj.optBoolean("pricedecimalplaces", false) == true ? 1 : 0;
-                        int isusecustpricelevel = systobj.optBoolean("isusecustpricelevel", false) == true ? 1 : 0;
-                        int isuseuserpricelevel = systobj.optBoolean("isuseuserpricelevel", false) == true ? 1 : 0;
-                        int isusepic = systobj.optBoolean("isusepic", false) == true ? 1 : 0;
-                        int isusemultipricelvl = systobj.optBoolean("isusemultipricelvl", false) == true ? 1 : 0;
-                        int isusetax = systobj.optBoolean("isusetax", false) == true ? 1 : 0;
-                        int isexclusivetax = systobj.optBoolean("isexclusivetax", false) == true ? 1 : 0;
-                        double defaulttaxpercent = systobj.optDouble("defaulttaxpercent", 0);
-                        int taxCal = systobj.getInt("taxcal");
-                        int isusecustomergroup = systobj.optBoolean("isusecustomergroup", false) == true ? 1 : 0;
-                        int isusedelivery = systobj.optBoolean("isusedelivery", false) == true ? 1 : 0;
-                        int afterdiscount = systobj.optBoolean("afterdiscount", false) == true ? 1 : 0; // added by EKK on 05-11-2020
-                        int isuseduedate=systobj.optBoolean("isuseduedate",false)==true?1:0;
-                        String receiptheaderline1 = systobj.getString("receiptheaderline1");
-                        String receiptheaderline2 = systobj.getString("receiptheaderline2");
-                        String receiptheaderline3 = systobj.getString("receiptheaderline3");
-                        String receiptheaderline4 = systobj.getString("receiptheaderline4");
-
-
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("title", title);
-                        contentValues.put("isuseunit", isuseunit);
-                        contentValues.put("isusetownship", isusetownship);
-                        contentValues.put("isuselocation", isuselocation);
-                        contentValues.put("isusemultipaid", isusemultipaid);
-                        contentValues.put("isusemultiinvoice", isusemultiinvoice);
-                        contentValues.put("isusesalesmen", isusesalesmen);
-                        contentValues.put("qtydecimalplaces", qtydecimalplaces);
-                        contentValues.put("pricedecimalplaces", pricedecimalplaces);
-                        contentValues.put("isusecustpricelevel", isusecustpricelevel);
-                        contentValues.put("isusetax", isusetax);
-                        contentValues.put("isuseuserpricelevel", isuseuserpricelevel);
-                        contentValues.put("isusepic", isusepic);
-                        contentValues.put("isusemultipricelvl", isusemultipricelvl);
-                        contentValues.put("defaulttaxpercent", defaulttaxpercent);
-                        contentValues.put("taxCal", taxCal);
-                        contentValues.put("isexclusivetax", isexclusivetax);
-                        contentValues.put("isusecustomergroup", isusecustomergroup);
-                        contentValues.put("isusedelivery", isusedelivery);
-                        contentValues.put("afterdiscount", afterdiscount); // added by EKK on 05-11-2020
-                        contentValues.put("receiptheaderline1", receiptheaderline1);
-                        contentValues.put("receiptheaderline2", receiptheaderline2);
-                        contentValues.put("receiptheaderline3", receiptheaderline3);
-                        contentValues.put("receiptheaderline4", receiptheaderline4);
-                        contentValues.put("isuseduedate", isuseduedate);
-                        DatabaseHelper.insertWithOnConflict("SystemSetting", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-                    }
-                    break;
-                case "Salesmen":
-                    JSONArray salesmen = null;
-
-                    salesmen = jobj.getJSONArray("salesmen");
-                    for (int salesmencount = 0; salesmencount < salesmen.length(); salesmencount++) {
-                        JSONObject salesmenobj = salesmen.getJSONObject(salesmencount);
-                        int id = salesmenobj.getInt("salesmenid");
-
-                        String name = salesmenobj.optString("salesmenname", "null");
-                        String shortdes = salesmenobj.optString("shortdesc", "null");
-                        sqlString = "insert into Salesmen(salesmenid,salesmenname,shortdesc)values(" + id + ",'" + name + "','" + shortdes + "')";
-                        DatabaseHelper.execute(sqlString);
-                    }
-                    break;
-
-
-                case "class":
-                    JSONArray cls = jobj.getJSONArray("class");
-
-                    for (int syscount = 0; syscount < cls.length(); syscount++) {
-                        JSONObject clsobj = cls.getJSONObject(syscount);
-                        int classid = clsobj.getInt("classid");
-                        String name = clsobj.optString("name");
-                        //String  updateddatetime=clsobj.optString("updateddatetime");
-                        int isdeleted = clsobj.optBoolean("isdeleted", false) == true ? 1 : 0;
-                        int sortid = clsobj.optInt("sortid", 1);
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("classid", classid);
-                        contentValues.put("name", name);
-                        //contentValues.put("updateddatetime",updateddatetime);
-                        contentValues.put("isdeleted", isdeleted);
-                        contentValues.put("sortid", sortid);
-                        //ry{
-                        DatabaseHelper.insertWithOnConflict("class", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-                        //}catch (error)
-                    }
-                    break;
-                case "category":
-                    JSONArray cate = jobj.getJSONArray("category");
-
-                    for (int syscount = 0; syscount < cate.length(); syscount++) {
-                        JSONObject cateobj = cate.getJSONObject(syscount);
-                        int categoryid = cateobj.getInt("categoryid");
-                        int classid = cateobj.optInt("classid", 0);
-                        String name = cateobj.optString("name");
-                        String parentgroupid = cateobj.optString("parentgroupid");
-                        String generatedid = cateobj.optString("generatedid");
-                        String shortdesc = cateobj.optString("shortdesc");
-                        int sortid = cateobj.optInt("sortid", 1);
-                        int israw = cateobj.optInt("israw");
-                        String imagepath = cateobj.optString("imagepath");
-                        //byte categoryimage=(byte)cateobj.opt("categoryimage");
-                        String colorrgb = cateobj.optString("colorrgb");
-                        int ismodifiercategory = cateobj.optInt("ismodifiercategory");
-                        int issetmenu = cateobj.optInt("issetmenu");
-                        // Date updateddatetime=cateobj.;
-                        int isdeleted = cateobj.optInt("isdeleted");
-
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("categoryid", categoryid);
-                        contentValues.put("classid", classid);
-                        contentValues.put("name", name);
-                        contentValues.put("parentgroupid", parentgroupid);
-                        contentValues.put("generatedid", generatedid);
-                        contentValues.put("shortdesc", shortdesc);
-                        contentValues.put("israw", israw);
-                        contentValues.put("imagepath", imagepath);
-                        //contentValues.put("categoryimage", categoryimage);
-                        contentValues.put("colorrgb", colorrgb);
-                        contentValues.put("ismodifiercategory", ismodifiercategory);
-                        contentValues.put("issetmenu", issetmenu);
-                        // contentValues.put("updateddatetime",updateddatetime);
-                        contentValues.put("isdeleted", isdeleted);
-                        contentValues.put("sortid", sortid);
-                        DatabaseHelper.insertWithOnConflict("category", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-                    }
-
-                    break;
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
+//    public void insertingData(String table, JSONObject jobj) {
+//        try {
+//            switch (table) {
+//                case "Posuser":
+//                    JSONArray user = null;
+//
+//                    user = jobj.getJSONArray("posuser");
+//                    for (int usercount = 0; usercount < user.length(); usercount++) {
+//                        JSONObject postobj = user.getJSONObject(usercount);
+//                        int userid = postobj.getInt("userid");
+//                        String name = postobj.optString("name", "null");
+//                        String shortdes = postobj.optString("shortdesc", "null");
+//                        int branchid = postobj.optInt("branchid");
+//                        String password = postobj.optString("password", "null");
+//                        int canchangesaleprice = postobj.optBoolean("canchangesaleprice", false) == true ? 1 : 0;
+//                        int canchangepurprice = postobj.optBoolean("canchangepurprice", false) == true ? 1 : 0;
+//                        int canchangedate = postobj.optBoolean("canchangedate", false) == true ? 1 : 0;
+//                        int defaultlocationid = postobj.optInt("defaultlocationid", 0); //1
+//                        int candiscount = postobj.optBoolean("candiscount", false) == true ? 1 : 0;
+//                        int isusetax = postobj.optBoolean("isusetax", false) == true ? 1 : 0;
+//                        int ishidepurprice = postobj.optBoolean("ishidepurprice", false) == true ? 1 : 0;
+//                        int ishidesaleprice = postobj.optBoolean("ishidesaleprice", false) == true ? 1 : 0;
+//                        int ishidepurcostprice = postobj.optBoolean("ishidepurcostprice", false) == true ? 1 : 0;
+//                        int isviewallsalepricelevel = postobj.optBoolean("isviewallsalepricelevel", false) == true ? 1 : 0;
+//                        int isinactive = postobj.optBoolean("isinactive", false) == true ? 1 : 0;
+//
+//                        int defaultbranchid = postobj.optInt("defaultbranchid", 0);//1
+//                        int defaultcashid = postobj.optInt("defaultcashid", 1);
+//                        int isallowsysdatechange = postobj.optBoolean("isallowsysdatechange", false) == true ? 1 : 0;
+//                        int isallowovercreditlimit = postobj.optBoolean("isallowovercreditlimit", false) == true ? 1 : 0;
+//                        String isknockcode = postobj.optString("isknockcode", "null");
+//                        int istabletuser = postobj.optBoolean("istabletuser", false) == true ? 1 : 0;
+//                        int isallowpricelevel = postobj.optBoolean("isallowpricelevel", false) == true ? 1 : 0;
+//                        int canselectcustomer = postobj.optBoolean("canselectcustomer", false) == true ? 1 : 0;
+//                        int canselectlocation = postobj.optBoolean("canselectlocation", false) == true ? 1 : 0;
+//                        int salepricelevelid = postobj.optInt("salepricelevelid", 0);
+//
+//                        ContentValues values2 = new ContentValues();
+//                        values2.put("userid", userid);
+//                        values2.put("name", name);
+//                        values2.put("shortdesc", shortdes);
+//                        values2.put("branchid", branchid);
+//                        values2.put("password", password);
+//                        values2.put("canchangesaleprice", canchangesaleprice);
+//
+//
+//                        values2.put("canchangepurprice", canchangepurprice);
+//                        values2.put("canchangedate", canchangedate);
+//                        values2.put("defaultlocationid", defaultlocationid);
+//                        values2.put("candiscount", candiscount);
+//
+//
+//                        values2.put("isusetax", isusetax);
+//                        values2.put("ishidepurprice", ishidepurprice);
+//                        values2.put("ishidesaleprice", ishidesaleprice);
+//                        values2.put("ishidepurcostprice", ishidepurcostprice);
+//                        values2.put("isviewallsalepricelevel", isviewallsalepricelevel);
+//                        values2.put("isinactive", isinactive);
+//                        values2.put("defaultbranchid", defaultbranchid);
+//                        values2.put("defaultcashid", defaultcashid);
+//                        values2.put("isallowsysdatechange", isallowsysdatechange);
+//                        values2.put("isallowovercreditlimit", isallowovercreditlimit);
+//                        values2.put("isknockcode", isknockcode);
+//                        values2.put("istabletuser", istabletuser);
+//
+//                        values2.put("isallowpricelevel", isallowpricelevel);
+//                        values2.put("canselectcustomer", canselectcustomer);
+//                        values2.put("canselectlocation", canselectlocation);
+//                        values2.put("salepricelevelid", salepricelevelid);
+//
+//
+//                        DatabaseHelper.insertWithOnConflict("Posuser", null, values2, SQLiteDatabase.CONFLICT_REPLACE);
+//                    }
+//                    break;
+//                case "Customer":
+//                    JSONArray cust = jobj.getJSONArray("customer");
+//
+//
+//                    for (int custcount = 0; custcount < cust.length(); custcount++) {
+//                        JSONObject custobj = cust.getJSONObject(custcount);
+//                        long customerid = custobj.getLong("customerid");
+//                        String shortdesc = custobj.optString("shortdesc", "null");
+//                        String name = custobj.optString("name", "null");
+//                        int townshipid = custobj.optInt("townshipid", 1);
+//                        int pricelevelid = custobj.optInt("pricelevelid", 1);
+//                        int iscredit = custobj.optBoolean("iscredit", false) == true ? 1 : 0;
+//                        int balance = custobj.optInt("balance");
+//                        int creditlimit = custobj.optInt("creditlimit");
+//                        int dueindays = custobj.optInt("dueindays");
+//                        int discountpercent = custobj.optInt("discountpercent");
+//                        int isinactive = custobj.optBoolean("isinactive", false) == true ? 1 : 0;
+//                        int discountamount = custobj.optInt("discountamount");
+//                        int custgroupid = custobj.optInt("custgroupid");
+//                        int nationalcardid = custobj.optInt("nationalcardid");
+//                        int isdeleted = custobj.optInt("isdeleted");
+//
+//                        String custgroupname = custobj.optString("custgroupname");
+//                        String custgroupcode = custobj.optString("custgroupcode");
+//                        String townshipname = custobj.optString("townshipname");
+//                        String townshipcode = custobj.optString("townshipcode");
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("customerid", customerid);
+//                        contentValues.put("name", name);
+//                        contentValues.put("shortdesc", shortdesc);
+//                        contentValues.put("townshipid", townshipid);
+//                        contentValues.put("pricelevelid", pricelevelid);
+//                        contentValues.put("iscredit", iscredit);
+//                        contentValues.put("balance", balance);
+//                        contentValues.put("creditlimit", creditlimit);
+//                        contentValues.put("dueindays", dueindays);
+//                        contentValues.put("discountpercent", discountpercent);
+//                        contentValues.put("isinactive", isinactive);
+//                        contentValues.put("discountamount", discountamount);
+//                        contentValues.put("custgroupid", custgroupid);
+//                        contentValues.put("nationalcardid", nationalcardid);
+//                        contentValues.put("isdeleted", isdeleted);
+//                        contentValues.put("custgroupname", custgroupname);
+//
+//                        contentValues.put("custgroupcode", custgroupcode);
+//                        contentValues.put("townshipname", townshipname);
+//                        contentValues.put("townshipcode", townshipcode);
+//                        DatabaseHelper.insertWithOnConflict("Customer", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+////                        runOnUiThread(new Runnable() {
+////                            @Override
+////                            public void run() {
+////                                txtProgress.setText((custcount + 1) + "/" + cust.length());
+////                                pbDownload.setProgress(custcount + 1);
+////                            }
+////                        });
+////                        Thread.sleep(3);
+//
+//
+//                    }
+//                    break;
+//                case "Location":
+//                    JSONArray loc = jobj.getJSONArray("location");
+//                    for (int loccount = 0; loccount < loc.length(); loccount++) {
+//
+//
+//                        JSONObject locobj = loc.getJSONObject(loccount);
+//                        long locationid = locobj.getLong("locationid");
+//                        int branchid = locobj.optInt("branchid", 1);
+//                        String parentgroupid = locobj.optString("parentgroupid", "null");
+//                        String oldparentgroupid = locobj.optString("oldparentgroupid");
+//                        int sortid = locobj.optInt("sortid");
+//                        String name = locobj.optString("name", "null");
+//                        String shortdesc = locobj.optString("shortdesc");
+//                        int iscalculate = locobj.optInt("iscalculate", 0);
+//                        int isdiffsaleprice = locobj.optInt("isdiffsaleprice");
+//                        int customerid = locobj.optInt("customerid", 1);
+//                        int isdeleted = locobj.optInt("isdeleted");
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("locationid", locationid);
+//                        contentValues.put("branchid", branchid);
+//                        contentValues.put("parentgroupid", parentgroupid);
+//                        contentValues.put("oldparentgroupid", oldparentgroupid);
+//                        contentValues.put("sortid", sortid);
+//                        contentValues.put("name", name);
+//                        contentValues.put("shortdesc", shortdesc);
+//                        contentValues.put("iscalculate", iscalculate);
+//                        contentValues.put("isdiffsaleprice", isdiffsaleprice);
+//                        contentValues.put("customerid", customerid);
+//                        contentValues.put("isdeleted", isdeleted);
+//                        DatabaseHelper.insertWithOnConflict("Location", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//                        //DatabaseHelper.execute(sqlString);
+//                    }
+//                    break;
+//                case "Usr_Code":
+//                    ContentValues usrcodevalue = new ContentValues();
+//                    JSONArray usr_code = jobj.getJSONArray("usr_code");
+//                    //JSONArray usr_code=data.getJSONObject(0).getJSONArray("usr_code");
+//                    for (int codecount = 0; codecount < usr_code.length(); codecount++) {
+//
+//                        JSONObject codeobj = usr_code.getJSONObject(codecount);
+//
+//
+//                        long code = codeobj.getLong("code");
+//                        String usrcode = codeobj.getString("usrcode");
+//                        String description = codeobj.optString("description", usrcode);
+//                        double saleprice = codeobj.optDouble("saleprice", 0);
+//                        int salecur = codeobj.optInt("salecur", 1);
+//                        long classid = codeobj.getLong("class");
+//                        String classname = codeobj.optString("classname", "null");
+//                        long categoryid = codeobj.getLong("category");
+//                        String categoryname = codeobj.optString("categoryname", "null");
+//                        int unit_type = codeobj.optInt("unittype", 1);
+//                        String unitname = codeobj.optString("unitname", "null");
+//                        String unitshort = codeobj.optString("unitshort", "null");
+//
+//                        usrcodevalue.put("code", code);
+//                        usrcodevalue.put("usr_code", usrcode);
+//                        usrcodevalue.put("description", description);
+//                        usrcodevalue.put("sale_price", saleprice);
+//                        usrcodevalue.put("sale_curr", salecur);
+//                        usrcodevalue.put("class", classid);
+//                        usrcodevalue.put("classname", classname);
+//                        usrcodevalue.put("categoryname", categoryname);
+//                        usrcodevalue.put("category", categoryid);
+//                        usrcodevalue.put("unit_type", unit_type);
+//                        usrcodevalue.put("unitname", unitname);
+//                        usrcodevalue.put("unitshort", unitshort);
+//                        DatabaseHelper.insertWithOnConflict("Usr_Code", null, usrcodevalue, SQLiteDatabase.CONFLICT_IGNORE);
+//
+//                    }
+//                    break;
+//                case "Payment_Type":
+//                    JSONArray pay = jobj.getJSONArray("paymenttype");
+//
+//                    for (int paycount = 0; paycount < pay.length(); paycount++) {
+//                        JSONObject paytobj = pay.getJSONObject(paycount);
+//                        long pay_type = paytobj.getLong("paytypeid");
+//                        String name = paytobj.optString("name", "null");
+//                        String shortdes = paytobj.optString("shortdesc", "null");
+//                        sqlString = "insert into Payment_Type(paytypeid,name,shortdesc)" +
+//                                " values(" + pay_type + ",'" + name + "','" + shortdes + "')";
+//
+//                        DatabaseHelper.execute(sqlString);
+//
+//                    }
+//                    break;
+//                case "Dis_Type":
+//                    JSONArray dis = jobj.getJSONArray("dis_type");
+//
+//                    for (int discount = 0; discount < dis.length(); discount++) {
+//
+//                        JSONObject distobj = dis.getJSONObject(discount);
+//                        long pay_type = distobj.getLong("itemdiscounttypeid");
+//                        String name = distobj.optString("name", "null");
+//                        String shortdes = distobj.optString("shortdesc", "null");
+//                        int paid = distobj.optBoolean("ispaid", false) == true ? 1 : 0;
+//                        int disamt = distobj.optInt("discount", 0);
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("itemdiscounttypeid", pay_type);
+//                        contentValues.put("name", name);
+//                        contentValues.put("shortdesc", shortdes);
+//                        contentValues.put("ispaid", paid);
+//                        contentValues.put("discount", disamt);
+//                        DatabaseHelper.insertWithOnConflict("Dis_Type", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//
+//                    }
+//                    break;
+//                case "System Setting":
+//                    JSONArray sys = jobj.getJSONArray("systemsetting");
+//
+//                    for (int syscount = 0; syscount < sys.length(); syscount++) {
+//
+//
+//                        JSONObject systobj = sys.getJSONObject(syscount);
+//
+//                        String title = systobj.getString("title");
+//                        int isuseunit = systobj.optBoolean("isuseunit", false) == true ? 1 : 0;
+//                        int isusetownship = systobj.optBoolean("isusetownship", false) == true ? 1 : 0;
+//                        int isuselocation = systobj.optBoolean("isuselocation", false) == true ? 1 : 0;
+//                        int isusemultipaid = systobj.optBoolean("isusemultipaid", false) == true ? 1 : 0;
+//                        int isusemultiinvoice = systobj.optBoolean("isusemultiinvoice", false) == true ? 1 : 0;
+//                        int isusesalesmen = systobj.optBoolean("isusesalesmen", false) == true ? 1 : 0;
+//                        int qtydecimalplaces = systobj.optBoolean("qtydecimalplaces", false) == true ? 1 : 0;
+//                        int pricedecimalplaces = systobj.optBoolean("pricedecimalplaces", false) == true ? 1 : 0;
+//                        int isusecustpricelevel = systobj.optBoolean("isusecustpricelevel", false) == true ? 1 : 0;
+//                        int isuseuserpricelevel = systobj.optBoolean("isuseuserpricelevel", false) == true ? 1 : 0;
+//                        int isusepic = systobj.optBoolean("isusepic", false) == true ? 1 : 0;
+//                        int isusemultipricelvl = systobj.optBoolean("isusemultipricelvl", false) == true ? 1 : 0;
+//                        int isusetax = systobj.optBoolean("isusetax", false) == true ? 1 : 0;
+//                        int isexclusivetax = systobj.optBoolean("isexclusivetax", false) == true ? 1 : 0;
+//                        double defaulttaxpercent = systobj.optDouble("defaulttaxpercent", 0);
+//                        int taxCal = systobj.getInt("taxcal");
+//                        int isusecustomergroup = systobj.optBoolean("isusecustomergroup", false) == true ? 1 : 0;
+//                        int isusedelivery = systobj.optBoolean("isusedelivery", false) == true ? 1 : 0;
+//                        int afterdiscount = systobj.optBoolean("afterdiscount", false) == true ? 1 : 0; // added by EKK on 05-11-2020
+//                        int isuseduedate=systobj.optBoolean("isuseduedate",false)==true?1:0;
+//                        String receiptheaderline1 = systobj.getString("receiptheaderline1");
+//                        String receiptheaderline2 = systobj.getString("receiptheaderline2");
+//                        String receiptheaderline3 = systobj.getString("receiptheaderline3");
+//                        String receiptheaderline4 = systobj.getString("receiptheaderline4");
+//
+//
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("title", title);
+//                        contentValues.put("isuseunit", isuseunit);
+//                        contentValues.put("isusetownship", isusetownship);
+//                        contentValues.put("isuselocation", isuselocation);
+//                        contentValues.put("isusemultipaid", isusemultipaid);
+//                        contentValues.put("isusemultiinvoice", isusemultiinvoice);
+//                        contentValues.put("isusesalesmen", isusesalesmen);
+//                        contentValues.put("qtydecimalplaces", qtydecimalplaces);
+//                        contentValues.put("pricedecimalplaces", pricedecimalplaces);
+//                        contentValues.put("isusecustpricelevel", isusecustpricelevel);
+//                        contentValues.put("isusetax", isusetax);
+//                        contentValues.put("isuseuserpricelevel", isuseuserpricelevel);
+//                        contentValues.put("isusepic", isusepic);
+//                        contentValues.put("isusemultipricelvl", isusemultipricelvl);
+//                        contentValues.put("defaulttaxpercent", defaulttaxpercent);
+//                        contentValues.put("taxCal", taxCal);
+//                        contentValues.put("isexclusivetax", isexclusivetax);
+//                        contentValues.put("isusecustomergroup", isusecustomergroup);
+//                        contentValues.put("isusedelivery", isusedelivery);
+//                        contentValues.put("afterdiscount", afterdiscount); // added by EKK on 05-11-2020
+//                        contentValues.put("receiptheaderline1", receiptheaderline1);
+//                        contentValues.put("receiptheaderline2", receiptheaderline2);
+//                        contentValues.put("receiptheaderline3", receiptheaderline3);
+//                        contentValues.put("receiptheaderline4", receiptheaderline4);
+//                        contentValues.put("isuseduedate", isuseduedate);
+//                        DatabaseHelper.insertWithOnConflict("SystemSetting", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//                    }
+//                    break;
+//                case "Salesmen":
+//                    JSONArray salesmen = null;
+//
+//                    salesmen = jobj.getJSONArray("salesmen");
+//                    for (int salesmencount = 0; salesmencount < salesmen.length(); salesmencount++) {
+//                        JSONObject salesmenobj = salesmen.getJSONObject(salesmencount);
+//                        int id = salesmenobj.getInt("salesmenid");
+//
+//                        String name = salesmenobj.optString("salesmenname", "null");
+//                        String shortdes = salesmenobj.optString("shortdesc", "null");
+//                        sqlString = "insert into Salesmen(salesmenid,salesmenname,shortdesc)values(" + id + ",'" + name + "','" + shortdes + "')";
+//                        DatabaseHelper.execute(sqlString);
+//                    }
+//                    break;
+//
+//
+//                case "class":
+//                    JSONArray cls = jobj.getJSONArray("class");
+//
+//                    for (int syscount = 0; syscount < cls.length(); syscount++) {
+//                        JSONObject clsobj = cls.getJSONObject(syscount);
+//                        int classid = clsobj.getInt("classid");
+//                        String name = clsobj.optString("name");
+//                        //String  updateddatetime=clsobj.optString("updateddatetime");
+//                        int isdeleted = clsobj.optBoolean("isdeleted", false) == true ? 1 : 0;
+//                        int sortid = clsobj.optInt("sortid", 1);
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("classid", classid);
+//                        contentValues.put("name", name);
+//                        //contentValues.put("updateddatetime",updateddatetime);
+//                        contentValues.put("isdeleted", isdeleted);
+//                        contentValues.put("sortid", sortid);
+//                        //ry{
+//                        DatabaseHelper.insertWithOnConflict("class", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//                        //}catch (error)
+//                    }
+//                    break;
+//                case "category":
+//                    JSONArray cate = jobj.getJSONArray("category");
+//
+//                    for (int syscount = 0; syscount < cate.length(); syscount++) {
+//                        JSONObject cateobj = cate.getJSONObject(syscount);
+//                        int categoryid = cateobj.getInt("categoryid");
+//                        int classid = cateobj.optInt("classid", 0);
+//                        String name = cateobj.optString("name");
+//                        String parentgroupid = cateobj.optString("parentgroupid");
+//                        String generatedid = cateobj.optString("generatedid");
+//                        String shortdesc = cateobj.optString("shortdesc");
+//                        int sortid = cateobj.optInt("sortid", 1);
+//                        int israw = cateobj.optInt("israw");
+//                        String imagepath = cateobj.optString("imagepath");
+//                        //byte categoryimage=(byte)cateobj.opt("categoryimage");
+//                        String colorrgb = cateobj.optString("colorrgb");
+//                        int ismodifiercategory = cateobj.optInt("ismodifiercategory");
+//                        int issetmenu = cateobj.optInt("issetmenu");
+//                        // Date updateddatetime=cateobj.;
+//                        int isdeleted = cateobj.optInt("isdeleted");
+//
+//                        ContentValues contentValues = new ContentValues();
+//                        contentValues.put("categoryid", categoryid);
+//                        contentValues.put("classid", classid);
+//                        contentValues.put("name", name);
+//                        contentValues.put("parentgroupid", parentgroupid);
+//                        contentValues.put("generatedid", generatedid);
+//                        contentValues.put("shortdesc", shortdesc);
+//                        contentValues.put("israw", israw);
+//                        contentValues.put("imagepath", imagepath);
+//                        //contentValues.put("categoryimage", categoryimage);
+//                        contentValues.put("colorrgb", colorrgb);
+//                        contentValues.put("ismodifiercategory", ismodifiercategory);
+//                        contentValues.put("issetmenu", issetmenu);
+//                        // contentValues.put("updateddatetime",updateddatetime);
+//                        contentValues.put("isdeleted", isdeleted);
+//                        contentValues.put("sortid", sortid);
+//                        DatabaseHelper.insertWithOnConflict("category", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+//                    }
+//
+//                    break;
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
 
     public void UpSertingData(String table, JSONObject jobj) {
@@ -642,9 +642,9 @@ public class SelectInsertLibrary {
                         int balance = custobj.optInt("balance");
                         int creditlimit = custobj.optInt("creditlimit");
                         int dueindays = custobj.optInt("dueindays");
-                        int discountpercent = custobj.optInt("discountpercent");
+                        double discountpercent = custobj.optDouble("discountpercent");
                         int isinactive = custobj.optBoolean("isinactive", false) == true ? 1 : 0;
-                        int discountamount = custobj.optInt("discountamount");
+                        double discountamount = custobj.optDouble("discountamount",0);
                         int custgroupid = custobj.optInt("custgroupid");
                         int nationalcardid = custobj.optInt("nationalcardid");
                         int isdeleted = custobj.optBoolean("isdeleted", false) == true ? 1 : 0;
