@@ -23,12 +23,14 @@ import static android.Manifest.permission.CAMERA;
 public class frmscancode extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private static final int REQUEST_CAMERA_PERMISSION = 201;
     ZXingScannerView scannerView;
+    String formname="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frmscancode);
         scannerView = findViewById(R.id.scanner);
+
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -114,7 +116,8 @@ public class frmscancode extends AppCompatActivity implements ZXingScannerView.R
         }
         finish();
         if (!scannercode.equals("NULL")) {
-            usrcodeAdapter.scanner(scannercode);
+
+            usrcodeAdapter.scanner(scannercode,getIntent().getExtras().getString("name"));//added by KLM to effect both sale & sale order in qrcode scanner
         } else {
             Toast.makeText(getBaseContext(), "Alias Code isn't in the Table!", Toast.LENGTH_SHORT).show();
         }

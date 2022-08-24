@@ -826,6 +826,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(sale_entry.this, frmscancode.class);
+                    i.putExtra("name","sale");//added by KLM to effect both sale & sale order in qrcode scanner
                     startActivity(i);
                 }
             });

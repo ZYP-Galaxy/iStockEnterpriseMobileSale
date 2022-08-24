@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.UsrcodeAdapter;
 import com.squareup.picasso.Picasso;
 
 
@@ -1007,55 +1008,102 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
 
 
     //Added by abbp barcode scanner on 19/6/2019
-    public static void scanner(String usr_code) {
-        adddata(usr_code);
+    public static void scanner(String usr_code,String entryFormName) {
+        adddata(usr_code,entryFormName);
     }
 
-    private static void adddata(String usr_code) {
+    private static void adddata(String usr_code,String entryFormName) {
+        if (entryFormName.equals("saleorder")) {//added by KLM to effect both sale & sale order in qrcode scanner
+            specialPrice = GetPriceLevel();
+            String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.saleprice" + specialPrice;
+            String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
+            String sqlString = "select uc.unit_type,code,description," + sale_price + " as sale_price,open_price,smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                    " where uc.unit_type=1 and uc.usr_code='" + usr_code + "'";
+            Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+            if (cursor != null && cursor.getCount() != 0) {
+                if (cursor.moveToFirst()) {
+                    do {
 
-        specialPrice = GetPriceLevel();
-        String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.saleprice" + specialPrice;
-        String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
-        String sqlString = "select uc.unit_type,code,description," + sale_price + " as sale_price,open_price,smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
-                " where uc.unit_type=1 and uc.usr_code='" + usr_code + "'";
-        Cursor cursor = DatabaseHelper.rawQuery(sqlString);
-        if (cursor != null && cursor.getCount() != 0) {
-            if (cursor.moveToFirst()) {
-                do {
+                        long code = cursor.getLong(cursor.getColumnIndex("code"));
+                        double price = cursor.getDouble(cursor.getColumnIndex("sale_price"));
+                        int open_price = cursor.getInt(cursor.getColumnIndex("open_price"));
+                        double smallest_unit_qty = cursor.getDouble(cursor.getColumnIndex("smallest_unit_qty"));
+                        int unit_type = cursor.getInt(cursor.getColumnIndex("unit_type"));
+                        String unit_short = cursor.getString(cursor.getColumnIndex("unitshort"));
+                        String unitname = cursor.getString(cursor.getColumnIndex("unitname"));
+                        String desc = cursor.getString(cursor.getColumnIndex("description"));
+                        int CalNoTax = cursor.getInt(cursor.getColumnIndex("CalNoTax"));
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        saleorder_entry.sd.add(new sale_det(
+                                saleorder_entry.tranid,
+                                saleorder_entry.sd.size() + 1,
+                                df.format(new Date()),
+                                1,
+                                open_price,
+                                smallest_unit_qty,
+                                unit_type,
+                                price,
+                                0,
+                                0,
+                                0,
+                                "",
+                                code, unit_short, desc, CalNoTax, SP));
+                        //Toast.makeText(context,sale_entry.sd.get(0),Toast.LENGTH_LONG).show();
+                    } while (cursor.moveToNext());
+                }
 
-                    long code = cursor.getLong(cursor.getColumnIndex("code"));
-                    double price = cursor.getDouble(cursor.getColumnIndex("sale_price"));
-                    int open_price = cursor.getInt(cursor.getColumnIndex("open_price"));
-                    double smallest_unit_qty = cursor.getDouble(cursor.getColumnIndex("smallest_unit_qty"));
-                    int unit_type = cursor.getInt(cursor.getColumnIndex("unit_type"));
-                    String unit_short = cursor.getString(cursor.getColumnIndex("unitshort"));
-                    String unitname = cursor.getString(cursor.getColumnIndex("unitname"));
-                    String desc = cursor.getString(cursor.getColumnIndex("description"));
-                    int CalNoTax = cursor.getInt(cursor.getColumnIndex("CalNoTax"));
-                    DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                    sale_entry.sd.add(new sale_det(
-                            sale_entry.tranid,
-                            sale_entry.sd.size() + 1,
-                            df.format(new Date()),
-                            1,
-                            open_price,
-                            smallest_unit_qty,
-                            unit_type,
-                            price,
-                            0,
-                            0,
-                            0,
-                            "",
-                            code, unit_short, desc, CalNoTax, SP));
-                    //Toast.makeText(context,sale_entry.sd.get(0),Toast.LENGTH_LONG).show();
-                } while (cursor.moveToNext());
             }
-
+            cursor.close();
+            saleorder_entry.itemAdapter.notifyDataSetChanged();
+            saleorder_entry.entrygrid.setSelection(saleorder_entry.sd.size());
+            saleorder_entry.getSummary();
         }
-        cursor.close();
-        sale_entry.itemAdapter.notifyDataSetChanged();
-        sale_entry.entrygrid.setSelection(sale_entry.sd.size());
-        sale_entry.getSummary();
+        else{
+            specialPrice = GetPriceLevel();
+            String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.saleprice" + specialPrice;
+            String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
+            String sqlString = "select uc.unit_type,code,description," + sale_price + " as sale_price,open_price,smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                    " where uc.unit_type=1 and uc.usr_code='" + usr_code + "'";
+            Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+            if (cursor != null && cursor.getCount() != 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+
+                        long code = cursor.getLong(cursor.getColumnIndex("code"));
+                        double price = cursor.getDouble(cursor.getColumnIndex("sale_price"));
+                        int open_price = cursor.getInt(cursor.getColumnIndex("open_price"));
+                        double smallest_unit_qty = cursor.getDouble(cursor.getColumnIndex("smallest_unit_qty"));
+                        int unit_type = cursor.getInt(cursor.getColumnIndex("unit_type"));
+                        String unit_short = cursor.getString(cursor.getColumnIndex("unitshort"));
+                        String unitname = cursor.getString(cursor.getColumnIndex("unitname"));
+                        String desc = cursor.getString(cursor.getColumnIndex("description"));
+                        int CalNoTax = cursor.getInt(cursor.getColumnIndex("CalNoTax"));
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                        sale_entry.sd.add(new sale_det(
+                                sale_entry.tranid,
+                                sale_entry.sd.size() + 1,
+                                df.format(new Date()),
+                                1,
+                                open_price,
+                                smallest_unit_qty,
+                                unit_type,
+                                price,
+                                0,
+                                0,
+                                0,
+                                "",
+                                code, unit_short, desc, CalNoTax, SP));
+                        //Toast.makeText(context,sale_entry.sd.get(0),Toast.LENGTH_LONG).show();
+                    } while (cursor.moveToNext());
+                }
+
+            }
+            cursor.close();
+            sale_entry.itemAdapter.notifyDataSetChanged();
+            sale_entry.entrygrid.setSelection(sale_entry.sd.size());
+            sale_entry.getSummary();
+        }
+
     }
 
 

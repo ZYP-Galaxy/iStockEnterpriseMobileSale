@@ -1575,6 +1575,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(saleorder_entry.this, frmscancode.class);
+                i.putExtra("name","saleorder");//added by KLM to effect both sale & sale order in qrcode scanner
                 startActivity(i);
             }
         });
