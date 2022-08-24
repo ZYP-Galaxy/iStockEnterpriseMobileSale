@@ -156,7 +156,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
                         sale_entry.getSummary();
                     }
                     else{
-                        sale_entry_tv.sh.get(0).setDiscount_per(0);
+                        sale_entry.sh.get(0).setDiscount_per(0);
                     }
                     //added by KLM for customer discount 22082022
                     //sale_entry.SummaryFormat(sale_entry.txtfoc, sale_entry.foc_tmp + sale_entry.itemDis_tmp + sale_entry.sh.get(0).getDiscount());
