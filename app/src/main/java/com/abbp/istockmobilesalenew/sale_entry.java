@@ -1647,7 +1647,35 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                        selectInsertLibrary.OfflineCheck = false;
 //                        voucherConfirm();
 //                    }
-                    voucherConfirm();
+                    if(sh.get(0).getPay_type()==2){
+                        AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
+                        bd.setTitle("iStock");
+                        bd.setMessage("Do you want to Print Bill?");
+                        bd.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                billprintcount=1;
+                                bill_not_print=false;
+                                use_bluetooth=true;
+                                dialog.dismiss();
+                                voucherConfirm();
+                            }
+                        });
+                        bd.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                bill_not_print=true;
+                                voucherConfirm();
+                            }
+                        });
+                        bd.create().show();
+
+                    }
+                    else{
+                        voucherConfirm();
+                    }
+
                 } else {
                     AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
                     bd.setTitle("iStock");
@@ -4289,7 +4317,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         } else {
 
             //This Customer's Credit Limit is Over.Do you want to continue ???
-            use_bluetooth = bill_not_print = false;
+//            use_bluetooth =
+            //bill_not_print = false;
             double outstandamt = net_amount + Double.parseDouble(ClearFormat(txtoutstand.getText().toString()));
             if (outstandamt > sale_entry.credit_limit && sale_entry.credit_limit != 0) {
                 if (frmlogin.isallowovercreditlimit == 1) {
@@ -6752,6 +6781,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         dialog.dismiss();
 
                         if (ConfirmedTranid != 0) {
+                            if(sh.get(0).getPay_type()==2){
+
+                            }
                             if (!bill_not_print && billprintcount > 0 && use_bluetooth) {
                                 //bluetoothPrinter.Connect_Device();
                                 //showPrinterList();
