@@ -205,7 +205,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                         FilterUser.uid = -1;
                 }
 
-                BindingData();
+//                BindingData();
 
             }
         });
@@ -627,7 +627,11 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             final Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-
+                    salelists.clear();
+                    adp.notifyDataSetChanged();
+                    txtCount.setText(String.valueOf(salelists.size()));
+                    txtTotal.setText("0.0");
+                    total = 0.0;
                     try {
                         JSONArray jarr = new JSONArray(response);
                         for (int i = 0; i < jarr.length(); i++) {
@@ -690,6 +694,8 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
 
         }
     }
+
+
 
     @Override
     public void onClick(View v) {

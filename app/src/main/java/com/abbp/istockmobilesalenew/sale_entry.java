@@ -242,7 +242,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
     boolean isoffline;
 
-    public static boolean use_bluetooth;//Add By TZW for BlueToothPrinter.
+    public static boolean use_bluetooth=true;//Add By TZW for BlueToothPrinter.
     public static boolean use_localprint; //Added by ZYP for localprinter
     AlertDialog addDialog = null;
 
