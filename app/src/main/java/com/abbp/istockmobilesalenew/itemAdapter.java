@@ -164,6 +164,8 @@ public class itemAdapter extends BaseAdapter {
                             saleorder_entry.sh.get(0).setDiscount_per(0);
                             saleorder_entry.sh.get(0).setPaid_amount(0);
                             saleorder_entry.txtvoudis.setText("0");
+                            saleorder_entry.sh.get(0).setIstemdis_amount(0.0);
+                            saleorder_entry.sh.get(0).setFoc_amount(0.0);
                             // saleorder_entry.txtpaidAmt.setText("0"); //modified by EKK on 05-11-2020
                             saleorder_entry.getSummary();
                         }
@@ -436,6 +438,8 @@ public class itemAdapter extends BaseAdapter {
                             sale_entry.sh.get(0).setPaid_amount(0);
                             sale_entry.txtvoudis.setText("0");
                             sale_entry.txtpaidamt.setText("0");
+                            sale_entry.sh.get(0).setIstemdis_amount(0.0);
+                            sale_entry.sh.get(0).setFoc_amount(0.0);
                             sale_entry.getSummary();
                         }
                         dialog.dismiss();

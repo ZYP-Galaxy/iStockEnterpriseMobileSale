@@ -440,6 +440,8 @@ public class ItemAdapter extends BaseAdapter {
                             sale_entry_tv.sh.get(0).setPaid_amount(0);
                             sale_entry_tv.txtvoudis.setText("0");
                             sale_entry_tv.txtpaidamt.setText("0");
+                            sale_entry_tv.sh.get(0).setIstemdis_amount(0.0);
+                            sale_entry_tv.sh.get(0).setFoc_amount(0.0);
                             sale_entry_tv.getSummary();
                         }
 
