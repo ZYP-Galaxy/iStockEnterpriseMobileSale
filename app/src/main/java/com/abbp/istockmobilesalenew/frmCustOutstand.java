@@ -239,6 +239,7 @@ public class frmCustOutstand extends AppCompatActivity {
                 tdate = new Date();
                 custOutstandArrayList.clear();
                 custOutstandAdapter.notifyDataSetChanged();
+                totalClosingBalance.setText("0.0");
 //                custOutstandArrayList.clear();
 //                custOutstandAdapter.notifyDataSetChanged();
             }

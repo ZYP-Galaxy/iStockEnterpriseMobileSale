@@ -542,6 +542,7 @@ public class SelectInsertLibrary {
 
 
     public void UpSertingData(String table, JSONObject jobj) {
+        DatabaseHelper.execute("DELETE FROM discount_code");
         try {
             switch (table) {
                 case "Posuser":
