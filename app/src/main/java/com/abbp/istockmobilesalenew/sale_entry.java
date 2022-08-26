@@ -4400,6 +4400,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 } else {
                     //itemDis_tmp=0;
                     sh.get(0).setIstemdis_amount(itemDis_tmp);
+                    sh.get(0).setFoc_amount(foc_tmp);
                 }
 
             }
