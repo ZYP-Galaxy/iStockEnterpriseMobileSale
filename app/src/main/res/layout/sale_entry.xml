@@ -164,7 +164,29 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:id="@+id/layoutbillprint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:layout_toRightOf="@+id/todeliver"
+                        android:orientation="horizontal">
 
+                        <CheckBox
+                            android:id="@+id/chkbillprint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Bill not Print"
+                            android:textColor="#ffffff"
+                            android:textSize="15dp"
+                            android:textStyle="bold">
+
+                        </CheckBox>
+
+
+                    </LinearLayout>
                     <ImageButton
                         android:id="@+id/imgHeader"
                         android:layout_width="wrap_content"

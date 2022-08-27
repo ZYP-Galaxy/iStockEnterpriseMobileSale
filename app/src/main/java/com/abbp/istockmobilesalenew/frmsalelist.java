@@ -697,8 +697,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     }
 
     private static void GetBranchid() {
-//        branchid
-        Cursor cursor=DatabaseHelper.rawQuery("select branchid from branch where locationid="+FilterLocation.locid);
+        Cursor cursor=DatabaseHelper.rawQuery("select branchid from Location where locationid="+FilterLocation.locid);
         if(cursor!=null && cursor.getCount()>0){
             if (cursor.moveToFirst()) {
                 do{
