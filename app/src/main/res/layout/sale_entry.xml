@@ -115,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/invoicelayout"
                         android:orientation="horizontal"
                         android:visibility="gone">
@@ -146,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         android:layout_toRightOf="@+id/invoicelayout"
                         android:orientation="horizontal">
 
