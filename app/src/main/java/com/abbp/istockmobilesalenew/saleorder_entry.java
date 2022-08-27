@@ -3395,7 +3395,16 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
                     break;
                 case "Township":
-                    cursor = DatabaseHelper.DistinctSelectQuery("Customer", new String[]{"townshipid", "townshipname", "townshipcode"});
+                    if (use_customergroup) {
+                        sqlString = "select  distinct townshipid,townshipname,townshipcode from Customer " +
+                                " where  isdeleted=0 and isinactive=0 and ((custgroupid<>-1 and custgroupid=" + selected_custgroupid + ") or " + selected_custgroupid + "=-1)";
+
+                    } else {
+                        sqlString = "select distinct townshipid,townshipname,townshipcode from Customer " +
+                                " where  isdeleted=0 and isinactive=0";
+                    }
+                    cursor = DatabaseHelper.rawQuery(sqlString);
+//                    cursor = DatabaseHelper.DistinctSelectQuery("Customer", new String[]{"townshipid", "townshipname", "townshipcode"});
                     if (cursor != null && cursor.getCount() != 0) {
                         if (cursor.moveToFirst()) {
                             do {

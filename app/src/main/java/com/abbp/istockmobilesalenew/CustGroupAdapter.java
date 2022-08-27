@@ -70,7 +70,35 @@ public class CustGroupAdapter extends RecyclerView.Adapter<CustGroupAdapter.MyVi
 
 
         if (context.toString().contains("saleorder_entry")) {
-            String sqlString = "select customerid,name,townshipid,townshipname,credit from customer where customerid=(select min(customerid)customerid " +
+            String sqlString = "select customerid,name,townshipid,townshipname,iscredit from customer where customerid=(select min(customerid)customerid " +
+                    " from customer" +
+                    " where CustGroupID=" + saleorder_entry.selected_custgroupid +
+                    " group by CustGroupID)";
+            Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+            if (cursor != null && cursor.getCount() != 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        long customerid = cursor.getLong(cursor.getColumnIndex("customerid"));
+                        String customername = cursor.getString(cursor.getColumnIndex("name"));
+                        int townshipid = cursor.getInt(cursor.getColumnIndex("townshipid"));
+                        String townshipname = cursor.getString(cursor.getColumnIndex("townshipname"));
+                        boolean credit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1;
+                        saleorder_entry.btntownship.setText(/*townshipid+":"+*/townshipname);
+                        saleorder_entry.btncustomer.setText(/*customerid+":"+*/customername);
+                        saleorder_entry.selected_townshipid = townshipid;
+                        saleorder_entry.creditcustomer = credit;
+                        String pay_type = !credit ? "Cash Down" : "Credit";
+                        saleorder_entry.btnpaytype.setText(pay_type);
+                        saleorder_entry.sh.get(0).setTownshipid(townshipid);
+                        saleorder_entry.sh.get(0).setCustomerid(customerid);
+                        saleorder_entry.sh.get(0).setPay_type(!credit ? 1 : 2);
+                    } while (cursor.moveToNext());
+
+                }
+
+            }
+            cursor = null;
+           /* String sqlString = "select customerid,name,townshipid,townshipname,iscredit from customer where customerid=(select min(customerid)customerid " +
                     " from customer" +
                     " where CustGroupID=" + saleorder_entry.selected_custgroupid +
                     " group by CustGroupID)";
@@ -82,9 +110,9 @@ public class CustGroupAdapter extends RecyclerView.Adapter<CustGroupAdapter.MyVi
                         String customername = cursor.getString(cursor.getColumnIndex("name"));
                         long townshipid = cursor.getLong(cursor.getColumnIndex("townshipid"));
                         String townshipname = cursor.getString(cursor.getColumnIndex("townshipname"));
-                        boolean credit = cursor.getInt(cursor.getColumnIndex("credit")) == 1 ? true : false;
-                        saleorder_entry.btntownship.setText(/*townshipid+":"+*/townshipname);
-                        saleorder_entry.btncustomer.setText(/*customerid+":"+*/customername);
+                        boolean credit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
+                        saleorder_entry.btntownship.setText(*//*townshipid+":"+*//*townshipname);
+                        saleorder_entry.btncustomer.setText(*//*customerid+":"+*//*customername);
                         saleorder_entry.selected_townshipid = townshipid;
                         saleorder_entry.creditcustomer = credit;
                         String pay_type = credit == false ? "Cash Down" : "Credit";
@@ -97,7 +125,7 @@ public class CustGroupAdapter extends RecyclerView.Adapter<CustGroupAdapter.MyVi
                 }
 
             }
-            cursor = null;
+            cursor = null;*/
 
         }
         else if(context.toString().contains("sale_entry_tv")) {
