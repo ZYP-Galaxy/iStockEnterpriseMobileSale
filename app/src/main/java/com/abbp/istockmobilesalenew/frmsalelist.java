@@ -700,11 +700,13 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
 //        branchid
         Cursor cursor=DatabaseHelper.rawQuery("select branchid from branch where locationid="+FilterLocation.locid);
         if(cursor!=null && cursor.getCount()>0){
-            do{
-                branchid=cursor.getInt(cursor.getColumnIndex("branchid"));
-            }while (cursor.moveToNext());
-
+            if (cursor.moveToFirst()) {
+                do{
+                    branchid=cursor.getInt(cursor.getColumnIndex("branchid"));
+                }while (cursor.moveToNext());
+            }
         }
+        cursor.close();
     }
 
 
