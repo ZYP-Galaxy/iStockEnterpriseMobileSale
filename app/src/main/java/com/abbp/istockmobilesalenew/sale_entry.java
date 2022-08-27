@@ -229,7 +229,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     int defloc = 1;
     int defunit = -1;
     int def_cashid;
-    CheckBox chkDeliver, chkOffline,chkbillnotprint;
+    CheckBox chkDeliver, chkOffline;
+    CheckBox chkbillnotprint;
     TextView txtCloud;
     SharedPreferences sh_printer, sh_ptype;
     String ToDeliver = "";
@@ -300,7 +301,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        bill_not_print = sh_printer.getBoolean("bill_not_print", false);
+        //bill_not_print = sh_printer.getBoolean("bill_not_print", false);
+
         //        String str = "1,11,111.23d";
 //        try {
 //            double l = DecimalFormat.getNumberInstance().parse(str).doubleValue();
@@ -335,8 +337,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         if (sd.size() > 0) sd.clear();
         if (sh.size() > 0) sh.clear();
         getHeader();
+
 //        getTranID();
         getHeaderWithUUID();
+        if(sh.get(0).getPay_type()==2){
+            chkbillnotprint.setVisibility(View.VISIBLE);
+        }
         getData();
         getSystemSetting();
         if (!Use_Delivery) {
@@ -519,17 +525,18 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             TextView tvUnit = findViewById(R.id.unit);
             chkDeliver = findViewById(R.id.chkToDeliver);
             chkbillnotprint = findViewById(R.id.chkbillprint);
-            chkbillnotprint.setChecked(bill_not_print);
+           // chkbillnotprint.setChecked(bill_not_print);
             chkbillnotprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     bill_not_print = isChecked;
-                    SharedPreferences.Editor editor = sh_printer.edit();
-                    editor.putBoolean("bill_not_print", bill_not_print);
-                    editor.apply();
+//                    SharedPreferences.Editor editor = sh_printer.edit();
+//                    editor.putBoolean("bill_not_print", bill_not_print);
+//                    editor.apply();
                 }
             });
             chkOffline = findViewById(R.id.chkOffline);
+            chkbillnotprint.setVisibility(View.GONE);
             chkOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -2066,6 +2073,11 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         headRemark = headremark.getText().toString().trim().isEmpty() ? null : headremark.getText().toString().trim();
                         sh.get(0).setHeadremark(headRemark);
                         defloc = 1;
+                        if(sh.get(0).getPay_type()==2){
+                            chkbillnotprint.setVisibility(View.VISIBLE);
+                            bill_not_print=false;
+                        }
+
                         //Added for credit limit customer
                         String sqlString = "select customerid,iscredit,creditlimit from Customer where customerid=" + sh.get(0).getCustomerid();//,credit,due_in_days,credit_limit
                         Cursor cursor = DatabaseHelper.rawQuery(sqlString);
@@ -4207,7 +4219,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             tvPaid.setText(txtnet.getText().toString());
             CheckBox chkPrint = v.findViewById(R.id.chkPrint);
             chkPrint.setChecked(false);
-            //bill_not_print = false;//klm27
+            bill_not_print = false;//klm27
 
             rlBT.setVisibility(View.VISIBLE);//Add by TZW for BlueToothPrinter
             RadioButton chkBT = v.findViewById(R.id.chkBT);//Add by TZW for BlueToothPrinter
