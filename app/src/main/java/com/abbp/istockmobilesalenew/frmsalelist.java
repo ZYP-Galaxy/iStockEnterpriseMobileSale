@@ -71,6 +71,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     public static String getActionName = "";
     private TextView title;
     String def_locationName="";
+    static int branchid=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -621,8 +622,8 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             total = 0.0;
             String ip = sh_ip.getString("ip", "empty");
             String port = sh_port.getString("port", "empty");
-
-            url = "http://" + ip + ":" + port + "/api/mobile/GetEnqData?userid=" + frmlogin.LoginUserid + "&uid=" + FilterUser.uid + "&fdate=" + dateFormat.format(fdate) + "&tdate=" + dateFormat.format(tdate) + "&ccid=" + FilterCustomer.ccid + "&locid=" + FilterLocation.locid + "&branchid=" + frmlogin.defaultbranchid + "&name=" + getActionName;
+            GetBranchid();
+            url = "http://" + ip + ":" + port + "/api/mobile/GetEnqData?userid=" + frmlogin.LoginUserid + "&uid=" + FilterUser.uid + "&fdate=" + dateFormat.format(fdate) + "&tdate=" + dateFormat.format(tdate) + "&ccid=" + FilterCustomer.ccid + "&locid=" + FilterLocation.locid + "&branchid=" +branchid /*frmlogin.defaultbranchid*/ + "&name=" + getActionName;
             requestQueue = Volley.newRequestQueue(listcontext);
             final Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
@@ -695,6 +696,16 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         }
     }
 
+    private static void GetBranchid() {
+//        branchid
+        Cursor cursor=DatabaseHelper.rawQuery("select branchid from branch where locationid="+FilterLocation.locid);
+        if(cursor!=null && cursor.getCount()>0){
+            do{
+                branchid=cursor.getInt(cursor.getColumnIndex("branchid"));
+            }while (cursor.moveToNext());
+
+        }
+    }
 
 
     @Override
