@@ -229,7 +229,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     int defloc = 1;
     int defunit = -1;
     int def_cashid;
-    CheckBox chkDeliver, chkOffline;
+    CheckBox chkDeliver, chkOffline,chkbillnotprint;
     TextView txtCloud;
     SharedPreferences sh_printer, sh_ptype;
     String ToDeliver = "";
@@ -300,8 +300,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-//        String str = "1,11,111.23d";
+        bill_not_print = sh_printer.getBoolean("bill_not_print", false);
+        //        String str = "1,11,111.23d";
 //        try {
 //            double l = DecimalFormat.getNumberInstance().parse(str).doubleValue();
 //            System.out.println(l);
@@ -398,10 +398,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
         } catch (Exception ee) {
             Toast.makeText(this, "You are in Offline. Please check your connection!", Toast.LENGTH_LONG).show();
-
-
         }
-
     }
 
     private void settingcpyname() {
@@ -521,6 +518,17 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             SaleVouSalesmen.clear();
             TextView tvUnit = findViewById(R.id.unit);
             chkDeliver = findViewById(R.id.chkToDeliver);
+            chkbillnotprint = findViewById(R.id.chkbillprint);
+            chkbillnotprint.setChecked(bill_not_print);
+            chkbillnotprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    bill_not_print = isChecked;
+                    SharedPreferences.Editor editor = sh_printer.edit();
+                    editor.putBoolean("bill_not_print", bill_not_print);
+                    editor.apply();
+                }
+            });
             chkOffline = findViewById(R.id.chkOffline);
             chkOffline.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -1648,7 +1656,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                        selectInsertLibrary.OfflineCheck = false;
 //                        voucherConfirm();
 //                    }
-                    if(sh.get(0).getPay_type()==2){
+                   /* if(sh.get(0).getPay_type()==2){
                         AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
                         bd.setTitle("iStock");
                         bd.setMessage("Do you want to Print Bill?");
@@ -1673,9 +1681,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         bd.create().show();
 
                     }
-                    else{
+                    else{*/
                         voucherConfirm();
-                    }
+                    //}
 
                 } else {
                     AlertDialog.Builder bd = new AlertDialog.Builder(sale_entry.this, R.style.AlertDialogTheme);
@@ -4199,7 +4207,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             tvPaid.setText(txtnet.getText().toString());
             CheckBox chkPrint = v.findViewById(R.id.chkPrint);
             chkPrint.setChecked(false);
-            bill_not_print = false;
+            //bill_not_print = false;//klm27
 
             rlBT.setVisibility(View.VISIBLE);//Add by TZW for BlueToothPrinter
             RadioButton chkBT = v.findViewById(R.id.chkBT);//Add by TZW for BlueToothPrinter
@@ -4221,7 +4229,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             chkLocalPrint.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 use_localprint = isChecked;
             });
-
+            chkPrint.setChecked(bill_not_print);
             chkPrint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -4985,6 +4993,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         keynum = "1";
 
                     }
+                    Log.i("Error from Keynum",e+" 0");
                     txtNum.setText(keynum);
 //                    AlertDialog.Builder bd=new AlertDialog.Builder(sale_entry.this,R.style.AlertDialogTheme);
 //                    bd.setTitle("iStock");
