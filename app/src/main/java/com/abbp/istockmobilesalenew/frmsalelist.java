@@ -70,8 +70,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     public static Context listcontext;
     public static String getActionName = "";
     private TextView title;
-    String def_locationName="";
-    static int branchid=1;
+    String def_locationName = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,10 +105,10 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    def_locationName=cursor.getString(cursor.getColumnIndex("Name"));
+                    def_locationName = cursor.getString(cursor.getColumnIndex("Name"));
                     selectfilter.setText(def_locationName);
                     //if(frmlogin.canselectlocation!=0){
-                        filterV = 3;
+                    filterV = 3;
                     //}
 
 
@@ -144,10 +143,9 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
 
         if (item.getItemId() == R.id.add) {
             Intent intent;
-            if(frmlogin.isTVMode){
+            if (frmlogin.isTVMode) {
                 intent = new Intent(frmsalelist.this, sale_entry_tv.class);
-            }
-            else{
+            } else {
                 intent = new Intent(frmsalelist.this, sale_entry.class);
             }
 
@@ -215,17 +213,16 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         findViewById(R.id.imgAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(getActionName.equals("Sale History")){
+                if (getActionName.equals("Sale History")) {
                     Intent intent;
-                    if(frmlogin.isTVMode){
+                    if (frmlogin.isTVMode) {
                         intent = new Intent(frmsalelist.this, sale_entry_tv.class);
-                    }
-                    else{
+                    } else {
                         intent = new Intent(frmsalelist.this, sale_entry.class);
                     }
                     startActivity(intent);
                     finish();
-                }else if(getActionName.equals("Sale Order History")){
+                } else if (getActionName.equals("Sale Order History")) {
                     Intent intent = new Intent(frmsalelist.this, saleorder_entry.class);
                     startActivity(intent);
                     finish();
@@ -267,7 +264,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 } else if (selectfilter.getText().toString().trim().equals("Choose User") || filterV == 2) {
                     filterV = 2;
                     selecter("User", selectfilter);
-                } else if (frmlogin.canselectlocation!=0 && (selectfilter.getText().toString().trim().equals("Choose Location") || filterV == 3)) {
+                } else if (frmlogin.canselectlocation != 0 && (selectfilter.getText().toString().trim().equals("Choose Location") || filterV == 3)) {
                     filterV = 3;
                     selecter("Location", selectfilter);
                 } else if (filterV == 0) {
@@ -356,7 +353,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                                                     filteredcustomer.add(item);
                                                 }
                                             }
-                                            FilterCustomer ca = new FilterCustomer(frmsalelist.this, filteredcustomer, btn, da,getActionName);
+                                            FilterCustomer ca = new FilterCustomer(frmsalelist.this, filteredcustomer, btn, da, getActionName);
                                             rv.setAdapter(ca);
                                             GridLayoutManager gridLayoutManagerCust = new GridLayoutManager(getApplicationContext(), 4);
                                             rv.setLayoutManager(gridLayoutManagerCust);
@@ -383,7 +380,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                                                     filteredloc.add(item);
                                                 }
                                             }
-                                            FilterLocation loc = new FilterLocation(frmsalelist.this, filteredloc, btn, da,getActionName);
+                                            FilterLocation loc = new FilterLocation(frmsalelist.this, filteredloc, btn, da, getActionName);
                                             rv.setAdapter(loc);
                                             GridLayoutManager gridLayoutManagerLoc = new GridLayoutManager(getApplicationContext(), 4);
                                             rv.setLayoutManager(gridLayoutManagerLoc);
@@ -465,7 +462,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                     }
                     cursor.close();
 
-                    FilterCustomer cad = new FilterCustomer(frmsalelist.this, customers, btn, da,getActionName);
+                    FilterCustomer cad = new FilterCustomer(frmsalelist.this, customers, btn, da, getActionName);
                     rv.setAdapter(cad);
                     GridLayoutManager gridLayoutManagerCustomer = new GridLayoutManager(getApplicationContext(), 4);
                     rv.setLayoutManager(gridLayoutManagerCustomer);
@@ -537,7 +534,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
 //                    }
 //                    cursor.close();
 
-                    FilterLocation lad = new FilterLocation(frmsalelist.this, locs, btn, da,getActionName);
+                    FilterLocation lad = new FilterLocation(frmsalelist.this, locs, btn, da, getActionName);
                     rv.setAdapter(lad);
                     GridLayoutManager gridLayoutManagerLocation = new GridLayoutManager(getApplicationContext(), 4);
                     rv.setLayoutManager(gridLayoutManagerLocation);
@@ -561,7 +558,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 switch (item.getItemId()) {
                     case R.id.customermenu:
                         selectfilter.setText("Choose Customer");
-                        filterV=1;
+                        filterV = 1;
                         return true;
                     case R.id.usermenu: {
                         if (getActionName.equals("Sale History")) {
@@ -576,19 +573,18 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                             } else
                                 selectfilter.setText("Choose User");
                         }
-                        filterV=2;
+                        filterV = 2;
                         return true;
                     }
 
                     case R.id.locmenu:
-                        if(frmlogin.canselectlocation==0){
+                        if (frmlogin.canselectlocation == 0) {
                             selectfilter.setText(def_locationName);
-                        }
-                        else{
+                        } else {
                             selectfilter.setText("Choose Location");
                         }
 
-                        filterV=3;
+                        filterV = 3;
                         return true;
                     default:
                         return false;
@@ -622,8 +618,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             total = 0.0;
             String ip = sh_ip.getString("ip", "empty");
             String port = sh_port.getString("port", "empty");
-            GetBranchid();
-            url = "http://" + ip + ":" + port + "/api/mobile/GetEnqData?userid=" + frmlogin.LoginUserid + "&uid=" + FilterUser.uid + "&fdate=" + dateFormat.format(fdate) + "&tdate=" + dateFormat.format(tdate) + "&ccid=" + FilterCustomer.ccid + "&locid=" + FilterLocation.locid + "&branchid=" +branchid /*frmlogin.defaultbranchid*/ + "&name=" + getActionName;
+            url = "http://" + ip + ":" + port + "/api/mobile/GetEnqData?userid=" + frmlogin.LoginUserid + "&uid=" + FilterUser.uid + "&fdate=" + dateFormat.format(fdate) + "&tdate=" + dateFormat.format(tdate) + "&ccid=" + FilterCustomer.ccid + "&locid=" + FilterLocation.locid + "&branchid=0" /*frmlogin.defaultbranchid*/ + "&name=" + getActionName;
             requestQueue = Volley.newRequestQueue(listcontext);
             final Response.Listener<String> listener = new Response.Listener<String>() {
                 @Override
@@ -697,7 +692,8 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     }
 
     private static void GetBranchid() {
-        Cursor cursor=DatabaseHelper.rawQuery("select branchid from Location where locationid="+FilterLocation.locid);
+//        branchid
+        Cursor cursor=DatabaseHelper.rawQuery("select branchid from branch where locationid="+FilterLocation.locid);
         if(cursor!=null && cursor.getCount()>0){
             if (cursor.moveToFirst()) {
                 do{
