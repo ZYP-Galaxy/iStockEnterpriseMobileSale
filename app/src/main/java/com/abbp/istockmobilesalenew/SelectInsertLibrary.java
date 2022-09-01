@@ -1166,7 +1166,7 @@ public class SelectInsertLibrary {
                         cv.put("disamount9", discount.optDouble("discount9amount", 0));
                         cv.put("disamount10", discount.optDouble("discount10amount", 0));
 
-                        cv.put("dispercent", discount.optDouble("discountpercent", 0));
+                        /*cv.put("dispercent", discount.optDouble("discountpercent", 0));
                         cv.put("dispercent1", discount.optDouble("discount1percent", 0));
                         cv.put("dispercent2", discount.optDouble("discount2percent", 0));
                         cv.put("dispercent3", discount.optDouble("discount3percent", 0));
@@ -1176,9 +1176,8 @@ public class SelectInsertLibrary {
                         cv.put("dispercent7", discount.optDouble("discount7percent", 0));
                         cv.put("dispercent8", discount.optDouble("discount8percent", 0));
                         cv.put("dispercent9", discount.optDouble("discount9percent", 0));
-                        cv.put("dispercent10", discount.optDouble("discount10percent", 0));
+                        cv.put("dispercent10", discount.optDouble("discount10percent", 0));*/
 
-                        //DatabaseHelper.upsertWithOnConflit("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE, null, null);
                         DatabaseHelper.insertWithOnConflict("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
                     }
                     break;

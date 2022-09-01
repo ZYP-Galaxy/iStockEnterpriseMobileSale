@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -435,6 +436,18 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
         edtBarcodeScan = findViewById(R.id.edtBarcodeScan);
         edtBarcodeScan.setShowSoftInputOnFocus(false);
+        edtBarcodeScan.requestFocus();
+        edtBarcodeScan.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+//                setImeVisibility(hasFocus);
+                edtBarcodeScan.setShowSoftInputOnFocus(false);
+                if (hasFocus) {
+                    hideSoftKeyboard(view);
+                }
+
+            }
+        });
         edtBarcodeScan.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -463,6 +476,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+        hideSoftKeyboard(edtBarcodeScan);
+
 
         EditText edtSearch = findViewById(R.id.edtSearch);
         edtSearch.addTextChangedListener(new TextWatcher() {
@@ -727,6 +742,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
         });
 
+    }
+
+    private void hideSoftKeyboard(View v){
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     public void bindingCreditBalance() {
@@ -2087,6 +2107,12 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 dialog = builder.create();
                 dialog.show();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        hideSoftKeyboard(edtBarcodeScan);
+                    }
+                });
 
 
                 break;

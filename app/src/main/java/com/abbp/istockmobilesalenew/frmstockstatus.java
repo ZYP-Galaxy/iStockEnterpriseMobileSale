@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -435,6 +436,9 @@ public class frmstockstatus extends AppCompatActivity {
             }
         };
         StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+        req.setRetryPolicy(new DefaultRetryPolicy(1000000000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(req);
 
 

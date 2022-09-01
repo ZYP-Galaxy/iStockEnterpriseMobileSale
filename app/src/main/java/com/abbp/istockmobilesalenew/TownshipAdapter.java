@@ -75,10 +75,24 @@ public class TownshipAdapter extends RecyclerView.Adapter<TownshipAdapter.MyView
 
     private void BindMaxCustomer(Context context) {
         if (context.toString().contains("saleorder_entry")) {
-            String sqlString = "select customerid,name,iscredit,CustGroupID,CustGroupname from customer where customerid=(select min(customerid)customerid " +
-                    " from customer" +
-                    " where Townshipid=" + saleorder_entry.selected_townshipid +
-                    " group by Townshipid)";
+            String sqlString = null;
+
+            if (saleorder_entry.use_customergroup) {
+                sqlString = "select customerid,name,iscredit,CustGroupID,CustGroupname from customer where customerid=(select min(customerid)customerid " +
+                        " from customer" +
+                        " where Townshipid=" + saleorder_entry.selected_townshipid +
+                        " and ((custgroupid<>-1 and custgroupid=" + saleorder_entry.selected_custgroupid + ") or " + saleorder_entry.selected_custgroupid + "=-1)"+
+                        " group by Townshipid)";
+            } else {
+                sqlString = "select customerid,name,iscredit,CustGroupID,CustGroupname from customer where customerid=(select min(customerid)customerid " +
+                        " from customer" +
+                        " where Townshipid=" + saleorder_entry.selected_townshipid +
+                        " group by Townshipid)";
+            }
+//            String sqlString = "select customerid,name,iscredit,CustGroupID,CustGroupname from customer where customerid=(select min(customerid)customerid " +
+//                    " from customer" +
+//                    " where Townshipid=" + saleorder_entry.selected_townshipid +
+//                    " group by Townshipid)";
             Cursor cursor = DatabaseHelper.rawQuery(sqlString);
             if (cursor != null && cursor.getCount() != 0) {
                 if (cursor.moveToFirst()) {

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -681,6 +682,10 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 }
             };
             StringRequest req = new StringRequest(Request.Method.GET, url, listener, error);
+            req.setRetryPolicy(new DefaultRetryPolicy(
+                    60000,
+                    1,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(req);
 
 

@@ -2133,6 +2133,15 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                 dialog = builder.create();
                 dialog.show();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        if(sh.get(0).getPay_type()==2){
+                            chkbillnotprint.setVisibility(View.VISIBLE);
+                            bill_not_print=false;
+                        }
+                    }
+                });
 
 
                 break;
