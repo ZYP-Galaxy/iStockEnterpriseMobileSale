@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="INVOICE NO"
+                        android:text="Invoice No"
                         android:textColor="@color/barcolor"
                         android:textSize="14dp"
                         android:textStyle="bold" />

@@ -57,11 +57,11 @@ public class frmstockstatus extends AppCompatActivity {
     Button choosecategory, chooselocation;
     AlertDialog da = null;
     AlertDialog msg;
-    public static ArrayList<class_item> class_items = new ArrayList<>();
+    public ArrayList<class_item> class_items = new ArrayList<>();
     classAdapter classadapter;
     public static RecyclerView gridclassview;
     int status = 0;
-    public static ArrayList<category> categories = new ArrayList<>();
+    public ArrayList<category> categories = new ArrayList<>();
     categoryAdapter categoryadapter;
 
     public static SharedPreferences sh_ip, sh_port;
@@ -371,6 +371,11 @@ public class frmstockstatus extends AppCompatActivity {
 
                     JSONArray stockstatusjarr = jsonObject.getJSONArray("stockstatus");
                     JSONObject object = null;
+                    Boolean searchAllMatch=false;
+                    if(searchcode.contains("%")){
+                        searchcode.replace("%","");
+                        searchAllMatch=true;
+                    }
                     for (int i = 0; i < stockstatusjarr.length(); i++) {
 
                         object = stockstatusjarr.getJSONObject(i);
@@ -392,18 +397,26 @@ public class frmstockstatus extends AppCompatActivity {
 //                        if(usrcode.toLowerCase().contains(findcode.getText().toString().toLowerCase())) {
                         String description1 = description.length() == 0 || description.equals("null")? usrcode : description;
                         if (!searchcode.equals("")) {
+
                             if (usrcode.toLowerCase().contains(searchcode)) {
                                 System.out.println(usrcode + " " + description + " " + saleamount + " " + balanceqty + " " + searchcode);
 
                                 stockStatuses.add(new StockStatus(usrcode, description1, saleamount, balanceqty));
-                                searchcode = "";
-                                if (stockStatuses.size() == 0) {
-                                    Toast.makeText(getApplicationContext(), "Anything does not match with " + searchcode, Toast.LENGTH_LONG).show();
+                                //searchcode = "";
+                                if(!searchAllMatch){
+                                    break;
                                 }
-                                break;
+
+                                //
                             }
                         } else {
                             stockStatuses.add(new StockStatus(usrcode, description1, saleamount, balanceqty));
+                        }
+                    }
+                    if(!searchcode.equals("") && stockStatuses.size()<0){
+                        if (stockStatuses.size() == 0) {
+                            Toast.makeText(getApplicationContext(), "Anything does not match with " + searchcode, Toast.LENGTH_LONG).show();
+
                         }
                     }
 

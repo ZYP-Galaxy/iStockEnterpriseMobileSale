@@ -119,7 +119,7 @@ public class frmscancode extends AppCompatActivity implements ZXingScannerView.R
 
             usrcodeAdapter.scanner(scannercode,getIntent().getExtras().getString("name"));//added by KLM to effect both sale & sale order in qrcode scanner
         } else {
-            Toast.makeText(getBaseContext(), "Alias Code isn't in the Table!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(), "Code isn't found. Please scan again!", Toast.LENGTH_SHORT).show();
         }
 
         /*AlertDialog.Builder builder=new AlertDialog.Builder(this);

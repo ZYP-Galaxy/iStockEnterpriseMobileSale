@@ -1,6 +1,7 @@
 package com.abbp.istockmobilesalenew.tvsale;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -435,7 +436,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         txtUsername.setText(frmlogin.username);
 
         edtBarcodeScan = findViewById(R.id.edtBarcodeScan);
-        edtBarcodeScan.setShowSoftInputOnFocus(false);
         edtBarcodeScan.requestFocus();
         edtBarcodeScan.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -443,11 +443,14 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                setImeVisibility(hasFocus);
                 edtBarcodeScan.setShowSoftInputOnFocus(false);
                 if (hasFocus) {
-                    hideSoftKeyboard(view);
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(edtBarcodeScan.getWindowToken(), 0);
+                    //hideSoftKeyboard(view);
                 }
 
             }
         });
+        edtBarcodeScan.setShowSoftInputOnFocus(false);
         edtBarcodeScan.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -476,8 +479,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-        hideSoftKeyboard(edtBarcodeScan);
-
+        //hideSoftKeyboard(edtBarcodeScan);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(edtBarcodeScan.getWindowToken(), 0);
 
         EditText edtSearch = findViewById(R.id.edtSearch);
         edtSearch.addTextChangedListener(new TextWatcher() {
@@ -709,7 +713,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 //                }
                 String vouper = "Vou Discount";
                 if (sh.get(0).getDiscount_per() > 0) {
-                    custDis=sh.get(0).getDiscount_per();
+                    custDis = sh.get(0).getDiscount_per();
                     vouper = "Vou Discount( " + custDis + "% )";
                     sh.get(0).setDiscount_per(custDis);
                     getSummary();
@@ -744,7 +748,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void hideSoftKeyboard(View v){
+    private void hideSoftKeyboard(View v) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
@@ -794,7 +798,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
     private void getHeaderWithUUID() {
         Cursor cursor = DatabaseHelper.rawQuery("select * from sale_head_main");
-        if(cursor!=null && cursor.getCount()>0){
+        if (cursor != null && cursor.getCount() > 0) {
             tranidInt = cursor.getCount() + 1;
         }
         sh.add(new Sale_head_main(tranid, frmlogin.LoginUserid, "VOU-1", dateFormat.format(new Date()), "", "", frmlogin.det_locationid, 1, frmlogin.def_cashid, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0));
@@ -2107,10 +2111,17 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 dialog = builder.create();
                 dialog.show();
+               // edtBarcodeScan.setShowSoftInputOnFocus(false);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        hideSoftKeyboard(edtBarcodeScan);
+                       // edtBarcodeScan.setShowSoftInputOnFocus(false);
+                        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        //inputMethodManager.hideSoftInputFromWindow(.getWindowToken(), 0);
+                        inputMethodManager.hideSoftInputFromWindow(edtBarcodeScan.getWindowToken(), 0);
+                        //InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//                        inputMethodManager.hideSoftInputFromWindow(edtBarcodeScan.getWindowToken(), 0);
+//                        hideSoftKeyboard(edtBarcodeScan);
                     }
                 });
 
@@ -3235,7 +3246,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
                     Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
                     EditText credit = layout.findViewById(R.id.txtCredit);
-                    EditText txtdueDay=layout.findViewById(R.id.txtdueday);
+                    EditText txtdueDay = layout.findViewById(R.id.txtdueday);
                     credit.setEnabled(false);
                     Button btnclose = layout.findViewById(R.id.btnclose);
                     Button btnok = layout.findViewById(R.id.btnok);
@@ -3269,7 +3280,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 credit.setEnabled(true);
-                                if(frmmain.isuseduedate){
+                                if (frmmain.isuseduedate) {
                                     txtdueDay.setVisibility(View.VISIBLE);
                                 }
                             } else {
@@ -3300,9 +3311,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
-                                    int dueinday=0;
-                                    if(!txtdueDay.getText().toString().isEmpty()){
-                                        dueinday=Integer.parseInt(txtdueDay.getText().toString());
+                                    int dueinday = 0;
+                                    if (!txtdueDay.getText().toString().isEmpty()) {
+                                        dueinday = Integer.parseInt(txtdueDay.getText().toString());
                                     }
                                     newCustomerName = nameSt;
                                     int custid = getCustomerCount() + 1;
@@ -3312,7 +3323,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
                                     sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted,dueindays) values (";
-                                    sqlstring += (codeSt.length() > 0?"'" + codeSt + "'":null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
+                                    sqlstring += (codeSt.length() > 0 ? "'" + codeSt + "'" : null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false," + (dueinday > 0 ? dueinday : null) + ")";
 //                                    if (codeSt.length() > 0) {
 //                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false)";
 //                                    } else {
