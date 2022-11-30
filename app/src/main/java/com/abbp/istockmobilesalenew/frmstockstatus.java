@@ -270,6 +270,7 @@ public class frmstockstatus extends AppCompatActivity {
                 fdate = new Date();
                 tdate = new Date();
                 stockStatuses.clear();
+                searchcode="";
                 stockStatusAdapter.notifyDataSetChanged();
 
 //                BindingData();
@@ -419,7 +420,7 @@ public class frmstockstatus extends AppCompatActivity {
 
                         }
                     }
-                    searchcode="";
+                    //searchcode="";
                     rcv.setAdapter(stockStatusAdapter);
                     LinearLayoutManager lm = new LinearLayoutManager(frmstockstatus.this, LinearLayoutManager.VERTICAL, false);
                     rcv.setLayoutManager(lm);
