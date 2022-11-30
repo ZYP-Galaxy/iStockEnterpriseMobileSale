@@ -373,7 +373,7 @@ public class frmstockstatus extends AppCompatActivity {
                     JSONObject object = null;
                     Boolean searchAllMatch=false;
                     if(searchcode.contains("%")){
-                        searchcode.replace("%","");
+                        searchcode=searchcode.replace("%","");
                         searchAllMatch=true;
                     }
                     for (int i = 0; i < stockstatusjarr.length(); i++) {
@@ -413,9 +413,9 @@ public class frmstockstatus extends AppCompatActivity {
                             stockStatuses.add(new StockStatus(usrcode, description1, saleamount, balanceqty));
                         }
                     }
-                    if(!searchcode.equals("") && stockStatuses.size()<0){
+                    if(!searchcode.equals("") && stockStatuses.size()<1){
                         if (stockStatuses.size() == 0) {
-                            Toast.makeText(getApplicationContext(), "Anything does not match with " + searchcode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),  searchcode + " does not find!", Toast.LENGTH_LONG).show();
 
                         }
                     }
