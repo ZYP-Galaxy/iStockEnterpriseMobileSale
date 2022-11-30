@@ -6535,16 +6535,25 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         String stamount = null;
         String qtyprice = null;
         String item = null;
+        String qty = null;
+        String unit = null;
         double amt = 0.0;
+        String price = null;
         LinearLayout detailLayout = voucher.findViewById(R.id.detail);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < sale_entry.sd.size(); i++) {
             View voucheritem = getLayoutInflater().inflate(R.layout.layout_voucher_item, null);
             TextView tvdescription = voucheritem.findViewById(R.id.txtdescription);
+            TextView tvqty = voucheritem.findViewById(R.id.txtqty);
+            TextView tvunit = voucheritem.findViewById(R.id.txtunit);
+            TextView tvprice = voucheritem.findViewById(R.id.txtprice);
             TextView tvamount = voucheritem.findViewById(R.id.txtAmount);
             TextView tvqtyamount = voucheritem.findViewById(R.id.txtQtyPrice);
 
             item = sale_entry.sd.get(i).getDesc();
+            qty = String.format("%." + frmmain.qty_places + "f", sale_entry.sd.get(i).getUnit_qty());
+            unit = sale_entry.sd.get(i).getUnit_short();
+            price = (CurrencyFormat(sale_entry.sd.get(i).getSale_price())).toString();
             amt = sale_entry.sd.get(i).getUnit_qty() * sale_entry.sd.get(i).getSale_price();
 //            int len = item.length();
 //            if (len > 20) {
@@ -6555,6 +6564,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     + CurrencyFormat(sale_entry.sd.get(i).getSale_price()) + ")";
 
             tvdescription.setText(item);
+            tvqty.setText(qty);
+            tvunit.setText(unit);
+            tvprice.setText(price);
             tvamount.setText(stamount);
             tvqtyamount.setText(qtyprice);
             detailLayout.addView(voucheritem);
@@ -6788,6 +6800,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
 //                    b.setCancelable(false);
 //                    b.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//
 //                                                                @Override
 //                                public void onClick(DialogInterface dialog, int which) {
 //                                    dialog.dismiss();

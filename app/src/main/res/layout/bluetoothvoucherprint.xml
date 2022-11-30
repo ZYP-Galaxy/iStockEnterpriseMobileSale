@@ -189,8 +189,26 @@
                     style="@style/voucher_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="ITEMS" />
+                    android:layout_weight="1.5"
+                    android:text="Description" />
+
+                <TextView
+                    style="@style/voucher_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="end"
+                    android:padding="5dp"
+                    android:text="Qty" />
+
+                <TextView
+                    style="@style/voucher_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:gravity="end"
+                    android:padding="5dp"
+                    android:text="Unit" />
 
                 <TextView
                     style="@style/voucher_text"
@@ -199,7 +217,16 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:padding="5dp"
-                    android:text="AMOUNT" />
+                    android:text="Price" />
+
+                <TextView
+                    style="@style/voucher_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:padding="5dp"
+                    android:text="Amount" />
             </LinearLayout>
 
             <LinearLayout
