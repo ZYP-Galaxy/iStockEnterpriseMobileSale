@@ -419,7 +419,7 @@ public class frmstockstatus extends AppCompatActivity {
 
                         }
                     }
-
+                    searchcode="";
                     rcv.setAdapter(stockStatusAdapter);
                     LinearLayoutManager lm = new LinearLayoutManager(frmstockstatus.this, LinearLayoutManager.VERTICAL, false);
                     rcv.setLayoutManager(lm);
