@@ -78,8 +78,10 @@ public class itemAdapter extends BaseAdapter {
     }
 
     private View saleorddetdatabind(int position, View convertView, ViewGroup parent) {
-        LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = lf.inflate(R.layout.dataitem, null, false);
+        if (convertView == null) {
+            LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = lf.inflate(R.layout.dataitem, null, false);
+        }
         TextView tv = (TextView) convertView.findViewById(R.id.sr);
         TextView tv1 = (TextView) convertView.findViewById(R.id.desc);
         tv2 = (TextView) convertView.findViewById(R.id.qty);
@@ -352,8 +354,10 @@ public class itemAdapter extends BaseAdapter {
     }
 
     private View saledetdatabind(int position, View convertView, ViewGroup parent) {
-        LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = lf.inflate(R.layout.dataitem, null, false);
+        if (convertView == null) {
+            LayoutInflater lf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = lf.inflate(R.layout.dataitem, null, false);
+        }
         TextView tv = (TextView) convertView.findViewById(R.id.sr);
         TextView tv1 = (TextView) convertView.findViewById(R.id.desc);
         TextView tv2 = (TextView) convertView.findViewById(R.id.qty);
@@ -1016,9 +1020,9 @@ public class itemAdapter extends BaseAdapter {
 
 
                     } else {
-                        if(!isValidQty){
+                        if (!isValidQty) {
                             tmpPriceLevel = "SP";
-                            isValidQty=true;
+                            isValidQty = true;
                             pad = new priceLevelAdapter(context, itemposition, tv4, tv2, txtamt, 0);
                             pad.issaleentry = isSaleEntry;
                             sale_price = pad.getSalePrice(tmpPriceLevel);
@@ -1031,18 +1035,18 @@ public class itemAdapter extends BaseAdapter {
                     }
 
                     // Toast.makeText(context,"Price " + sale_price, Toast.LENGTH_LONG).show();
-                        if(isValidQty){
-                            if (isSaleEntry) {
-                                sale_entry.sd.get(itemposition).setSale_price(sale_price);
-                                sale_entry.sd.get(itemposition).setDis_price(sale_price);
-                            } else {
-                                saleorder_entry.sd.get(itemposition).setSale_price(sale_price);
-                                saleorder_entry.sd.get(itemposition).setDis_price(sale_price);
-                            }
-
-                            double amt = Double.parseDouble(keynum) * sale_price;
-                            tv4.setText(String.format("%,." + frmmain.price_places + "f", amt));
+                    if (isValidQty) {
+                        if (isSaleEntry) {
+                            sale_entry.sd.get(itemposition).setSale_price(sale_price);
+                            sale_entry.sd.get(itemposition).setDis_price(sale_price);
+                        } else {
+                            saleorder_entry.sd.get(itemposition).setSale_price(sale_price);
+                            saleorder_entry.sd.get(itemposition).setDis_price(sale_price);
                         }
+
+                        double amt = Double.parseDouble(keynum) * sale_price;
+                        tv4.setText(String.format("%,." + frmmain.price_places + "f", amt));
+                    }
 
 
                 } while (cursor.moveToNext());

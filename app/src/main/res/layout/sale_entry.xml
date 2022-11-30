@@ -172,8 +172,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="2dp"
                         android:layout_toRightOf="@+id/todeliver"
-                        android:orientation="horizontal"
-                        >
+                        android:orientation="horizontal">
 
                         <CheckBox
                             android:id="@+id/chkbillprint"
@@ -188,6 +187,7 @@
 
 
                     </LinearLayout>
+
                     <ImageButton
                         android:id="@+id/imgHeader"
                         android:layout_width="wrap_content"

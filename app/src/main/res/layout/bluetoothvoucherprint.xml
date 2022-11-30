@@ -127,6 +127,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/salemenlayout"
                 android:layout_width="wrap_content"
@@ -151,6 +152,7 @@
 
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -177,7 +179,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3dp"
-                android:layout_marginVertical="5dp"
+                android:layout_marginVertical="3dp"
                 android:background="@drawable/dotted" />
 
             <LinearLayout
@@ -198,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="end"
-                    android:padding="5dp"
+                    android:padding="3dp"
                     android:text="Qty" />
 
                 <TextView
@@ -206,8 +208,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
-                    android:gravity="end"
-                    android:padding="5dp"
+                    android:gravity="center"
+                    android:padding="3dp"
                     android:text="Unit" />
 
                 <TextView
@@ -216,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:padding="5dp"
+                    android:padding="3dp"
                     android:text="Price" />
 
                 <TextView
@@ -225,9 +227,15 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:padding="5dp"
+                    android:padding="3dp"
                     android:text="Amount" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginVertical="3dp"
+                android:background="@drawable/dotted" />
 
             <LinearLayout
                 android:id="@+id/detail"
@@ -322,6 +330,7 @@
                     android:text="1000" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout_tax"
                 android:layout_width="match_parent"
@@ -346,6 +355,12 @@
                     android:text="1000" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/dotted" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -433,7 +448,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/txtfootertitle2"
@@ -445,7 +460,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/txtfootertitle3"
@@ -457,7 +472,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="18sp"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
         </LinearLayout>
     </ScrollView>

@@ -217,7 +217,6 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="0dp"
                         android:background="@drawable/btnround2"
-
                         android:text="Exit"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
