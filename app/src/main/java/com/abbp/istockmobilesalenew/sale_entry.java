@@ -6555,6 +6555,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pb.setCancelable(false);//added by KLM (MWA22124) don't dismiss if process is imcomplete 21122022
             pb.show();
         }
 
@@ -6612,6 +6613,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     ConfirmedTranid = Long.parseLong(s);
                 }
                 AlertDialog.Builder b = new AlertDialog.Builder(sale_entry.this, R.style.MyDialogTheme);
+                b.setCancelable(false);//added by KLM (MWA22124) don't dismiss if process is imcomplete 21122022
                 TextView title = new TextView(getApplicationContext());
                 title.setBackgroundColor(Color.rgb(96, 169, 23));
                 title.setPadding(30, 20, 10, 20);
