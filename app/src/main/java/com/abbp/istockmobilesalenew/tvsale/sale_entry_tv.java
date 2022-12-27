@@ -99,6 +99,7 @@ import com.abbp.istockmobilesalenew.sale_det_tmp;
 import com.abbp.istockmobilesalenew.sale_entry;
 import com.abbp.istockmobilesalenew.sale_head_tmp;
 import com.abbp.istockmobilesalenew.salechange;
+import com.abbp.istockmobilesalenew.saleorder_entry;
 import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
 import com.abbp.istockmobilesalenew.unitforcode;
 import com.abbp.istockmobilesalenew.usr_code;
@@ -353,35 +354,18 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         gridclassview.setVisibility(View.VISIBLE);
         gridcodeview.setVisibility(View.VISIBLE);
         BindingClass();
-
-//        if (frmmain.withoutclass.equals("true")) {
-//            gridview.setVisibility(View.VISIBLE);
-//            BindingCategory();
-//        } else {
-//            gridclassview.setVisibility(View.VISIBLE);
-//            gridcodeview.setVisibility(View.VISIBLE);
-//            BindingClass();
-//        }
-
+        tranid = 0;//added by KLM to override old tranid 27122022
         if (sd.size() > 0) sd.clear();
         if (sh.size() > 0) sh.clear();
         getHeader();
-//        getTranID();
         getHeaderWithUUID();
         getData();
         getSystemSetting();
-//        if (!Use_Delivery) {
-//            chkDeliver.setVisibility(View.GONE);
-//        } else {
-//            chkDeliver.setVisibility(View.VISIBLE);
-//        }
         Tax_Type = getTaxType();
         caltax = caltaxsetting();
         fitercode = "Code";
         sortcode = "usr_code";
         isCategory = true;
-        //imgFilterCode.setVisibility(View.GONE);
-
         btPrinter = BaseApplication.getInstance().getRtPrinter();
 
     }
@@ -2112,11 +2096,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 dialog = builder.create();
                 dialog.show();
-               // edtBarcodeScan.setShowSoftInputOnFocus(false);
+                // edtBarcodeScan.setShowSoftInputOnFocus(false);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                       // edtBarcodeScan.setShowSoftInputOnFocus(false);
+                        // edtBarcodeScan.setShowSoftInputOnFocus(false);
                         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         //inputMethodManager.hideSoftInputFromWindow(.getWindowToken(), 0);
                         inputMethodManager.hideSoftInputFromWindow(edtBarcodeScan.getWindowToken(), 0);
@@ -5362,48 +5346,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         GetSalesmenids()/*==0?(Integer)null:sh.get(0).getSalesmenid()*/, 0,
                         sh.get(0).getPaidpercent()
                 ));
-
-//
-//            String head = "update sale_head_tmp set " +
-//                    "tranid="+sh.get(0).getTranid()+"," +
-//                    "docid='"+sh.get(0).getDocid()+"'," +
-//                    "date=" +"'" + String.format(sh.get(0).getDate(), "yyyy-MM-dd") + "'," +
-//                    "invoiceno="+invoice_no+"," +
-//                    "locationid="+sh.get(0).getLocationid()+"," +
-//                    "customerid="+sh.get(0).getCustomerid()+"," +
-//                    "cashid="+sh.get(0).getDef_cashid()+"," +
-//                    "townshipid="+sh.get(0).getTownshipid()+","+
-//                    "paytypeid="+sh.get(0).getPay_type()+"," +
-//                    "dueindays="+sh.get(0).getDue_in_days()+"," +
-//                    "salecurr=1," +
-//                    "discountamount="+sh.get(0).getDiscount()+"," +
-//                    "paidamount="+sh.get(0).getPaid_amount()+"," +
-//                    "invoiceamount="+sh.get(0).getInvoice_amount()+"," +
-//                    "invoiceqty="+sh.get(0).getInvoice_qty()+"," +
-//                    "focamount="+sh.get(0).getFoc_amount()+"," +
-//                    //"itemdis_amount="+sh.get(0).getIstemdis_amount()+",\n" +
-//                    "netamount="+net_amount+"," +
-//                    "voucherremark="+headRemark+","+
-//                    "taxamount="+sh.get(0).getTax_amount()+"," +
-//                    "taxpercent="+sh.get(0).getTax_per()+"," +
-//                    "discountpercent="+sh.get(0).getDiscount_per()+","+
-//                    "exgrate="+1+""+
-//                     ToDeliver+
-//                    " where tranid="+sd.get(0).getTranid();
-
-//            ContentValues contentValues=new ContentValues();
-//            contentValues.put("trandid",sh.get(0).getTranid());
-
-                //String det = "delete from sale_det_tmp where tranid="+sh.get(0).getTranid()+
-                //   " insert into sale_det_tmp(tranid,date,unit_qty,qty,sale_price,dis_price,dis_type,dis_percent,remark,unit_type,code,sr,srno,PriceLevel,SQTY,SPrice) values ";
-//            String det = ";delete from sale_det_tmp where tranid="+sh.get(0).getTranid()+
-//                    ";insert into sale_det_tmp(tranid,unitqty,qty,saleprice,discountamount,itemdiscounttypeid,discountpercent,remark,unittypeid,code,sr,srno) values ";
-//
-//            String salechange=";delete from salechange_history where tranid="+sh.get(0).getTranid()+
-//                    "; insert into salechange_history(tranid,currencyid,paidamount,changeamount,exgrate,invoiceamount) values ";
-
-//            salechange=salechange + "(" +sh.get(0).getTranid()+","+1+","+paid+","+changeamount+","+1+","+sh.get(0).getInvoice_amount()+");";
-
                 salechanges.add(new salechange((int) sh.get(0).getTranid(),
                         1,
                         paidamount,
@@ -5424,60 +5366,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     } else {
                         detRemark =/*"N'"+*/sd.get(i).getDetremark()/*+"'"*/;
                     }
-
-
-//                if (i < (sd.size() - 1))
-//                {
-
-
-//                switch (sd.get(i).getPriceLevel()){
-////                    case "SP":pricelevelid="0";break;
-////                    case "SP1":pricelevelid="1";break;
-////                    case "SP2":pricelevelid="2";break;
-////                    case "SP3":pricelevelid="3";break;
-////                    case "SP4":pricelevelid="4";break;
-////                    case "SP5":pricelevelid="5";break;
-//                    case "SP":pricelevelid=0;break;
-//                    case "SP1":pricelevelid=1;break;
-//                    case "SP2":pricelevelid=2;break;
-//                    case "SP3":pricelevelid=3;break;
-//                    case "SP4":pricelevelid=4;break;
-//                    case "SP5":pricelevelid=5;break;
-//                }
-
-//                if(selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel())==-1){
-////                    short plevel;
-//                    sale_det_tmpsfordirect.add(new sale_det_tmp((int)sd.get(i).getTranid(),
-//                            sd.get(i).getUnit_qty(),
-//                            sd.get(i).getQty(),
-//                            sd.get(i).getSale_price(),
-//                            sd.get(i).getDis_price(),
-//                            (int)sd.get(i).getDis_type(),
-//                            sd.get(i).getDis_percent(),
-//                            detRemark,
-//                            sd.get(i).getUnt_type(),
-//                            (int)sd.get(i).getCode(),
-//                            (i + 1),
-//                            (i + 1),));
-//
-//            }
-//                if(selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel())!=-1){
-//                if(selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel())==0){
-//                    sale_det_tmpsfordirect.add(new sale_det_tmp((int)sd.get(i).getTranid(),
-//                            sd.get(i).getUnit_qty(),
-//                            sd.get(i).getQty(),
-//                            sd.get(i).getSale_price(),
-//                            sd.get(i).getDis_price(),
-//                            (int)sd.get(i).getDis_type(),
-//                            sd.get(i).getDis_percent(),
-//                            detRemark,
-//                            sd.get(i).getUnt_type(),
-//                            (int)sd.get(i).getCode(),
-//                            (i + 1),
-//                            (i + 1)));
-//                    System.out.println("this is sp");
-//                }else{
-                    sale_det_tmpsfordirect.add(new sale_det_tmp((int) sd.get(i).getTranid(),
+                    sale_det_tmpsfordirect.add(new sale_det_tmp((int) sh.get(0).getTranid(),
                             sd.get(i).getUnit_qty(),
                             sd.get(i).getQty(),
                             sd.get(i).getSale_price(),
@@ -5491,107 +5380,44 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                             (i + 1), selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel()),
                             false,
                             (int) sh.get(0).getLocationid()));
-//                }
-
-//                    Toast.makeText(getApplicationContext(),"this is price level"+sd.get(i).getPriceLevel(),Toast.LENGTH_LONG).show();
-//                }else{
-//                    sale_det_tmpsfordirect.add(new sale_det_tmp((int)sd.get(i).getTranid(),
-//                            sd.get(i).getUnit_qty(),
-//                            sd.get(i).getQty(),
-//                            sd.get(i).getSale_price(),
-//                            sd.get(i).getDis_price(),
-//                            (int)sd.get(i).getDis_type(),
-//                            sd.get(i).getDis_percent(),
-//                            detRemark,
-//                            sd.get(i).getUnt_type(),
-//                            (int)sd.get(i).getCode(),
-//                            (i + 1),
-//                            (i + 1),sd.get(i).getPricelevelid()));
-//                }
-
-
-//                    det = det + "(" +
-//                            sd.get(i).getTranid() + "," +
-//                            sd.get(i).getUnit_qty() + "," +
-//                            sd.get(i).getQty() + "," +
-//                            sd.get(i).getSale_price() + "," +
-//                            sd.get(i).getDis_price() + "," +
-//                            sd.get(i).getDis_type()+","+
-//                            sd.get(i).getDis_percent()+ "," +
-//                            detRemark+","+
-//                            sd.get(i).getUnt_type() + "," +
-//                            sd.get(i).getCode() + "," +
-//                            (i + 1) + "," +
-//                            (i + 1) +" ),";
-
-//                }
-
-//                else {
-                        /*
-                        det = det + "(" +
-                                sd.get(i).getTranid() + "," +
-                                "'" + String.format(sd.get(0).getDate(), "yyyy-MM-dd") + "'," +
-                                sd.get(i).getUnit_qty() + "," +
-                                sd.get(i).getQty() + "," +
-                                sd.get(i).getSale_price() + "," +
-                                sd.get(i).getDis_price() + "," +
-                                sd.get(i).getDis_type()+","+
-                                sd.get(i).getDis_percent()+ "," +
-                                detRemark+","+
-                                sd.get(i).getUnt_type() + "," +
-                                sd.get(i).getCode() + "," +
-                                (i + 1)+ "," +
-                                (i + 1) + ",'"+
-                                sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sd.get(i).getCode(),sd.get(i).getUnit_qty(),sd.get(i).getUnt_type())+","+
-                                getSPrice(sd.get(i).getCode()) +" )";
-
-                         */
-
-//                    det = det + "(" +
-//                            sd.get(i).getTranid() + "," +
-//                            sd.get(i).getUnit_qty() + "," +
-//                            sd.get(i).getQty() + "," +
-//                            sd.get(i).getSale_price() + "," +
-//                            sd.get(i).getDis_price() + "," +
-//                            sd.get(i).getDis_type()+","+
-//                            sd.get(i).getDis_percent()+ "," +
-//                            detRemark+","+
-//                            sd.get(i).getUnt_type() + "," +
-//                            sd.get(i).getCode() + "," +
-//                            (i + 1) + "," +
-//                            (i + 1) +" )";
-//                }
-
                 }
-//            sh.get(0).getDiscount_per();
-//            sh.get(0).setDiscount_per(0.0);
-//            custDis=sh.get(0).getDiscount_per();
-//            sqlstring = head +" "+salechange+" "+det;
-//            if(use_salesperson && SaleVouSalesmen.size()>0)
-//            {
-//                String salePerson=" delete from SalesVoucher_Salesmen_Tmp where Sales_TranID="+sh.get(0).getTranid()+" and userid="+frmlogin.LoginUserid+
-//                        " insert into SalesVoucher_Salesmen_Tmp(Sales_TranID,Salesmen_ID,rmt_copy,userid)"+
-//                        "values ";
-//                for(int i=0;i<SaleVouSalesmen.size();i++)
-//                {
-//                    salePerson=salePerson+"("+
-//                            sh.get(0).getTranid()+","+
-//                            SaleVouSalesmen.get(i).getSalesmen_Id()+","+
-//                            "1,"+frmlogin.LoginUserid+"),";
-//                }
-//                salePerson=salePerson.substring(0,salePerson.length()-1);
-//                sqlstring=sqlstring+" "+salePerson;
+                Confirm();
+                //SaleVouSalesmen.clear();//comment by KLM for salemen print 30062022
             }
+            else {
+                AlertDialog.Builder b = new AlertDialog.Builder(sale_entry_tv.this, R.style.MyDialogTheme);
+                b.setCancelable(false);//added by KLM (MWA22124) don't dismiss if process is imcomplete 21122022
+                TextView title = new TextView(getApplicationContext());
 
-            Confirm();
-            //SaleVouSalesmen.clear();//comment by KLM for salemen print 30062022
+                title.setBackgroundColor(Color.rgb(204, 51, 0));
+//                    title.setBackgroundColor(Color.rgb(96, 169, 23));
+                title.setPadding(30, 20, 10, 20);
+                title.setTextSize(18F);
+                title.setText("iStock");
+                title.setTextColor(Color.WHITE);
+                b.setCustomTitle(title);
+                b.setCancelable(false);
+                b.setMessage("Connection Fail. Please check your connection and try again!");
+                b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        getHeader();
 
-//        }
+                    }
+                });
+                dialog = b.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog1) {
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                    }
+                });
+                dialog.show();
+            }
         } catch (Exception ee) {
             System.out.println(ee.toString() + "error");
         }
-
     }
 
 
