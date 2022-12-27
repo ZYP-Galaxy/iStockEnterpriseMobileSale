@@ -352,11 +352,14 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
 
     private void getpic() {
 
-        Cursor cursor = DatabaseHelper.rawQuery("select isusepic from SystemSetting");
+        Cursor cursor = DatabaseHelper.rawQuery("select isusepic,billprintcount from SystemSetting");
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
                     use_pic = cursor.getInt(cursor.getColumnIndex("isusepic"));
+                    //added by ZYP [23-12-2022]
+                    sale_entry.billprintcount = cursor.getInt(cursor.getColumnIndex("billprintcount"));
+                    sale_entry_tv.billprintcount = cursor.getInt(cursor.getColumnIndex("billprintcount"));
                 } while (cursor.moveToNext());
             }
 

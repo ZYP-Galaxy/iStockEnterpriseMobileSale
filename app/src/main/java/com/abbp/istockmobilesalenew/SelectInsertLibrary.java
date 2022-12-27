@@ -870,6 +870,7 @@ public static void ResetData() {
                         int isusespecialprice = systobj.optBoolean("isusespecialprice", false) == true ? 1 : 0; // added by EKK on 05-11-2020
                         int isusemulticash = systobj.optBoolean("isusemulticash", false) == true ? 1 : 0; // added by EKK on 17-11-2020
                         int isuseduedate = systobj.optBoolean("isuseduedate", false) == true ? 1 : 0;
+                        int billprintcount = systobj.optInt("billprintcount", 1);   //added by ZYP [23-12-2022]
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("title", title);
                         contentValues.put("isuseunit", isuseunit);
@@ -898,6 +899,7 @@ public static void ResetData() {
                         contentValues.put("isusespecialprice", isusespecialprice);
                         contentValues.put("isusemulticash", isusemulticash); //added by EKK on 17-11-2020
                         contentValues.put("isuseduedate", isuseduedate);
+                        contentValues.put("billprintcount", billprintcount);
                         DatabaseHelper.deleteWithOnConflit("SystemSetting", null, contentValues, SQLiteDatabase.CONFLICT_REPLACE, "title=?", title);
                     }
                     break;
