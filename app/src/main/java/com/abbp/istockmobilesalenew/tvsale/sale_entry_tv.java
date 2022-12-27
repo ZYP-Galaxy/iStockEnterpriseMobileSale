@@ -193,7 +193,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
-    Date voudate;
+    Date voudate, getDate;
     AlertDialog disDa = null;
     TextView txtChangeQty, txtProgress, txtTable;
     EditText txtChangePrice;
@@ -2112,11 +2112,11 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                 dialog = builder.create();
                 dialog.show();
-               // edtBarcodeScan.setShowSoftInputOnFocus(false);
+                // edtBarcodeScan.setShowSoftInputOnFocus(false);
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                       // edtBarcodeScan.setShowSoftInputOnFocus(false);
+                        // edtBarcodeScan.setShowSoftInputOnFocus(false);
                         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         //inputMethodManager.hideSoftInputFromWindow(.getWindowToken(), 0);
                         inputMethodManager.hideSoftInputFromWindow(edtBarcodeScan.getWindowToken(), 0);
@@ -5113,7 +5113,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         int mYear = c.get(Calendar.YEAR);
         int mMonty = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
-
         pickerDialog = new DatePickerDialog(this, R.style.DatePickerDialog, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -5124,13 +5123,37 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date todate = new Date();
-                if (voudate.getTime() <= todate.getTime()) {
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                    sh.get(0).setDate(dateFormat.format(voudate));
+                if (!frmmain.daysbeforeallowedit.equals("null")) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -(Integer.parseInt(frmmain.daysbeforeallowedit)));
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    String output = sdf1.format(cal.getTime());
+                    try {
+                        getDate = new SimpleDateFormat("dd/MM/yyyy").parse(output);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date todate = new Date();
+                    if (voudate.getTime() >= getDate.getTime()) {
+                        if (voudate.getTime() <= todate.getTime()) {
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                            sh.get(0).setDate(dateFormat.format(voudate));
+                        } else if (voudate.getTime() > todate.getTime()) {
+                            Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                        }
+                    } else {
+                        Toast.makeText(sale_entry_tv.this, "Your date is out of range! ", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    Date todate = new Date();
+                    if (voudate.getTime() <= todate.getTime()) {
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                        sh.get(0).setDate(dateFormat.format(voudate));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    }
                 }
 
             }

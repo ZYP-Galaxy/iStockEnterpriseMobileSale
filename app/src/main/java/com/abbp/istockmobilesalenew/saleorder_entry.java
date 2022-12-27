@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -120,7 +121,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
-    Date voudate;
+    Date voudate, getDate;
     AlertDialog disDa = null;
     TextView txtChangeQty, txtChangePrice, txtamt, txtdate;
     EditText txtinvoiceNo;
@@ -207,10 +208,10 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     String ToDeliver = "";
     double tmpSalePrice;
     static long specialPrice = 0;
-    static int newCustomerId=0;
+    static int newCustomerId = 0;
     private AlertDialog downloadAlert;
     private ProgressBar pbDownload;
-    TextView txtProgress,txtTable;
+    TextView txtProgress, txtTable;
     private Context context;
     private JSONObject jobj;
 
@@ -1576,7 +1577,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(saleorder_entry.this, frmscancode.class);
-                i.putExtra("name","saleorder");//added by KLM to effect both sale & sale order in qrcode scanner
+                i.putExtra("name", "saleorder");//added by KLM to effect both sale & sale order in qrcode scanner
                 startActivity(i);
             }
         });
@@ -2975,12 +2976,10 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             if (name == "Salesmen") {
                 imgChangSave.setVisibility(View.VISIBLE);
                 imgClear.setVisibility(View.VISIBLE);
-            }
-            else if (name.equals("Customer")) {
+            } else if (name.equals("Customer")) {
                 imgAddCustomer.setVisibility(View.VISIBLE);
                 //imgClear.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 imgChangSave.setVisibility(View.GONE);
                 imgClear.setVisibility(View.GONE);
             }
@@ -3000,7 +2999,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                     Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
                     Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
                     EditText credit = layout.findViewById(R.id.txtCredit);
-                    EditText txtdueDay=layout.findViewById(R.id.txtdueday);
+                    EditText txtdueDay = layout.findViewById(R.id.txtdueday);
                     credit.setEnabled(false);
                     Button btnclose = layout.findViewById(R.id.btnclose);
                     Button btnok = layout.findViewById(R.id.btnok);
@@ -3034,7 +3033,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 credit.setEnabled(true);
-                                if(frmmain.isuseduedate){
+                                if (frmmain.isuseduedate) {
                                     txtdueDay.setVisibility(View.VISIBLE);
                                 }
                             } else {
@@ -3065,9 +3064,9 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
-                                    int dueinday=0;
-                                    if(!txtdueDay.getText().toString().isEmpty()){
-                                        dueinday=Integer.parseInt(txtdueDay.getText().toString());
+                                    int dueinday = 0;
+                                    if (!txtdueDay.getText().toString().isEmpty()) {
+                                        dueinday = Integer.parseInt(txtdueDay.getText().toString());
                                     }
 //                                    newCustomerName=nameSt;
 //                                    int custid = getCustomerCount() + 1;
@@ -3076,15 +3075,15 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                                         iscredit = true;
                                         creditL = Double.parseDouble(creditLimit.equals("") ? "0.0" : creditLimit);
                                     }
-                                    sqlstring="insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted,dueindays) values (";
-                                    sqlstring += (codeSt.length() > 0?"'" + codeSt + "'":null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
+                                    sqlstring = "insert into customer_tmp (shortdesc,  name,townshipid,iscredit,creditlimit, custgroupid,userid,sr, isinactive,isdeleted,dueindays) values (";
+                                    sqlstring += (codeSt.length() > 0 ? "'" + codeSt + "'" : null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false," + (dueinday > 0 ? dueinday : null) + ")";
 //                                    if(codeSt.length()>0){
 //                                        sqlstring+="'"+ codeSt+"','"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
 //                                    }
 //                                    else{
 //                                        sqlstring+= null+",'"+nameSt+"',"+selected_townshipid+","+iscredit+","+creditL+","+selected_custgroupid+","+frmlogin.LoginUserid+",uuid_generate_v4(),false,false)";
 //                                    }
-                                    sqlstring+="&"+frmlogin.LoginUserid;
+                                    sqlstring += "&" + frmlogin.LoginUserid;
                                     String sqlString = "select name from Customer where name='" + nameSt + "'";
                                     Cursor cursor = DatabaseHelper.rawQuery(sqlString);
                                     if (cursor != null && cursor.getCount() > 0) {
@@ -3126,8 +3125,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                                         msg.show();
 
 
-                                    }
-                                    else{
+                                    } else {
 
                                         InsertCustomer();
 
@@ -3533,55 +3531,53 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 //                    }
 //                    cursor.close();
 
-            LocationAdapter lad = new LocationAdapter(saleorder_entry.this, locations, btn, da);
-            rv.setAdapter(lad);
-            GridLayoutManager gridLayoutManagerLocation = new GridLayoutManager(getApplicationContext(), 4);
-            rv.setLayoutManager(gridLayoutManagerLocation);
-            da.show();
+                    LocationAdapter lad = new LocationAdapter(saleorder_entry.this, locations, btn, da);
+                    rv.setAdapter(lad);
+                    GridLayoutManager gridLayoutManagerLocation = new GridLayoutManager(getApplicationContext(), 4);
+                    rv.setLayoutManager(gridLayoutManagerLocation);
+                    da.show();
 
-            break;
-            case "Payment Type":
+                    break;
+                case "Payment Type":
 
-                if (pay_types.size() > 0) {
-                    pay_types.clear();
-                }
-                if (isCreditcustomer) {
-                    sqlString = "select * from Payment_Type where paytypeid!=3 and paytypeid!=4";
-                } else {
-                    sqlString = "select * from Payment_Type where paytypeid=1";
-                }
-                cursor = DatabaseHelper.rawQuery(sqlString);
-                if (cursor != null && cursor.getCount() != 0) {
-                    if (cursor.moveToFirst()) {
-                        do {
-                            int pay_type = cursor.getInt(cursor.getColumnIndex("paytypeid"));
-                            String pay_typename = cursor.getString(cursor.getColumnIndex("name"));
-                            String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
-                            pay_types.add(new pay_type(pay_type, pay_typename, shortname));
-                        } while (cursor.moveToNext());
-
+                    if (pay_types.size() > 0) {
+                        pay_types.clear();
                     }
+                    if (isCreditcustomer) {
+                        sqlString = "select * from Payment_Type where paytypeid!=3 and paytypeid!=4";
+                    } else {
+                        sqlString = "select * from Payment_Type where paytypeid=1";
+                    }
+                    cursor = DatabaseHelper.rawQuery(sqlString);
+                    if (cursor != null && cursor.getCount() != 0) {
+                        if (cursor.moveToFirst()) {
+                            do {
+                                int pay_type = cursor.getInt(cursor.getColumnIndex("paytypeid"));
+                                String pay_typename = cursor.getString(cursor.getColumnIndex("name"));
+                                String shortname = cursor.getString(cursor.getColumnIndex("shortdesc"));
+                                pay_types.add(new pay_type(pay_type, pay_typename, shortname));
+                            } while (cursor.moveToNext());
 
-                } else {
-                    da.dismiss();
-                }
-                cursor.close();
+                        }
 
-                PaymentTypeAdapter pad = new PaymentTypeAdapter(saleorder_entry.this, pay_types, btn, da);
-                rv.setAdapter(pad);
-                GridLayoutManager gridLayoutManagerPaymentType = new GridLayoutManager(getApplicationContext(), 4);
-                rv.setLayoutManager(gridLayoutManagerPaymentType);
-                da.show();
+                    } else {
+                        da.dismiss();
+                    }
+                    cursor.close();
 
-                break;
+                    PaymentTypeAdapter pad = new PaymentTypeAdapter(saleorder_entry.this, pay_types, btn, da);
+                    rv.setAdapter(pad);
+                    GridLayoutManager gridLayoutManagerPaymentType = new GridLayoutManager(getApplicationContext(), 4);
+                    rv.setLayoutManager(gridLayoutManagerPaymentType);
+                    da.show();
+
+                    break;
+            }
+        } catch (
+                Exception e) {
+            da.dismiss();
         }
-    } catch(
-    Exception e)
-
-    {
-        da.dismiss();
     }
-}
 
     public void bindingCreditBalance() {
         try {
@@ -3680,19 +3676,42 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date todate = new Date();
-                if (voudate.getTime() <= todate.getTime()) {
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                    sh.get(0).setDate(dateFormat.format(voudate));
+                if (!frmmain.daysbeforeallowedit.equals("null")) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -(Integer.parseInt(frmmain.daysbeforeallowedit)));
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    String output = sdf1.format(cal.getTime());
+                    try {
+                        getDate = new SimpleDateFormat("dd/MM/yyyy").parse(output);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date todate = new Date();
+                    if (voudate.getTime() >= getDate.getTime()) {
+                        if (voudate.getTime() <= todate.getTime()) {
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                            sh.get(0).setDate(dateFormat.format(voudate));
+                        } else if (voudate.getTime() > todate.getTime()) {
+                            Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                        }
+                    } else {
+                        Toast.makeText(saleorder_entry.this, "Your date is out of range! ", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    Date todate = new Date();
+                    if (voudate.getTime() <= todate.getTime()) {
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                        sh.get(0).setDate(dateFormat.format(voudate));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    }
                 }
 
             }
         }, mYear, mMonty, mDay);
         pickerDialog.show();
-
     }
 
     private void InitializeHeader(ArrayList<String> id, ArrayList<Button> btn) {
@@ -4676,18 +4695,18 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
         return codes;
     }
 
-public class addCust extends AsyncTask<String, Void, String> {
-    @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-        pb.show();
-    }
+    public class addCust extends AsyncTask<String, Void, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pb.show();
+        }
 
-    @Override
-    protected String doInBackground(String... strings) {
+        @Override
+        protected String doInBackground(String... strings) {
 
-        HttpURLConnection connection;
-        StringBuffer response = new StringBuffer();
+            HttpURLConnection connection;
+            StringBuffer response = new StringBuffer();
 //            try {
 //                URL url = new URL(strings[0]);
 //                connection = (HttpURLConnection) url.openConnection();
@@ -4715,48 +4734,48 @@ public class addCust extends AsyncTask<String, Void, String> {
 //                e.printStackTrace();
 //            }
 
-        SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
-        response = selectInsertLibrary.PostToApi(sqlstring, strings);
+            SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
+            response = selectInsertLibrary.PostToApi(sqlstring, strings);
 
-        return response.toString();
-    }
+            return response.toString();
+        }
 
-    @Override
-    protected void onPostExecute(String result) {
-        super.onPostExecute(result);
-        pb.dismiss();
-        try {
-            if(result!=null && !result.isEmpty()){
-                newCustomerId=Integer.parseInt(result);
-            }
-            AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
-            b.setTitle("iStock");
-            if (result!=null && !result.isEmpty()) {
-                b.setMessage("Save Successful.");
-                DownloadingCustomer();
-                custdia.dismiss();
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            pb.dismiss();
+            try {
+                if (result != null && !result.isEmpty()) {
+                    newCustomerId = Integer.parseInt(result);
+                }
+                AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.AlertDialogTheme);
+                b.setTitle("iStock");
+                if (result != null && !result.isEmpty()) {
+                    b.setMessage("Save Successful.");
+                    DownloadingCustomer();
+                    custdia.dismiss();
 //                FillDataWithSignalr();
 
-            } else {
-                b.setMessage("Save Fail.");
-            }
-            b.setCancelable(false);
-            b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    b.create().dismiss();
+                } else {
+                    b.setMessage("Save Fail.");
                 }
-            });
+                b.setCancelable(false);
+                b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        b.create().dismiss();
+                    }
+                });
 //                dialog =
-            b.create().show();
+                b.create().show();
 //                dialog.show();
-        } catch (Exception ee) {
-            pb.dismiss();
-            dialog.dismiss();
+            } catch (Exception ee) {
+                pb.dismiss();
+                dialog.dismiss();
+            }
         }
-    }
 
-}
+    }
 
     private void DownloadingCustomer() {
         try {
@@ -4791,7 +4810,7 @@ public class addCust extends AsyncTask<String, Void, String> {
         }
     }
 
-    private void DownloadCustomer(){
+    private void DownloadCustomer() {
         String ip = sh_ip.getString("ip", "empty");
         String port = sh_port.getString("port", "empty");
         String url = "http://" + ip + ":" + port + "/api/mobile/GetData?download=true&_macaddress=" + GettingIMEINumber.IMEINO;
@@ -4807,13 +4826,13 @@ public class addCust extends AsyncTask<String, Void, String> {
                     try {
                         if (jobj.getJSONArray("customer").length() > 0) {
 
-                            selectInsertLibrary.UpSertingData("Customer",jobj);
+                            selectInsertLibrary.UpSertingData("Customer", jobj);
                         }
-                        SelectInsertLibrary.BindHeader(saleorder_entry.this,newCustomerId);
+                        SelectInsertLibrary.BindHeader(saleorder_entry.this, newCustomerId);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
 
                 }
             }
