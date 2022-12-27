@@ -41,7 +41,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
     public static int isusespecialprice = 0; //added by EKK on 13-11-2020
     public static int isallowallusersviewforSE = 0; //added by EKK on 23-11-2020
     public static int isallowallusersviewforSO = 0; //added by EKK on 23-11-2020
-
+    public static String daysbeforeallowedit = null;//Added by KNO (19-12-2022)
     SharedPreferences sh_ip;
     SharedPreferences sh_port;
     Intent intent;
@@ -73,11 +73,14 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         txtUsername = (TextView) findViewById(R.id.txtUsername);
         txtUsername.setText("   " + frmlogin.username);
         cpyname = findViewById(R.id.cpyname);
-        if(frmlogin.isTVMode){
+        if (frmlogin.isTVMode) {
             cardsaleorder.setVisibility(View.GONE);
-            cardsaleorderlist.setVisibility(View.GONE);;
-            cardstock.setVisibility(View.GONE);;
-            cardcustoutstand.setVisibility(View.GONE);;
+            cardsaleorderlist.setVisibility(View.GONE);
+            ;
+            cardstock.setVisibility(View.GONE);
+            ;
+            cardcustoutstand.setVisibility(View.GONE);
+            ;
 //            cardsaleorder.setVisibility(View.GONE);;
         }
         cardsale.setOnClickListener(this);
@@ -98,6 +101,7 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         isUseSpecialPrice(); //added by EKK on 13-11-2020
         isAllowUserAllView();
         getuseduedayStatus();//added by KLM for dueday 18082022
+        getdaysbeforeallowedit(); //Added by KNO (19-12-2022)
         // Toast .makeText(frmmain.this,"User View " + isallowallusersviewforSE + "\n Sale Order "+ isallowallusersviewforSO, Toast.LENGTH_LONG).show();
     }
 
@@ -289,13 +293,14 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
 
 
     }
+
     private void getuseduedayStatus() {
 
         Cursor cursor = DatabaseHelper.rawQuery("select  isuseduedate from systemsetting");
         if (cursor != null && cursor.getCount() != 0) {
             if (cursor.moveToFirst()) {
                 do {
-                    isuseduedate = cursor.getInt(cursor.getColumnIndex("isuseduedate"))==1;
+                    isuseduedate = cursor.getInt(cursor.getColumnIndex("isuseduedate")) == 1;
                 } while (cursor.moveToNext());
             }
             //test for default uint type
@@ -451,6 +456,18 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    //Added by  KNO (19-12-2022)
+    private void getdaysbeforeallowedit() {
+        Cursor cursor = DatabaseHelper.rawQuery("select daysbeforeallowedit from PosUser where userid =" + frmlogin.LoginUserid);
+        if (cursor != null && cursor.getCount() != 0) {
+            if (cursor.moveToFirst()) {
+                do {
+                    daysbeforeallowedit = cursor.getString(cursor.getColumnIndex("daysbeforeallowedit"));
+                } while (cursor.moveToNext());
+            }
+
+        }
+    }
 
     @Override
     public void onClick(View v) {
@@ -458,10 +475,9 @@ public class frmmain extends AppCompatActivity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.cardsale:
-                if(frmlogin.isTVMode) {
+                if (frmlogin.isTVMode) {
                     intent = new Intent(frmmain.this, sale_entry_tv.class);
-                }
-                else{
+                } else {
                     intent = new Intent(frmmain.this, sale_entry.class);
                 }
                 startActivity(intent);

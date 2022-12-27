@@ -60,7 +60,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
     List<Calendar> calendars = new ArrayList<>();
     public static DateFormat dateFormat, griddateformat;
     String filterString = "and date between ";
-    ImageButton imgFilterClear, imgAdd, imgEdit, imgDelete, filtermenu;
+    ImageButton imgFilterClear, imgAdd, imgEdit, imgDelete, filtermenu, imgRefresh;
     public static saleListAdp adp;
     public static TextView txtCount, txtUsername, txtTotal;
     public static double total;
@@ -91,6 +91,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         txtCount.setText("0");
         txtTotal = (TextView) findViewById(R.id.txtTotal);
         txtTotal.setText("0");
+        salelists.clear();
         FilterCustomer.ccid = -1;
         FilterUser.uid = -1;
         FilterLocation.locid = -1;
@@ -133,7 +134,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 FilterUser.uid = -1;
         }
 
-        BindingData();
+        //BindingData();
 
         //Toast.makeText(getApplicationContext(),getActionName+" this is",Toast.LENGTH_LONG).show();
 
@@ -168,6 +169,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         pb.setIndeterminate(true);
         txtdate = findViewById(R.id.txtdate);
         txtdate.setOnClickListener(this);
+        imgRefresh = findViewById(R.id.btnrefresh);
         imgFilterClear = findViewById(R.id.imgFilterClear);
         filtermenu = (ImageButton) findViewById(R.id.filtermenu);
         selectfilter = (Button) findViewById(R.id.selectfilter);
@@ -176,6 +178,14 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
         } else {
             FilterLocation.locid = -1;
         }
+
+        imgRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BindingData();
+            }
+        });
+
         imgFilterClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,7 +215,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                         FilterUser.uid = -1;
                 }
 
-//                BindingData();
+                // BindingData();
 
             }
         });
@@ -742,7 +752,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
                 }
                 pw.dismiss();
                 txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(fdate) + " - " + new SimpleDateFormat("dd/MM/yyyy").format(tdate));
-                BindingData();
+                //  BindingData();
 
             }
         });

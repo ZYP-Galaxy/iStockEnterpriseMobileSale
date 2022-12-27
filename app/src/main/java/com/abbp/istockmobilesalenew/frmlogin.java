@@ -82,6 +82,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
 
     private Button btnlogin, btnexit, btnok, btncancel, btnrgok;
     private TextView btnconnect, btnposdown, btnRegister, txtTable, txtProgress, txtSetting;
+    private ImageButton btnrefresh;
     private EditText useredit, passedit, edtserver, edtport, edtkey;
     private ToggleButton toggleButton;
     private ListView lv;
@@ -259,6 +260,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         btnposdown = findViewById(R.id.btnposdown);
         txtSetting = findViewById(R.id.btnSetting);
         toggleButton = findViewById(R.id.toggleButton);
+        btnrefresh = findViewById(R.id.btnrefresh);
 //        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -284,6 +286,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
         btnRegister.setOnClickListener(this);
         btnposdown.setOnClickListener(this);
         txtSetting.setOnClickListener(this);
+        btnrefresh.setOnClickListener(this);
     }
 
     private boolean isRegister() {
@@ -295,7 +298,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
     private void GetDeviceName() {
 
         BluetoothAdapter myDevice = BluetoothAdapter.getDefaultAdapter();
-        if(myDevice != null){
+        if (myDevice != null) {
             Device_Name = myDevice.getName();
         }
 
@@ -547,6 +550,43 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                             .create().show();
 
                 }
+                break;
+            case R.id.btnrefresh:
+                new AlertDialog.Builder(this, R.style.AlertDialogTheme)
+                        .setTitle("iStock")
+                        .setMessage("Are you sure to reload all data?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (isRegister()) {
+                                    SelectInsertLibrary.ResetData();
+                                    GetTableNames();
+                                    GetDownloading();
+                                } else {
+
+                                    new AlertDialog.Builder(frmlogin.this, R.style.AlertDialogTheme)
+                                            .setTitle("iStock")
+                                            .setMessage("Please, Register Before Downloading!")
+                                            .setCancelable(false)
+                                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            })
+                                            .create().show();
+
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .create().show();
                 break;
             case R.id.login:
                 SignIn();

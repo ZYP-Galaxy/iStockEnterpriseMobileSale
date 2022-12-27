@@ -96,6 +96,7 @@ import com.abbp.istockmobilesalenew.priceLevelAdapter;
 import com.abbp.istockmobilesalenew.reportviewer;
 import com.abbp.istockmobilesalenew.sale_det;
 import com.abbp.istockmobilesalenew.sale_det_tmp;
+import com.abbp.istockmobilesalenew.sale_entry;
 import com.abbp.istockmobilesalenew.sale_head_tmp;
 import com.abbp.istockmobilesalenew.salechange;
 import com.abbp.istockmobilesalenew.sunmiprinter.SunmiPrintHelper;
@@ -1050,7 +1051,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             case "Code":
                 filteredCode = new ArrayList<>();
                 if (isCategory) {
-                    Cursor cursor = DatabaseHelper.DistinctSelectQuerySelection("Usr_Code", new String[]{"usr_code", "description", "sale_price"}, "unit_type=1 and usr_code LIKE?", new String[]{s});
+                    Cursor cursor = DatabaseHelper.DistinctSelectQuerySelection("Usr_Code", new String[]{"usr_code", "description", "sale_price"}, "unit_type=1 and usr_code LIKE?", new String[]{"%" + s + "%"});//Modified by KNO (14-12-2022) for code search
                     if (sale_entry_tv.usr_codes.size() > 0)
                         if (frmmain.withoutclass.equals("true")) {
                             filteredCode.add(new usr_code("Back", "Back"));
@@ -1070,7 +1071,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                         cursor.close();
                     } else {
 
-                        Cursor urcursor = DatabaseHelper.rawQuery("select usc.usr_code,usc.description,usc.sale_price from Alias_Code al join Usr_Code usc on usc.usr_code=al.usr_code where usc.unit_type=1 and al.al_code LIKE '" + s + "'");
+                        Cursor urcursor = DatabaseHelper.rawQuery("select usc.usr_code,usc.description,usc.sale_price from Alias_Code al join Usr_Code usc on usc.usr_code=al.usr_code where usc.unit_type=1 and al.al_code LIKE '%" + s + "%'");//Modified by KNO (14-12-2022) for code search
                         if (sale_entry_tv.usr_codes.size() > 0)
                             if (frmmain.withoutclass.equals("true")) {
                                 filteredCode.add(new usr_code("Back", "Back"));
@@ -6811,16 +6812,25 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         String stamount = null;
         String qtyprice = null;
         String item = null;
+        String qty = null;
+        String unit = null;
         double amt = 0.0;
+        String price = null;
         LinearLayout detailLayout = voucher.findViewById(R.id.detail);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         for (int i = 0; i < sale_entry_tv.sd.size(); i++) {
             View voucheritem = getLayoutInflater().inflate(R.layout.layout_voucher_item, null);
             TextView tvdescription = voucheritem.findViewById(R.id.txtdescription);
+            TextView tvqty = voucheritem.findViewById(R.id.txtqty);
+            TextView tvunit = voucheritem.findViewById(R.id.txtunit);
+            TextView tvprice = voucheritem.findViewById(R.id.txtprice);
             TextView tvamount = voucheritem.findViewById(R.id.txtAmount);
             TextView tvqtyamount = voucheritem.findViewById(R.id.txtQtyPrice);
 
             item = sale_entry_tv.sd.get(i).getDesc();
+            qty = String.format("%." + frmmain.qty_places + "f", sale_entry_tv.sd.get(i).getUnit_qty());
+            unit = sale_entry_tv.sd.get(i).getUnit_short();
+            price = (CurrencyFormat(sale_entry_tv.sd.get(i).getSale_price())).toString();
             amt = sale_entry_tv.sd.get(i).getUnit_qty() * sale_entry_tv.sd.get(i).getSale_price();
 //            int len = item.length();
 //            if (len > 20) {
@@ -6831,6 +6841,9 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                     + CurrencyFormat(sale_entry_tv.sd.get(i).getSale_price()) + ")";
 
             tvdescription.setText(item);
+            tvqty.setText(qty);
+            tvunit.setText(unit);
+            tvprice.setText(price);
             tvamount.setText(stamount);
             tvqtyamount.setText(qtyprice);
             detailLayout.addView(voucheritem);

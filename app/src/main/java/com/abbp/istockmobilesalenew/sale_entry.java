@@ -144,7 +144,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
-    Date voudate;
+    Date voudate, getDate;
     AlertDialog disDa = null;
     TextView txtChangeQty;
     TextView txtChangePrice;
@@ -243,7 +243,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     SelectInsertLibrary selectInsertLibrary = new SelectInsertLibrary();
     boolean isoffline;
 
-    public static boolean use_bluetooth=true;//Add By TZW for BlueToothPrinter.
+    public static boolean use_bluetooth = true;//Add By TZW for BlueToothPrinter.
     public static boolean use_localprint; //Added by ZYP for localprinter
     AlertDialog addDialog = null;
 
@@ -340,7 +340,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
 //        getTranID();
         getHeaderWithUUID();
-        if(sh.get(0).getPay_type()==2){
+        if (sh.get(0).getPay_type() == 2) {
             chkbillnotprint.setVisibility(View.VISIBLE);
         }
         getData();
@@ -525,7 +525,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             TextView tvUnit = findViewById(R.id.unit);
             chkDeliver = findViewById(R.id.chkToDeliver);
             chkbillnotprint = findViewById(R.id.chkbillprint);
-           // chkbillnotprint.setChecked(bill_not_print);
+            // chkbillnotprint.setChecked(bill_not_print);
             chkbillnotprint.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -809,7 +809,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                     String vouper = "Vou Discount";
                     if (sh.get(0).getDiscount_per() > 0) {
-                        custDis=sh.get(0).getDiscount_per();
+                        custDis = sh.get(0).getDiscount_per();
                         vouper = "Vou Discount( " + custDis + "% )";
                         sh.get(0).setDiscount_per(custDis);
                         getSummary();
@@ -841,7 +841,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(sale_entry.this, frmscancode.class);
-                    i.putExtra("name","sale");//added by KLM to effect both sale & sale order in qrcode scanner
+                    i.putExtra("name", "sale");//added by KLM to effect both sale & sale order in qrcode scanner
                     startActivity(i);
                 }
             });
@@ -1689,7 +1689,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                     }
                     else{*/
-                        voucherConfirm();
+                    voucherConfirm();
                     //}
 
                 } else {
@@ -2073,9 +2073,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         headRemark = headremark.getText().toString().trim().isEmpty() ? null : headremark.getText().toString().trim();
                         sh.get(0).setHeadremark(headRemark);
                         defloc = 1;
-                        if(sh.get(0).getPay_type()==2){
+                        if (sh.get(0).getPay_type() == 2) {
                             chkbillnotprint.setVisibility(View.VISIBLE);
-                            bill_not_print=false;
+                            bill_not_print = false;
                         }
 
                         //Added for credit limit customer
@@ -2136,9 +2136,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        if(sh.get(0).getPay_type()==2){
+                        if (sh.get(0).getPay_type() == 2) {
                             chkbillnotprint.setVisibility(View.VISIBLE);
-                            bill_not_print=false;
+                            bill_not_print = false;
                         }
                     }
                 });
@@ -3587,7 +3587,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                        final EditText shortdesc = layout.findViewById(R.id.txtShort);
                     final EditText code = layout.findViewById(R.id.txtCode);
                     final CheckBox chkCredit = layout.findViewById(R.id.chkCredit);
-                    EditText txtdueDay=layout.findViewById(R.id.txtdueday);
+                    EditText txtdueDay = layout.findViewById(R.id.txtdueday);
                     Button imgCustomerTownship = layout.findViewById(R.id.btnTownship);
                     Button imgCustomerGroup = layout.findViewById(R.id.btnCustGroup);
                     EditText credit = layout.findViewById(R.id.txtCredit);
@@ -3624,7 +3624,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                             if (isChecked) {
                                 credit.setEnabled(true);
-                                if(frmmain.isuseduedate){
+                                if (frmmain.isuseduedate) {
                                     txtdueDay.setVisibility(View.VISIBLE);
                                 }
 
@@ -3656,9 +3656,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                     String nameSt = name.getText().toString().trim();
                                     String codeSt = code.getText().toString().trim();
                                     String creditLimit = credit.getText().toString();
-                                    int dueinday=0;
-                                    if(!txtdueDay.getText().toString().isEmpty()){
-                                        dueinday=Integer.parseInt(txtdueDay.getText().toString());
+                                    int dueinday = 0;
+                                    if (!txtdueDay.getText().toString().isEmpty()) {
+                                        dueinday = Integer.parseInt(txtdueDay.getText().toString());
                                     }
 
                                     newCustomerName = nameSt;
@@ -3672,7 +3672,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 //                                    if (codeSt.length() > 0) {
 //                                        sqlstring += "'" + codeSt + "','" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
 //                                    } else {
-                                    sqlstring += (codeSt.length() > 0?"'" + codeSt + "'":null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false,"+(dueinday>0?dueinday:null)+")";
+                                    sqlstring += (codeSt.length() > 0 ? "'" + codeSt + "'" : null) + ",'" + nameSt + "'," + selected_townshipid + "," + iscredit + "," + creditL + "," + selected_custgroupid + "," + frmlogin.LoginUserid + ",uuid_generate_v4(),false,false," + (dueinday > 0 ? dueinday : null) + ")";
 //                                    }
                                     sqlstring += "&" + frmlogin.LoginUserid;
                                     String sqlString = "select name from Customer where name='" + nameSt + "'";
@@ -4061,7 +4061,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                                 int dueindays = cursor.getInt(cursor.getColumnIndex("dueindays"));
 //                                due_in_days=dueindays;
 //                                if(iscredit){
-                                  //  sh.get(0).setDue_in_days(dueindays);
+                                //  sh.get(0).setDue_in_days(dueindays);
 //                                }
 
                                 double discountpercent = cursor.getDouble(cursor.getColumnIndex("discountpercent"));
@@ -5014,7 +5014,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         keynum = "1";
 
                     }
-                    Log.i("Error from Keynum",e+" 0");
+                    Log.i("Error from Keynum", e + " 0");
                     txtNum.setText(keynum);
 //                    AlertDialog.Builder bd=new AlertDialog.Builder(sale_entry.this,R.style.AlertDialogTheme);
 //                    bd.setTitle("iStock");
@@ -5237,13 +5237,37 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date todate = new Date();
-                if (voudate.getTime() <= todate.getTime()) {
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                    sh.get(0).setDate(dateFormat.format(voudate));
+                if (!frmmain.daysbeforeallowedit.equals("null")) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -(Integer.parseInt(frmmain.daysbeforeallowedit)));
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    String output = sdf1.format(cal.getTime());
+                    try {
+                        getDate = new SimpleDateFormat("dd/MM/yyyy").parse(output);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date todate = new Date();
+                    if (voudate.getTime() >= getDate.getTime()) {
+                        if (voudate.getTime() <= todate.getTime()) {
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                            sh.get(0).setDate(dateFormat.format(voudate));
+                        } else if (voudate.getTime() > todate.getTime()) {
+                            Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                        }
+                    } else {
+                        Toast.makeText(sale_entry.this, "Your date is out of range! ", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    Date todate = new Date();
+                    if (voudate.getTime() <= todate.getTime()) {
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                        sh.get(0).setDate(dateFormat.format(voudate));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    }
                 }
 
             }
@@ -6826,7 +6850,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                         dialog.dismiss();
 
                         if (ConfirmedTranid != 0) {
-                            if(sh.get(0).getPay_type()==2){
+                            if (sh.get(0).getPay_type() == 2) {
 
                             }
                             if (!bill_not_print && billprintcount > 0 && use_bluetooth) {

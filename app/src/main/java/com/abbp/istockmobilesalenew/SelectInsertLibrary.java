@@ -540,9 +540,29 @@ public class SelectInsertLibrary {
 //
 //    }
 
+public static void ResetData() {
+    DatabaseHelper.execute("DELETE FROM Posuser");
+    DatabaseHelper.execute("DELETE FROM Customer");
+    DatabaseHelper.execute("DELETE FROM Location");
+    DatabaseHelper.execute("DELETE FROM Usr_Code");
+    DatabaseHelper.execute("DELETE FROM Payment_Type");
+    DatabaseHelper.execute("DELETE FROM Dis_Type");
+    DatabaseHelper.execute("DELETE FROM SystemSetting");
+    DatabaseHelper.execute("DELETE FROM Salesmen");
+    DatabaseHelper.execute("DELETE FROM Class");
+    DatabaseHelper.execute("DELETE FROM Category");
+    DatabaseHelper.execute("DELETE FROM Branch");
+    DatabaseHelper.execute("DELETE FROM Branch_User");
+    DatabaseHelper.execute("DELETE FROM Usr_Code_img");
+    DatabaseHelper.execute("DELETE FROM s_saleprice");
+    DatabaseHelper.execute("DELETE FROM Alias_code");
+    DatabaseHelper.execute("DELETE FROM cashbook_user");
+    DatabaseHelper.execute("DELETE FROM userroles");
+    DatabaseHelper.execute("DELETE FROM discount_code");
+}
 
     public void UpSertingData(String table, JSONObject jobj) {
-        DatabaseHelper.execute("DELETE FROM discount_code");
+        DatabaseHelper.execute("DELETE FROM discount_code"); //for discount maybe or doesn't have in json (usp_getallsetupdata)
         try {
             switch (table) {
                 case "Posuser":
@@ -590,6 +610,7 @@ public class SelectInsertLibrary {
                         int canselectlocation = postobj.optBoolean("canselectlocation", false) == true ? 1 : 0;
                         int salepricelevelid = postobj.optInt("salepricelevelid");
                         int userroleid = postobj.optInt("userroleid");
+                        String daysbeforeallowedit = postobj.optString("daysbeforeallowedit", "null"); //Added by  KNO (19-12-2022)
 
                         ContentValues values2 = new ContentValues();
                         values2.put("userid", userid);
@@ -624,6 +645,7 @@ public class SelectInsertLibrary {
                         values2.put("canselectlocation", canselectlocation);
                         values2.put("salepricelevelid", salepricelevelid);
                         values2.put("userroleid", userroleid);
+                        values2.put("daysbeforeallowedit", daysbeforeallowedit); //Added by  KNO (19-12-2022)
 
                         DatabaseHelper.upsertWithOnConflit("Posuser", null, values2, SQLiteDatabase.CONFLICT_REPLACE, "userid=?", new String[]{String.valueOf(userid)});
                     }
@@ -645,7 +667,7 @@ public class SelectInsertLibrary {
                         int dueindays = custobj.optInt("dueindays");
                         double discountpercent = custobj.optDouble("discountpercent");
                         int isinactive = custobj.optBoolean("isinactive", false) == true ? 1 : 0;
-                        double discountamount = custobj.optDouble("discountamount",0);
+                        double discountamount = custobj.optDouble("discountamount", 0);
                         int custgroupid = custobj.optInt("custgroupid");
                         int nationalcardid = custobj.optInt("nationalcardid");
                         int isdeleted = custobj.optBoolean("isdeleted", false) == true ? 1 : 0;
@@ -847,7 +869,7 @@ public class SelectInsertLibrary {
                         String receiptheaderline4 = systobj.getString("receiptheaderline4");
                         int isusespecialprice = systobj.optBoolean("isusespecialprice", false) == true ? 1 : 0; // added by EKK on 05-11-2020
                         int isusemulticash = systobj.optBoolean("isusemulticash", false) == true ? 1 : 0; // added by EKK on 17-11-2020
-                        int isuseduedate=systobj.optBoolean("isuseduedate",false)==true?1:0;
+                        int isuseduedate = systobj.optBoolean("isuseduedate", false) == true ? 1 : 0;
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("title", title);
                         contentValues.put("isuseunit", isuseunit);
@@ -1166,7 +1188,7 @@ public class SelectInsertLibrary {
                         cv.put("disamount9", discount.optDouble("discount9amount", 0));
                         cv.put("disamount10", discount.optDouble("discount10amount", 0));
 
-                        /*cv.put("dispercent", discount.optDouble("discountpercent", 0));
+                        cv.put("dispercent", discount.optDouble("discountpercent", 0));
                         cv.put("dispercent1", discount.optDouble("discount1percent", 0));
                         cv.put("dispercent2", discount.optDouble("discount2percent", 0));
                         cv.put("dispercent3", discount.optDouble("discount3percent", 0));
@@ -1176,7 +1198,7 @@ public class SelectInsertLibrary {
                         cv.put("dispercent7", discount.optDouble("discount7percent", 0));
                         cv.put("dispercent8", discount.optDouble("discount8percent", 0));
                         cv.put("dispercent9", discount.optDouble("discount9percent", 0));
-                        cv.put("dispercent10", discount.optDouble("discount10percent", 0));*/
+                        cv.put("dispercent10", discount.optDouble("discount10percent", 0));
 
                         DatabaseHelper.insertWithOnConflict("discount_code", null, cv, SQLiteDatabase.CONFLICT_REPLACE);
                     }
