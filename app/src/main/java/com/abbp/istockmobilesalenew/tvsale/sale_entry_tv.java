@@ -1712,7 +1712,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 RelativeLayout rlTownship = view.findViewById(R.id.rlTownship);
                 RelativeLayout rlLocatin = view.findViewById(R.id.rlLocation);
                 RelativeLayout rlsalesmen = view.findViewById(R.id.rlsalesmen);
-                RelativeLayout rlCashIn = view.findViewById(R.id.rlCashIn); //added by EKK on 16-11-2020
+                RelativeLayout rlCashIn = view.findViewById(R.id.rlcash); //added by EKK on 16-11-2020
 
                 btncustgroup = view.findViewById(R.id.btnCustGroup);
                 btntownship = view.findViewById(R.id.btnTownship);

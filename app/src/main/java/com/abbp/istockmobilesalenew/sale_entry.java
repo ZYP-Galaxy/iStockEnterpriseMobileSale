@@ -5594,13 +5594,12 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                 }
                 Confirm();
-            }
-            else{
+            } else {
                 AlertDialog.Builder b = new AlertDialog.Builder(sale_entry.this, R.style.MyDialogTheme);
                 b.setCancelable(false);//added by KLM (MWA22124) don't dismiss if process is imcomplete 21122022
                 TextView title = new TextView(getApplicationContext());
 
-                title.setBackgroundColor(Color.rgb(204,51,0));
+                title.setBackgroundColor(Color.rgb(204, 51, 0));
 //                    title.setBackgroundColor(Color.rgb(96, 169, 23));
                 title.setPadding(30, 20, 10, 20);
                 title.setTextSize(18F);
@@ -5617,7 +5616,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                     }
                 });
-                dialog=b.create();
+                dialog = b.create();
                 dialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
                     public void onShow(DialogInterface dialog1) {
@@ -5820,7 +5819,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                 } else if (defunit == 3) {
                     row_index = 2;
                 }
-
 
                 switch (sd.get(itemPosition).getUnit_type()) {
                     case 1:
