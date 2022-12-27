@@ -562,6 +562,26 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                 if (isRegister()) {
                                     SelectInsertLibrary.ResetData();
                                     GetTableNames();
+                                    //Update Downloaded DateTime to AccessedUser when reload all data
+                                    String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + "1990-01-01" + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
+                                    Log.i("frmlogin", url);
+                                    RequestQueue requestt = Volley.newRequestQueue(getApplicationContext());
+                                    final Response.Listener<String> listenerr = new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            System.out.println(response);
+                                        }
+                                    };
+
+                                    final Response.ErrorListener errorr = new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(getApplicationContext(), "You are in Offline. Please check your connection!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    };
+                                    StringRequest reqq = new StringRequest(Request.Method.GET, url, listenerr, errorr);
+                                    requestt.add(reqq);
+
                                     GetDownloading();
                                 } else {
 
