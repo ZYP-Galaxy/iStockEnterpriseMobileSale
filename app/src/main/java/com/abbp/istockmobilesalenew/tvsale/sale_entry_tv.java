@@ -194,7 +194,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
-    Date voudate;
+    Date voudate, getDate;
     AlertDialog disDa = null;
     TextView txtChangeQty, txtProgress, txtTable;
     EditText txtChangePrice;
@@ -248,7 +248,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     public static boolean logout = false;
     public static boolean use_location, use_customergroup, use_township, use_salesperson, Use_Delivery, use_multicash;
     public static boolean bill_not_print;
-    public static int billprintcount = 1;
+    public static int billprintcount;
     String detRemark = "";
     String headRemark = "";
     // String itemdis="Normal";
@@ -331,7 +331,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         sh_ip = getSharedPreferences("ip", MODE_PRIVATE);
         sh_port = getSharedPreferences("port", MODE_PRIVATE);
         dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        billprintcount = 1;
+        //billprintcount = 1;
         FillDataWithSignalr();
 
         pb = new ProgressDialog(sale_entry_tv.this, R.style.AlertDialogTheme);
@@ -5087,7 +5087,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
             }
         }
 
-        billprintcount = 1; //added by EKK
+        //billprintcount = 1; //added by EKK
     }
 
 
@@ -5097,7 +5097,6 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
         int mYear = c.get(Calendar.YEAR);
         int mMonty = c.get(Calendar.MONTH);
         int mDay = c.get(Calendar.DAY_OF_MONTH);
-
         pickerDialog = new DatePickerDialog(this, R.style.DatePickerDialog, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -5108,13 +5107,37 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date todate = new Date();
-                if (voudate.getTime() <= todate.getTime()) {
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                    sh.get(0).setDate(dateFormat.format(voudate));
+                if (!frmmain.daysbeforeallowedit.equals("null")) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -(Integer.parseInt(frmmain.daysbeforeallowedit)));
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    String output = sdf1.format(cal.getTime());
+                    try {
+                        getDate = new SimpleDateFormat("dd/MM/yyyy").parse(output);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date todate = new Date();
+                    if (voudate.getTime() >= getDate.getTime()) {
+                        if (voudate.getTime() <= todate.getTime()) {
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                            sh.get(0).setDate(dateFormat.format(voudate));
+                        } else if (voudate.getTime() > todate.getTime()) {
+                            Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                        }
+                    } else {
+                        Toast.makeText(sale_entry_tv.this, "Your date is out of range! ", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    Date todate = new Date();
+                    if (voudate.getTime() <= todate.getTime()) {
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                        sh.get(0).setDate(dateFormat.format(voudate));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    }
                 }
 
             }
@@ -6955,7 +6978,7 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
 
                             } else {
                                 PrintVoucher(tranid);
-                                billprintcount = 1;
+                                //billprintcount = 1;
                                 //tvBillCount.setText("1");
                             }
 

@@ -45,6 +45,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -120,7 +121,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
-    Date voudate;
+    Date voudate, getDate;
     AlertDialog disDa = null;
     TextView txtChangeQty, txtChangePrice, txtamt, txtdate;
     EditText txtinvoiceNo;
@@ -2262,8 +2263,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 }
                 Confirm();
                 SaleVouSalesmen.clear();
-            }
-            else {
+            } else {
                 AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.MyDialogTheme);
                 b.setCancelable(false);//added by KLM (MWA22124) don't dismiss if process is imcomplete 21122022
                 TextView title = new TextView(getApplicationContext());
@@ -3632,13 +3632,37 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Date todate = new Date();
-                if (voudate.getTime() <= todate.getTime()) {
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                    sh.get(0).setDate(dateFormat.format(voudate));
+                if (!frmmain.daysbeforeallowedit.equals("null")) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.add(Calendar.DATE, -(Integer.parseInt(frmmain.daysbeforeallowedit)));
+                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
+                    String output = sdf1.format(cal.getTime());
+                    try {
+                        getDate = new SimpleDateFormat("dd/MM/yyyy").parse(output);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    Date todate = new Date();
+                    if (voudate.getTime() >= getDate.getTime()) {
+                        if (voudate.getTime() <= todate.getTime()) {
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                            sh.get(0).setDate(dateFormat.format(voudate));
+                        } else if (voudate.getTime() > todate.getTime()) {
+                            Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                        }
+                    } else {
+                        Toast.makeText(saleorder_entry.this, "Your date is out of range! ", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    Date todate = new Date();
+                    if (voudate.getTime() <= todate.getTime()) {
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                        sh.get(0).setDate(dateFormat.format(voudate));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+                    }
                 }
 
             }

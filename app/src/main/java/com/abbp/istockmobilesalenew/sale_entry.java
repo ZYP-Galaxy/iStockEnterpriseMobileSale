@@ -195,7 +195,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
     public static boolean logout = false;
     public static boolean use_location, use_customergroup, use_township, use_salesperson, Use_Delivery, use_multicash;
     public static boolean bill_not_print;
-    public static int billprintcount = 1;
+    public static int billprintcount;
     String detRemark = "";
     String headRemark = "";
     // String itemdis="Normal";
@@ -5217,7 +5217,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             }
         }
 
-        billprintcount = 1; //added by EKK
+        //billprintcount = 1; //added by EKK
     }
 
 
