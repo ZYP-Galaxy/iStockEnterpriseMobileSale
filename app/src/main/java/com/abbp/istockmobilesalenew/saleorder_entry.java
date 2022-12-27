@@ -45,7 +45,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -121,7 +120,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
     AlertDialog msg;
     public static priceLevelAdapter pad;
     public static UnitAdapter uad;
-    Date voudate, getDate;
+    Date voudate;
     AlertDialog disDa = null;
     TextView txtChangeQty, txtChangePrice, txtamt, txtdate;
     EditText txtinvoiceNo;
@@ -253,7 +252,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
             gridcodeview.setVisibility(View.VISIBLE);
             BindingClass();
         }
-
+        tranid = 0;//added by KLM to override old tranid 27122022
         if (sd.size() > 0) sd.clear();
         if (sh.size() > 0) sh.clear();
         getHeader();
@@ -2247,7 +2246,7 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
 
 //                if (i < (sd.size() - 1))
 //                {
-                    sale_det_tmpsfordirect.add(new sale_det_tmp((int) sd.get(i).getTranid(),
+                    sale_det_tmpsfordirect.add(new sale_det_tmp((int) sh.get(0).getTranid(),
                             sd.get(i).getUnit_qty(),
                             sd.get(i).getQty(),
                             sd.get(i).getSale_price(),
@@ -2260,86 +2259,41 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                             (i + 1),
                             (i + 1), selectInsertLibrary.GettingPriceLevelId(sd.get(i).getPriceLevel()), false,
                             (int) sh.get(0).getLocationid()));
-
-
-//                    det = det + "(" +
-//                            sd.get(i).getTranid() + "," +
-//                            sd.get(i).getUnit_qty() + "," +
-//                            sd.get(i).getQty() + "," +
-//                            sd.get(i).getSale_price() + "," +
-//                            sd.get(i).getDis_price() + "," +
-//                            sd.get(i).getDis_type()+","+
-//                            sd.get(i).getDis_percent()+ "," +
-//                            detRemark+","+
-//                            sd.get(i).getUnit_type() + "," +
-//                            sd.get(i).getCode() + "," +
-//                            (i + 1) + "," +
-//                            (i + 1) +" ),";
-
-//                }
-
-//                else {
-                        /*
-                        det = det + "(" +
-                                sd.get(i).getTranid() + "," +
-                                "'" + String.format(sd.get(0).getDate(), "yyyy-MM-dd") + "'," +
-                                sd.get(i).getUnit_qty() + "," +
-                                sd.get(i).getQty() + "," +
-                                sd.get(i).getSale_price() + "," +
-                                sd.get(i).getDis_price() + "," +
-                                sd.get(i).getDis_type()+","+
-                                sd.get(i).getDis_percent()+ "," +
-                                detRemark+","+
-                                sd.get(i).getUnit_type() + "," +
-                                sd.get(i).getCode() + "," +
-                                (i + 1)+ "," +
-                                (i + 1) + ",'"+
-                                sd.get(i).getPriceLevel()+"',"+
-                                getSmallestQty(sd.get(i).getCode(),sd.get(i).getUnit_qty(),sd.get(i).getUnit_type())+","+
-                                getSPrice(sd.get(i).getCode()) +" )";
-
-                         */
-
-//                    det = det + "(" +
-//                            sd.get(i).getTranid() + "," +
-//                            sd.get(i).getUnit_qty() + "," +
-//                            sd.get(i).getQty() + "," +
-//                            sd.get(i).getSale_price() + "," +
-//                            sd.get(i).getDis_price() + "," +
-//                            sd.get(i).getDis_type()+","+
-//                            sd.get(i).getDis_percent()+ "," +
-//                            detRemark+","+
-//                            sd.get(i).getUnit_type() + "," +
-//                            sd.get(i).getCode() + "," +
-//                            (i + 1) + "," +
-//                            (i + 1) +" )";
-//                }
-
                 }
-//            sh.get(0).getDiscount_per();
-//            sh.get(0).setDiscount_per(0.0);
-//            custDis=sh.get(0).getDiscount_per();
-//            sqlstring = head +" "+salechange+" "+det;
-//            if(use_salesperson && SaleVouSalesmen.size()>0)
-//            {
-//                String salePerson=" delete from SalesVoucher_Salesmen_Tmp where Sales_TranID="+sh.get(0).getTranid()+" and userid="+frmlogin.LoginUserid+
-//                        " insert into SalesVoucher_Salesmen_Tmp(Sales_TranID,Salesmen_ID,rmt_copy,userid)"+
-//                        "values ";
-//                for(int i=0;i<SaleVouSalesmen.size();i++)
-//                {
-//                    salePerson=salePerson+"("+
-//                            sh.get(0).getTranid()+","+
-//                            SaleVouSalesmen.get(i).getSalesmen_Id()+","+
-//                            "1,"+frmlogin.LoginUserid+"),";
-//                }
-//                salePerson=salePerson.substring(0,salePerson.length()-1);
-//                sqlstring=sqlstring+" "+salePerson;
+                Confirm();
+                SaleVouSalesmen.clear();
             }
+            else {
+                AlertDialog.Builder b = new AlertDialog.Builder(saleorder_entry.this, R.style.MyDialogTheme);
+                b.setCancelable(false);//added by KLM (MWA22124) don't dismiss if process is imcomplete 21122022
+                TextView title = new TextView(getApplicationContext());
 
-            Confirm();
-            SaleVouSalesmen.clear();
+                title.setBackgroundColor(Color.rgb(204, 51, 0));
+//                    title.setBackgroundColor(Color.rgb(96, 169, 23));
+                title.setPadding(30, 20, 10, 20);
+                title.setTextSize(18F);
+                title.setText("iStock");
+                title.setTextColor(Color.WHITE);
+                b.setCustomTitle(title);
+                b.setCancelable(false);
+                b.setMessage("Connection Fail. Please check your connection and try again!");
+                b.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        getHeader();
 
-//        }
+                    }
+                });
+                dialog = b.create();
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog1) {
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                    }
+                });
+                dialog.show();
+            }
         } catch (Exception ee) {
             Context context = getApplicationContext();
             CharSequence text = "Hello toast!";
@@ -3676,42 +3630,19 @@ public class saleorder_entry extends AppCompatActivity implements AdapterView.On
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                if (!frmmain.daysbeforeallowedit.equals("null")) {
-                    Calendar cal = Calendar.getInstance();
-                    cal.add(Calendar.DATE, -(Integer.parseInt(frmmain.daysbeforeallowedit)));
-                    SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
-                    String output = sdf1.format(cal.getTime());
-                    try {
-                        getDate = new SimpleDateFormat("dd/MM/yyyy").parse(output);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    Date todate = new Date();
-                    if (voudate.getTime() >= getDate.getTime()) {
-                        if (voudate.getTime() <= todate.getTime()) {
-                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                            sh.get(0).setDate(dateFormat.format(voudate));
-                        } else if (voudate.getTime() > todate.getTime()) {
-                            Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                            txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-                        }
-                    } else {
-                        Toast.makeText(saleorder_entry.this, "Your date is out of range! ", Toast.LENGTH_LONG).show();
-                    }
+                Date todate = new Date();
+                if (voudate.getTime() <= todate.getTime()) {
+                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
+                    sh.get(0).setDate(dateFormat.format(voudate));
                 } else {
-                    Date todate = new Date();
-                    if (voudate.getTime() <= todate.getTime()) {
-                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(voudate));
-                        sh.get(0).setDate(dateFormat.format(voudate));
-                    } else {
-                        Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
-                        txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-                    }
+                    Toast.makeText(getApplicationContext(), "You can't change greater than Today date", Toast.LENGTH_LONG).show();
+                    txtdate.setText(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
                 }
 
             }
         }, mYear, mMonty, mDay);
         pickerDialog.show();
+
     }
 
     private void InitializeHeader(ArrayList<String> id, ArrayList<Button> btn) {
