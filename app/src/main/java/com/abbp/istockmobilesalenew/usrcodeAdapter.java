@@ -990,6 +990,7 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
                 sale_entry.sd.get(index).setDis_type(5);
                 sale_entry.sd.get(index).setDis_percent(0);
                 double discount_price = sale_entry.sd.get(index).getSale_price() - discount;
+                sale_entry.dis_percent = discount;
                 sale_entry.sd.get(index).setDis_price(discount_price);
                 sale_entry.itemAdapter.notifyDataSetChanged();
                 sale_entry.entrygrid.setSelection(sale_entry.sd.size());
@@ -997,6 +998,8 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
             } else if (dispercent > 0) {
                 sale_entry.sd.get(index).setDis_type(5);
                 sale_entry.sd.get(index).setDis_percent(dispercent);
+                sale_entry.dis_typepercent = true;
+                sale_entry.dis_percent = dispercent;
                 double discount_price = sale_entry.sd.get(index).getSale_price() - (sale_entry.sd.get(index).getSale_price() * (dispercent / 100));
                 sale_entry.sd.get(index).setDis_price(discount_price);
                 sale_entry.itemAdapter.notifyDataSetChanged();
@@ -1008,11 +1011,11 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
 
 
     //Added by abbp barcode scanner on 19/6/2019
-    public static void scanner(String usr_code,String entryFormName) {
-        adddata(usr_code,entryFormName);
+    public static void scanner(String usr_code, String entryFormName) {
+        adddata(usr_code, entryFormName);
     }
 
-    private static void adddata(String usr_code,String entryFormName) {
+    private static void adddata(String usr_code, String entryFormName) {
         if (entryFormName.equals("saleorder")) {//added by KLM to effect both sale & sale order in qrcode scanner
             specialPrice = GetPriceLevel();
             String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.saleprice" + specialPrice;
@@ -1057,8 +1060,7 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
             saleorder_entry.itemAdapter.notifyDataSetChanged();
             saleorder_entry.entrygrid.setSelection(saleorder_entry.sd.size());
             saleorder_entry.getSummary();
-        }
-        else{
+        } else {
             specialPrice = GetPriceLevel();
             String sale_price = specialPrice == 0 ? "uc.sale_price" : "uc.saleprice" + specialPrice;
             String SP = specialPrice == 0 ? "SP" : "SP" + specialPrice;
