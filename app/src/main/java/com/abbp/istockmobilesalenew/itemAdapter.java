@@ -18,6 +18,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.abbp.istockmobilesalenew.tvsale.sale_entry_tv;
+
 import java.util.ArrayList;
 
 import static com.abbp.istockmobilesalenew.sale_entry.itemPosition;
@@ -157,6 +159,7 @@ public class itemAdapter extends BaseAdapter {
                         }
                         saleorder_entry.getData();
                         saleorder_entry.getSummary();
+                        saleorder_entry.entrygrid.smoothScrollToPosition(saleorder_entry.sd.size());
                         if (saleorder_entry.sd.size() == 0) {
                             String tax = "Tax" + (saleorder_entry.getTax() > 0 ? "( " + saleorder_entry.getTax() + "% )" : "");
                             saleorder_entry.txttax.setText(tax);
@@ -432,6 +435,7 @@ public class itemAdapter extends BaseAdapter {
                         }
                         sale_entry.getData();
                         sale_entry.getSummary();
+                        sale_entry.entrygrid.smoothScrollToPosition(sale_entry.sd.size());
                         if (sale_entry.sd.size() == 0) {
                             String tax = "Tax" + (sale_entry.getTax() > 0 ? "( " + sale_entry.getTax() + "% )" : "");
                             sale_entry.txttax.setText(tax);
