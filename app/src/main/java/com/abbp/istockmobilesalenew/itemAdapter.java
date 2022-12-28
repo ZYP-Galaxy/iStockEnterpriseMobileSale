@@ -157,9 +157,7 @@ public class itemAdapter extends BaseAdapter {
                         for (int i = 0; i < saleorder_entry.sd.size(); i++) {
                             saleorder_entry.sd.get(i).setSr(i + 1);
                         }
-                        saleorder_entry.getData();
-                        saleorder_entry.getSummary();
-                        saleorder_entry.entrygrid.smoothScrollToPosition(saleorder_entry.sd.size());
+
                         if (saleorder_entry.sd.size() == 0) {
                             String tax = "Tax" + (saleorder_entry.getTax() > 0 ? "( " + saleorder_entry.getTax() + "% )" : "");
                             saleorder_entry.txttax.setText(tax);
@@ -174,6 +172,9 @@ public class itemAdapter extends BaseAdapter {
                             // saleorder_entry.txtpaidAmt.setText("0"); //modified by EKK on 05-11-2020
                             saleorder_entry.getSummary();
                         }
+                        saleorder_entry.itemAdapter.notifyDataSetChanged();
+                        saleorder_entry.getSummary();
+                        saleorder_entry.entrygrid.smoothScrollToPosition(sale_entry.sd.size());
                         dialog.dismiss();
                     }
                 });
@@ -433,9 +434,7 @@ public class itemAdapter extends BaseAdapter {
                         for (int i = 0; i < sale_entry.sd.size(); i++) {
                             sale_entry.sd.get(i).setSr(i + 1);
                         }
-                        sale_entry.getData();
-                        sale_entry.getSummary();
-                        sale_entry.entrygrid.smoothScrollToPosition(sale_entry.sd.size());
+
                         if (sale_entry.sd.size() == 0) {
                             String tax = "Tax" + (sale_entry.getTax() > 0 ? "( " + sale_entry.getTax() + "% )" : "");
                             sale_entry.txttax.setText(tax);
@@ -448,8 +447,11 @@ public class itemAdapter extends BaseAdapter {
                             sale_entry.txtpaidamt.setText("0");
                             sale_entry.sh.get(0).setIstemdis_amount(0.0);
                             sale_entry.sh.get(0).setFoc_amount(0.0);
-                            sale_entry.getSummary();
+                            //sale_entry.getSummary();
                         }
+                        sale_entry.itemAdapter.notifyDataSetChanged();
+                        sale_entry.getSummary();
+                        sale_entry.entrygrid.smoothScrollToPosition(sale_entry.sd.size());
                         dialog.dismiss();
                     }
                 });
