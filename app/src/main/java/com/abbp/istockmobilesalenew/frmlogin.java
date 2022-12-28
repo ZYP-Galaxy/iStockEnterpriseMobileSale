@@ -562,6 +562,8 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                 if (isRegister()) {
                                     SelectInsertLibrary.ResetData();
                                     GetTableNames();
+                                    ip = sh_ip.getString("ip", "empty");
+                                    port = sh_port.getString("port", "empty");
                                     //Update Downloaded DateTime to AccessedUser when reload all data
                                     String url = "http://" + ip + ":" + port + "/api/mobile/RegisterUsingIMEI?imei=" + GettingIMEINumber.IMEINO + "&lastupdatedatetime=" + "1990-01-01" + "&lastaccesseduserid=" + LoginUserid + "&clientname=" + Device_Name;
                                     Log.i("frmlogin", url);
@@ -570,6 +572,7 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                         @Override
                                         public void onResponse(String response) {
                                             System.out.println(response);
+                                            GetDownloading();
                                         }
                                     };
 
@@ -582,7 +585,6 @@ public class frmlogin extends AppCompatActivity implements View.OnClickListener,
                                     StringRequest reqq = new StringRequest(Request.Method.GET, url, listenerr, errorr);
                                     requestt.add(reqq);
 
-                                    GetDownloading();
                                 } else {
 
                                     new AlertDialog.Builder(frmlogin.this, R.style.AlertDialogTheme)
