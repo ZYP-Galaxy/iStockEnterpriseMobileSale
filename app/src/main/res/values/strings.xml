@@ -4,5 +4,5 @@
     <string name="search">Search</string>
     <string name="barcode_scan">Barcode Scan</string>
     <string name="content_description">Content Description</string>
-    <string name="app_version">Version 8.0.7 Alpha</string>
+    <string name="app_version">Version 8.0.7 Beta</string>
 </resources>
