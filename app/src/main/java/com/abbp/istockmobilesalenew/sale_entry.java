@@ -463,8 +463,6 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     Use_Delivery = cursor.getInt(cursor.getColumnIndex("isusedelivery")) == 1 ? true : false;
                     use_multicash = cursor.getInt(cursor.getColumnIndex("isusemulticash")) == 1 ? true : false; //added by EKK on 17-11-2020
                 } while (cursor.moveToNext());
-
-
             }
 
         }
@@ -2067,7 +2065,8 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onClick(View v) {
 
-//                        Toast.makeText(sale_entry.this,sh.size()+"u click me!",Toast.LENGTH_LONG).show();
+//                        Toast.makeText(sale_entry.this,sh.size()+"u click me!",Toast.LENGTH_LONG).show();\
+
                         invoice_no = txtinvoiceNo.getText().toString();/*.toString().trim().isEmpty()?"NULL":txtinvoiceNo.getText().toString().trim();*/
 //                        Toast.makeText(sale_entry.this,sh.size()+"u click me!"+invoice_no,Toast.LENGTH_LONG).show();
                         sh.get(0).setInvoice_no(invoice_no);
@@ -2078,14 +2077,15 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                             chkbillnotprint.setVisibility(View.VISIBLE);
                             bill_not_print = false;
                         }
-
+                        int pricelevelid = 0;
                         //Added for credit limit customer
-                        String sqlString = "select customerid,iscredit,creditlimit from Customer where customerid=" + sh.get(0).getCustomerid();//,credit,due_in_days,credit_limit
+                        String sqlString = "select customerid,iscredit,creditlimit,pricelevelid from Customer where customerid=" + sh.get(0).getCustomerid();//,credit,due_in_days,credit_limit
                         Cursor cursor = DatabaseHelper.rawQuery(sqlString);
                         if (cursor != null && cursor.getCount() != 0) {
                             if (cursor.moveToFirst()) {
                                 do {
                                     long customerid = cursor.getLong(cursor.getColumnIndex("customerid"));
+                                    pricelevelid = cursor.getInt(cursor.getColumnIndex("pricelevelid"));
 //                                String customername = cursor.getString(cursor.getColumnIndex("name"));
 //                    String customercode = cursor.getString(cursor.getColumnIndex("customer_code"));
                                     boolean credit = cursor.getInt(cursor.getColumnIndex("iscredit")) == 1 ? true : false;
@@ -2100,7 +2100,26 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
                         }
                         cursor.close();
-                        //Added for credit limit customer
+
+                        //Added by KNO(19-01-2023) for customer price level to change price in grid
+                        boolean use_multipricelvl = false;
+                        boolean isusecustpricelevel = false;
+
+                        Cursor cursorplvl = DatabaseHelper.rawQuery("select isusemultipricelvl,isusecustpricelevel from SystemSetting");
+                        if (cursorplvl != null && cursorplvl.getCount() != 0) {
+                            if (cursorplvl.moveToFirst()) {
+                                do {
+                                    use_multipricelvl = cursorplvl.getInt(cursorplvl.getColumnIndex("isusemultipricelvl")) == 1 ? true : false;
+                                    isusecustpricelevel = cursorplvl.getInt(cursorplvl.getColumnIndex("isusecustpricelevel")) == 1 ? true : false;
+                                } while (cursorplvl.moveToNext());
+
+
+                            }
+
+                        }
+                        cursorplvl.close();
+                        if (use_multipricelvl && isusecustpricelevel)
+                            ChangePriceLevelSale(pricelevelid);
 
                         //Added for Outstand
                         if (isCreditcustomer /*&& sh.get(0).getPay_type() == 2*/) {
@@ -2159,6 +2178,41 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
 
         }
 
+    }
+
+    //Added by KNO(19-01-2023) for customer price level to change price in grid
+    private void ChangePriceLevelSale(long pricelevelid) {
+        String sale_price = pricelevelid == 0 ? "uc.sale_price" : "uc.saleprice" + pricelevelid;
+        String SP = pricelevelid == 0 ? "SP" : "SP" + specialPrice;
+
+
+        for (int i = 0; i < sale_entry.sd.size(); i++) {
+            String sqlString = "select uc.unit_type,code,description," + sale_price + ",smallest_unit_qty,unitname,unitshort,CalNoTax from Usr_Code uc " +
+                    " where uc.unit_type=" + sale_entry.sd.get(i).getUnit_type() + " and uc.code=" + sale_entry.sd.get(i).getCode();
+            Cursor cursor = DatabaseHelper.rawQuery(sqlString);
+            if (cursor != null && cursor.getCount() != 0) {
+                if (cursor.moveToFirst()) {
+                    do {
+
+                        double price = cursor.getDouble(cursor.getColumnIndex(sale_price));
+                        sale_entry.sd.get(i).setPriceLevel(SP);
+                        if (price != 0) {
+                            sale_entry.sd.get(i).setSale_price(price);
+                            sale_entry.sd.get(i).setDis_price(price);
+                            sale_entry.sd.get(i).setDis_type(0);
+                        }
+
+                    } while (cursor.moveToNext());
+
+
+                }
+
+            }
+            cursor.close();
+
+        }
+        sale_entry.itemAdapter.notifyDataSetChanged();
+        sale_entry.getSummary();
     }
 
     private void CodeFind() {
@@ -2451,6 +2505,9 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
                     getSummary();
                 }
 
+                //if (entryformname.toString().contains("sale_entry")) {
+                usrcodeAdapter.GetDiscountCode();
+                //}
 
             }
         });
@@ -2461,6 +2518,7 @@ public class sale_entry extends AppCompatActivity implements View.OnClickListene
             }
         });
     }
+
 
     private List<usr_code> GetCodes() {
         List<usr_code> codes = new ArrayList<>();

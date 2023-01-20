@@ -3886,7 +3886,8 @@ public class sale_entry_tv extends AppCompatActivity implements View.OnClickList
     }
 
     private void voucherConfirm() {
-
+        paidamount = 0.0;
+        changeamount = 0.0;
         if (sh.get(0).getPay_type() == 1) {
             AlertDialog.Builder change = new AlertDialog.Builder(sale_entry_tv.this);
             change.setCancelable(false);

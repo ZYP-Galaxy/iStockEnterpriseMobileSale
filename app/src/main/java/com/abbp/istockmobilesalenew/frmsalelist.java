@@ -191,6 +191,7 @@ public class frmsalelist extends AppCompatActivity implements View.OnClickListen
             public void onClick(View v) {
                 txtdate.setText("Today");
                 selectfilter.setText("Choose");
+                filterV = 0;
                 FilterCustomer.ccid = -1;
                 //FilterUser.uid=-1;
                 //FilterLocation.locid=-1;

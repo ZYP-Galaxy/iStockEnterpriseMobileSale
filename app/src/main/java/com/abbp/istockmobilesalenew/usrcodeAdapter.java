@@ -960,7 +960,7 @@ public class usrcodeAdapter extends RecyclerView.Adapter<usrcodeAdapter.MyViewHo
     }
 
 
-    private void GetDiscountCode() {
+    public static void GetDiscountCode() {
         if (sale_entry.sd.size() > 0) {
             long code = sale_entry.sd.get((sale_entry.sd.size() - 1)).getCode();
             long locationid = sale_entry.sh.get(0).getLocationid();
